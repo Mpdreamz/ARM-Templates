@@ -215,7 +215,7 @@
     }
   },
   "variables": {
-    "templateBaseUrl": "https://raw.githubusercontent.com/webtoed/ARM-Templates/master/elastic/",
+    "templateBaseUrl": "https://raw.githubusercontent.com/Mpdreamz/ARM-Templates/master/elastic/",
     "masterNodesIpPrefix": "10.1.0.1",
     "admin": {
       "user": "[parameters('adminUsername')]",
