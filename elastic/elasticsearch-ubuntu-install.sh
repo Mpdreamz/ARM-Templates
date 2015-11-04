@@ -10,10 +10,10 @@
 # to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 # copies of the Software, and to permit persons to whom the Software is
 # furnished to do so, subject to the following conditions:
-# 
+#
 # The above copyright notice and this permission notice shall be included in all
 # copies or substantial portions of the Software.
-# 
+#
 # THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 # IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 # FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -218,7 +218,7 @@ install_java()
 # Install Elasticsearch
 install_es()
 {
-	
+
 	# Elasticsearch 2.0.0 uses a different download path
     if [[ "${ES_VERSION}" == \2* ]]; then
         DOWNLOAD_URL="https://download.elasticsearch.org/elasticsearch/release/org/elasticsearch/distribution/deb/elasticsearch/$ES_VERSION/elasticsearch-$ES_VERSION.deb"
@@ -304,6 +304,9 @@ echo "marvel.agent.enabled: true" >> /etc/elasticsearch/elasticsearch.yml
 echo "action.auto_create_index: .marvel-*, *"  >> /etc/elasticsearch/elasticsearch.yml
 
 echo "bootstrap.mlockall: true" >> /etc/elasticsearch/elasticsearch.yml
+
+# Since we always create a cluster with 3 master only eligable nodes bake in the minimum_master_nodes setting
+echo "discovery.zen.minimum_master_nodes: 2" >> /etc/elasticsearch/elasticsearch.yml
 
 # Configure Elasticsearch node type
 log "Configure master/client/data node type flags mater-$MASTER_ONLY_NODE data-$DATA_NODE"
@@ -408,7 +411,6 @@ exit 0
 #sed -i -e "/path\.data/s/^#//g;s/^\(path\.data\s*:\s*\).*\$/\1${DATAPATH_CONFIG}/" /etc/elasticsearch/elasticsearch.yml
 
 # Minimum master nodes nodes/2+1 (These can be configured via API as well - (_cluster/settings))
-# discovery.zen.minimum_master_nodes: 2
 # gateway.expected_nodes: 10
 # gateway.recover_after_time: 5m
 #----------------------
