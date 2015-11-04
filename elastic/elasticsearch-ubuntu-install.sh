@@ -317,10 +317,11 @@ echo "discovery.zen.ping.multicast.enabled: false" >> /etc/elasticsearch/elastic
 echo "discovery.zen.ping.unicast.hosts: $HOSTS_CONFIG" >> /etc/elasticsearch/elasticsearch.yml
 
 # Bind to private network IP and local
-echo "network.bind_host: [$PUBLISH_IP, "_local_"]" >> /etc/elasticsearch/elasticsearch.yml
+#echo "network.bind_host: [$PUBLISH_IP, "_local_"]" >> /etc/elasticsearch/elasticsearch.yml
 # publish over the private network IP
-log "binding elasticsearch's network.publish_host: $PUBLISH_IP"
-echo "network.publish_host: $PUBLISH_IP" >>  /etc/elasticsearch/elasticsearch.yml
+#log "binding elasticsearch's network.publish_host: $PUBLISH_IP"
+#echo "network.publish_host: $PUBLISH_IP" >>  /etc/elasticsearch/elasticsearch.yml
+echo "network.host: _non_loopback_" >> /etc/elasticsearch/elasticsearch.yml
 
 # Configure for for Marvel/Monitoring cluster
 # Next needs cleaned up for use of LBIP (ext/int) add to json param
