@@ -93,8 +93,7 @@ fi
 
 #Script Parameters
 CLUSTER_NAME="elasticsearch"
-CLUSTER_TYPE="elastic"
-ES_VERSION="1.5.0"
+ES_VERSION="2.0.0"
 DISCOVERY_ENDPOINTS=""
 INSTALL_PLUGINS="true" #We use this because of ARM template limitation
 CLIENT_ONLY_NODE=0
@@ -156,9 +155,6 @@ while getopts :n:d:v:l:a:A:r:R:k:K:m:t:xyzsh optname; do
       ;;
     s) #use OS striped disk volumes
       OS_STRIPED_DISK=1
-      ;;
-    t) #type of cluster
-      CLUSTER_TYPE=${OPTARG}
       ;;
     d) #place data on local resource disk
       NON_DURABLE=1
@@ -222,19 +218,17 @@ install_java()
 # Install Elasticsearch
 install_es()
 {
-    # apt-get install approach
-    # This has the added benefit that is simplifies upgrades (user)
-    # Using the debian package because it's easier to explicitly control version and less changes of nodes with different versions
-    #wget -qO - https://packages.elasticsearch.org/GPG-KEY-elasticsearch | sudo apt-key add -
-    #add-apt-repository "deb http://packages.elasticsearch.org/elasticsearch/1.5/debian stable main"
-    #apt-get update && apt-get install elasticsearch
+	
+	# Elasticsearch 2.0.0 uses a different download path
+    if [[ "${ES_VERSION}" == \2* ]]; then
+        DOWNLOAD_URL="https://download.elasticsearch.org/elasticsearch/release/org/elasticsearch/distribution/deb/elasticsearch/$ES_VERSION/elasticsearch-$ES_VERSION.deb"
+    else
+        DOWNLOAD_URL="https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-$ES_VERSION.deb"
+    fi
 
-    # if [ -z "$ES_VERSION" ]; then
-    #     ES_VERSION="1.5.0"
-    # fi
-
-    log "Installing Elasticsearch Version - $ES_VERSION"
-    sudo wget -q "https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-$ES_VERSION.deb" -O elasticsearch.deb
+    log "Installing Elaticsearch Version - $ES_VERSION"
+	log "Download location - $DOWNLOAD_URL"
+    sudo wget -q "$DOWNLOAD_URL" -O elasticsearch.deb
     sudo dpkg -i elasticsearch.deb
 }
 
@@ -309,8 +303,6 @@ echo "marvel.agent.exporter.es.hosts: [ $MARVEL_HOST ]" >> /etc/elasticsearch/el
 echo "marvel.agent.enabled: true" >> /etc/elasticsearch/elasticsearch.yml
 echo "action.auto_create_index: .marvel-*, *"  >> /etc/elasticsearch/elasticsearch.yml
 
-# Enable cross cors
-echo "http.cors.enabled: true" >> /etc/elasticsearch/elasticsearch.yml
 echo "bootstrap.mlockall: true" >> /etc/elasticsearch/elasticsearch.yml
 
 # Configure Elasticsearch node type
@@ -355,7 +347,7 @@ echo "vm.max_map_count = 262144" >> /etc/sysctl.conf
 #TODO: Move this to an init.d script so we can handle instance size increases
 ES_HEAP=`free -m |grep Mem | awk '{if ($2/2 >31744)  print 31744;else print $2/2;}'`
 log "Configure elasticsearch heap size - $ES_HEAP"
-echo "ES_HEAP_SIZE=${ES_HEAP}/" >> /etc/default/elasticseach
+echo "ES_HEAP_SIZE=${ES_HEAP}m" >> /etc/default/elasticsearch
 
 #Optionally Install Marvel
 log "Plugin install set to ${INSTALL_PLUGINS}"
