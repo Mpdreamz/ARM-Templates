@@ -52,7 +52,7 @@ help()
     echo "-r shield read only"
     echo "-R read password"
     echo "-k shield kibana"
-    echo "-K kibane password"
+    echo "-K kibana password"
     echo "-x configure as a dedicated master node"
     echo "-y configure as client only node (no master, no data)"
     echo "-z configure as data node (no master)"
