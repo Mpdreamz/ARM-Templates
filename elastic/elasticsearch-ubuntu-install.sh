@@ -291,7 +291,7 @@ S=$(expand_ip_range "$DISCOVERY_ENDPOINTS")
 HOSTS_CONFIG="[\"${S// /\",\"}\"]"
 
 S=$(get_publish_ip "$DISCOVERY_ENDPOINTS")
-PUBLISH_IP="[\"${S// /\",\"}\"]"
+PUBLISH_IP="\"${S// /\",\"}\""
 
 #Format the static discovery host endpoints for Elasticsearch configuration ["",""] format
 #HOSTS_CONFIG="[\"${DISCOVERY_ENDPOINTS//-/\",\"}\"]"
@@ -317,7 +317,7 @@ echo "discovery.zen.ping.multicast.enabled: false" >> /etc/elasticsearch/elastic
 echo "discovery.zen.ping.unicast.hosts: $HOSTS_CONFIG" >> /etc/elasticsearch/elasticsearch.yml
 
 # Bind to private network IP and local
-echo "network.bind_host: ["$PUBLISH_IP", "_local_"]" >> /etc/elasticsearch/elasticsearch.yml
+echo "network.bind_host: [$PUBLISH_IP, "_local_"]" >> /etc/elasticsearch/elasticsearch.yml
 # publish over the private network IP
 log "binding elasticsearch's network.publish_host: $PUBLISH_IP"
 echo "network.publish_host: $PUBLISH_IP" >>  /etc/elasticsearch/elasticsearch.yml
