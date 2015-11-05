@@ -222,7 +222,7 @@ install_java()
 # Install Elasticsearch
 install_es()
 {
-	
+
 	# Elasticsearch 2.0.0 uses a different download path
     if [[ "${ES_VERSION}" == \2* ]]; then
         DOWNLOAD_URL="https://download.elasticsearch.org/elasticsearch/release/org/elasticsearch/distribution/deb/elasticsearch/$ES_VERSION/elasticsearch-$ES_VERSION.deb"
@@ -303,7 +303,7 @@ echo "discovery.zen.ping.unicast.hosts: $HOSTS_CONFIG" >> /etc/elasticsearch/ela
 
 
 # Configure Elasticsearch node type
-log "Configure master/client/data node type flags mater-$MASTER_ONLY_NODE data-$DATA_NODE"
+log "Configure master/client/data node type flags master-$MASTER_ONLY_NODE data-$DATA_NODE"
 
 if [ ${MASTER_ONLY_NODE} -ne 0 ]; then
     log "Configure node as master only"
@@ -356,36 +356,36 @@ echo "ES_HEAP_SIZE=${ES_HEAP}m" >> /etc/default/elasticsearch
 log "Plugin install set to ${INSTALL_PLUGINS}"
 if [ "${INSTALL_PLUGINS}" == "true" ]; then
     log "Installing Plugins Shield, Marvel, Watcher"
-    sudo /usr/share/elasticsearch/bin/plugin install elasticsearch/license/latest 
+    sudo /usr/share/elasticsearch/bin/plugin install elasticsearch/license/latest
     sudo /usr/share/elasticsearch/bin/plugin install elasticsearch/shield/latest
-    sudo /usr/share/elasticsearch/bin/plugin install elasticsearch/watcher/latest
-    sudo /usr/share/elasticsearch/bin/plugin install elasticsearch/marvel/latest
-    
+    sudo /usr/share/elasticsearch/bin/plugin install elasticsearch/wa/tcher/latest
+    sudo /usr/share/elasticsearch/bin/plugin install marvel-agent
+
 	#should not be necessary and should use -Des.path.conf see:
 	# https://www.elastic.co/guide/en/shield/shield-1.3/installing-shield.html
-	# 
+	#
 	#sudo cp -r /usr/share/elasticsearch/config/shield /etc/elasticsearch/
-    
+
 	log " finished plugin install"
     log " Start Adding Shield Users ${USER_ADMIN}"
     log " Start adding ${USER_ADMIN}"
     sudo /usr/share/elasticsearch/bin/shield/esusers useradd "${USER_ADMIN}" -p "${USER_ADMIN_PWD}" -r admin
     log " Finished adding ${USER_ADMIN}"
-    
+
 	log " Start adding ${USER_READ}"
     sudo /usr/share/elasticsearch/bin/shield/esusers useradd "${USER_READ}" -p "${USER_READ_PWD}" -r user
     log " Finished adding ${USER_READ}"
-    
+
 	log " Start adding ${USER_KIBANA4}"
     sudo /usr/share/elasticsearch/bin/shield/esusers useradd "${USER_KIBANA4}" -p "${USER_KIBANA4_PWD}" -r kibana4
     log " Finished adding ${USER_KIBANA4}"
-    
+
 	log " adding marvel_agent "
 	sudo /usr/share/elasticsearch/bin/shield/esusers useradd marvel_export -p marvelPassw0rd -r marvel_agent
     log " finished adding Shield Users"
     log "Finished Plugin install and shield users"
-	
-	
+
+
 	echo "marvel.agent.exporter.es.hosts: [ $MARVEL_HOST ]" >> /etc/elasticsearch/elasticsearch.yml
 	echo "marvel.agent.enabled: true" >> /etc/elasticsearch/elasticsearch.yml
 fi
