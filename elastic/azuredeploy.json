@@ -174,8 +174,7 @@
       "type": "string",
       "defaultValue": "2.0.0",
       "allowedValues": [
-        "2.0.0",
-        "1.7.3"
+        "2.0.0"
       ],
       "metadata": {
         "description": "Elasticsearch version to install"

@@ -38,6 +38,10 @@
 ### -Add role based configs or link to file source - CLUSTER_TYPE. Need to add to parameters and extend logic
 ### -Issue with KOPF and 1.6.2+
 
+# Modified Martijn Laarman
+### resynced with azure-quick-start
+### 2.0 changes reflectect
+
 help()
 {
     #TODO: Add help text here
@@ -194,22 +198,6 @@ expand_ip_range() {
     echo "${EXPAND_STATICIP_RANGE_RESULTS[@]}"
 }
 
-get_publish_ip() {
-    IFS='-' read -a HOST_IPS <<< "$1"
-
-    #Get the IP Addresses on this machine
-    declare -a MY_IPS=`ifconfig | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' | grep -Eo '([0-9]*\.){3}[0-9]*' | grep -v '127.0.0.1'`
-    declare -a EXPAND_STATICIP_RANGE_RESULTS=()
-    for (( n=0 ; n<("${HOST_IPS[1]}"+0) ; n++))
-    do
-        HOST="${HOST_IPS[0]}${n}"
-        if [[ "${MY_IPS[@]}" =~ "${HOST}" ]]; then
-            EXPAND_STATICIP_RANGE_RESULTS+=($HOST)
-        fi
-    done
-    echo "${EXPAND_STATICIP_RANGE_RESULTS[@]}"
-}
-
 # Configure Elasticsearch Data Disk Folder and Permissions
 setup_data_disk()
 {
@@ -234,7 +222,7 @@ install_java()
 # Install Elasticsearch
 install_es()
 {
-
+	
 	# Elasticsearch 2.0.0 uses a different download path
     if [[ "${ES_VERSION}" == \2* ]]; then
         DOWNLOAD_URL="https://download.elasticsearch.org/elasticsearch/release/org/elasticsearch/distribution/deb/elasticsearch/$ES_VERSION/elasticsearch-$ES_VERSION.deb"
@@ -290,9 +278,6 @@ fi
 S=$(expand_ip_range "$DISCOVERY_ENDPOINTS")
 HOSTS_CONFIG="[\"${S// /\",\"}\"]"
 
-S=$(get_publish_ip "$DISCOVERY_ENDPOINTS")
-PUBLISH_IP="\"${S// /\",\"}\""
-
 #Format the static discovery host endpoints for Elasticsearch configuration ["",""] format
 #HOSTS_CONFIG="[\"${DISCOVERY_ENDPOINTS//-/\",\"}\"]"
 
@@ -316,23 +301,6 @@ log "Update configuration with hosts configuration of $HOSTS_CONFIG"
 echo "discovery.zen.ping.multicast.enabled: false" >> /etc/elasticsearch/elasticsearch.yml
 echo "discovery.zen.ping.unicast.hosts: $HOSTS_CONFIG" >> /etc/elasticsearch/elasticsearch.yml
 
-# Bind to private network IP and local
-#echo "network.bind_host: [$PUBLISH_IP, "_local_"]" >> /etc/elasticsearch/elasticsearch.yml
-# publish over the private network IP
-#log "binding elasticsearch's network.publish_host: $PUBLISH_IP"
-#echo "network.publish_host: $PUBLISH_IP" >>  /etc/elasticsearch/elasticsearch.yml
-echo "network.host: _non_loopback_" >> /etc/elasticsearch/elasticsearch.yml
-
-# Configure for for Marvel/Monitoring cluster
-# Next needs cleaned up for use of LBIP (ext/int) add to json param
-echo "marvel.agent.exporter.es.hosts: [ $MARVEL_HOST ]" >> /etc/elasticsearch/elasticsearch.yml
-echo "marvel.agent.enabled: true" >> /etc/elasticsearch/elasticsearch.yml
-echo "action.auto_create_index: .marvel-*, *"  >> /etc/elasticsearch/elasticsearch.yml
-
-echo "bootstrap.mlockall: true" >> /etc/elasticsearch/elasticsearch.yml
-
-# Since we always create a cluster with 3 master only eligable nodes bake in the minimum_master_nodes setting
-echo "discovery.zen.minimum_master_nodes: 2" >> /etc/elasticsearch/elasticsearch.yml
 
 # Configure Elasticsearch node type
 log "Configure master/client/data node type flags mater-$MASTER_ONLY_NODE data-$DATA_NODE"
@@ -358,6 +326,12 @@ else
     echo "node.data: true" >> /etc/elasticsearch/elasticsearch.yml
 fi
 
+
+
+echo "discovery.zen.minimum_master_nodes: 2" >> /etc/elasticsearch/elasticsearch.yml
+echo "network.host: _non_loopback_" >> /etc/elasticsearch/elasticsearch.yml
+echo "bootstrap.mlockall: true" >> /etc/elasticsearch/elasticsearch.yml
+
 # DNS Retry
 echo "options timeout:1 attempts:5" >> /etc/resolvconf/resolv.conf.d/head
 resolvconf -u
@@ -381,28 +355,39 @@ echo "ES_HEAP_SIZE=${ES_HEAP}m" >> /etc/default/elasticsearch
 #Optionally Install Marvel
 log "Plugin install set to ${INSTALL_PLUGINS}"
 if [ "${INSTALL_PLUGINS}" == "true" ]; then
-    log "Installing Plugins Shield, Marvel, watcher"
-    sudo /usr/share/elasticsearch/bin/plugin -i elasticsearch/license/latest
-    sudo /usr/share/elasticsearch/bin/plugin -i elasticsearch/shield/latest
-    sudo /usr/share/elasticsearch/bin/plugin -i elasticsearch/watcher/latest
-    sudo /usr/share/elasticsearch/bin/plugin -i elasticsearch/marvel/latest
-    sudo /usr/share/elasticsearch/bin/plugin -i lmenezes/elasticsearch-kopf/{version}
-    sudo cp -r /usr/share/elasticsearch/config/shield /etc/elasticsearch/
-    log " finished plugin install"
+    log "Installing Plugins Shield, Marvel, Watcher"
+    sudo /usr/share/elasticsearch/bin/plugin install elasticsearch/license/latest 
+    sudo /usr/share/elasticsearch/bin/plugin install elasticsearch/shield/latest
+    sudo /usr/share/elasticsearch/bin/plugin install elasticsearch/watcher/latest
+    sudo /usr/share/elasticsearch/bin/plugin install elasticsearch/marvel/latest
+    
+	#should not be necessary and should use -Des.path.conf see:
+	# https://www.elastic.co/guide/en/shield/shield-1.3/installing-shield.html
+	# 
+	#sudo cp -r /usr/share/elasticsearch/config/shield /etc/elasticsearch/
+    
+	log " finished plugin install"
     log " Start Adding Shield Users ${USER_ADMIN}"
     log " Start adding ${USER_ADMIN}"
     sudo /usr/share/elasticsearch/bin/shield/esusers useradd "${USER_ADMIN}" -p "${USER_ADMIN_PWD}" -r admin
     log " Finished adding ${USER_ADMIN}"
-    log " Start adding ${USER_READ}"
+    
+	log " Start adding ${USER_READ}"
     sudo /usr/share/elasticsearch/bin/shield/esusers useradd "${USER_READ}" -p "${USER_READ_PWD}" -r user
     log " Finished adding ${USER_READ}"
-    log " Start adding ${USER_KIBANA4}"
+    
+	log " Start adding ${USER_KIBANA4}"
     sudo /usr/share/elasticsearch/bin/shield/esusers useradd "${USER_KIBANA4}" -p "${USER_KIBANA4_PWD}" -r kibana4
     log " Finished adding ${USER_KIBANA4}"
-    log " adding marvel_agent "
-    sudo /usr/share/elasticsearch/bin/shield/esusers useradd marvel_export -p marvelPassw0rd -r marvel_agent
+    
+	log " adding marvel_agent "
+	sudo /usr/share/elasticsearch/bin/shield/esusers useradd marvel_export -p marvelPassw0rd -r marvel_agent
     log " finished adding Shield Users"
     log "Finished Plugin install and shield users"
+	
+	
+	echo "marvel.agent.exporter.es.hosts: [ $MARVEL_HOST ]" >> /etc/elasticsearch/elasticsearch.yml
+	echo "marvel.agent.enabled: true" >> /etc/elasticsearch/elasticsearch.yml
 fi
 
 
@@ -423,12 +408,12 @@ exit 0
 #echo "bootstrap.mlockall: true" >> /etc/elasticsearch/elasticsearch.yml
 
 # Verify this is necessary on azure
-#echo "elasticsearch    -    nofile    65536" >> /etc/security/limits.conf
-#echo "elasticsearch     -    memlock   unlimited" >> /etc/security/limits.conf
-#echo "session    required    pam_limits.so" >> /etc/pam.d/su
-#echo "session    required    pam_limits.so" >> /etc/pam.d/common-session
-#echo "session    required    pam_limits.so" >> /etc/pam.d/common-session-noninteractive
-#echo "session    required    pam_limits.so" >> /etc/pam.d/sudo
+echo "elasticsearch     -    nofile    65536" >> /etc/security/limits.conf
+echo "elasticsearch     -    memlock   unlimited" >> /etc/security/limits.conf
+echo "session    required    pam_limits.so" >> /etc/pam.d/su
+echo "session    required    pam_limits.so" >> /etc/pam.d/common-session
+echo "session    required    pam_limits.so" >> /etc/pam.d/common-session-noninteractive
+echo "session    required    pam_limits.so" >> /etc/pam.d/sudo
 
 #--------------- TEMP (We will use this for the update path yet) ---------------
 #Updating the properties in the existing configuraiton has been a bit sensitve and requires more testing
