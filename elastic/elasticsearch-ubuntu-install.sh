@@ -242,8 +242,9 @@ install_es()
 #      Future enhancement - (export the functions and use background/wait to run in parallel)
 
 #Format data disks (Find data disks then partition, format, and mount them as seperate drives)
+# using the -s paramater causing disks under /datadisks/* to be raid0'ed
 #------------------------
-bash vm-disk-utils-0.1.sh
+bash vm-disk-utils-0.1.sh -s
 
 #Install Oracle Java
 #------------------------
@@ -257,21 +258,25 @@ install_es
 # Prepare configuration information
 # Configure permissions on data disks for elasticsearch user:group
 #--------------------------
-DATAPATH_CONFIG=""
-if [ -d "${DATA_BASE}" ]; then
-    for D in `find /datadisks/ -mindepth 1 -maxdepth 1 -type d`
-    do
-        #Configure disk permissions and folder for storage
-        setup_data_disk ${D}
-        # Add to list for elasticsearch configuration
-        DATAPATH_CONFIG+="$D/elasticsearch/data,"
-    done
-    #Remove the extra trailing comma
-    DATAPATH_CONFIG="${DATAPATH_CONFIG%?}"
-else
-    #If we do not find folders/disks in our data disk mount directory then use the defaults
-    log "Configured data directory does not exist for ${HOSTNAME} using defaults"
-fi
+RAIDDISK="/datadisks/disk1"
+DATAPATH_CONFIG="/datadisks/disk1/elasticsearch/data"
+
+setup_data_disk ${RAIDDISK}
+
+#if [ -d "${DATA_BASE}" ]; then
+#    for D in `find /datadisks/ -mindepth 1 -maxdepth 1 -type d`
+#    do
+#        #Configure disk permissions and folder for storage
+#        setup_data_disk ${D}
+#        # Add to list for elasticsearch configuration
+#        DATAPATH_CONFIG+="$D/elasticsearch/data,"
+#    done
+#    #Remove the extra trailing comma
+#    DATAPATH_CONFIG="${DATAPATH_CONFIG%?}"
+#else
+#    #If we do not find folders/disks in our data disk mount directory then use the defaults
+#    log "Configured data directory does not exist for ${HOSTNAME} using defaults"
+#fi
 
 #expand_staticip_range "$IP_RANGE"
 
@@ -330,7 +335,7 @@ fi
 
 echo "discovery.zen.minimum_master_nodes: 2" >> /etc/elasticsearch/elasticsearch.yml
 echo "network.host: _non_loopback_" >> /etc/elasticsearch/elasticsearch.yml
-echo "bootstrap.mlockall: true" >> /etc/elasticsearch/elasticsearch.yml
+#echo "bootstrap.mlockall: true" >> /etc/elasticsearch/elasticsearch.yml
 
 # DNS Retry
 echo "options timeout:1 attempts:5" >> /etc/resolvconf/resolv.conf.d/head
@@ -408,12 +413,12 @@ exit 0
 #echo "bootstrap.mlockall: true" >> /etc/elasticsearch/elasticsearch.yml
 
 # Verify this is necessary on azure
-echo "elasticsearch     -    nofile    65536" >> /etc/security/limits.conf
-echo "elasticsearch     -    memlock   unlimited" >> /etc/security/limits.conf
-echo "session    required    pam_limits.so" >> /etc/pam.d/su
-echo "session    required    pam_limits.so" >> /etc/pam.d/common-session
-echo "session    required    pam_limits.so" >> /etc/pam.d/common-session-noninteractive
-echo "session    required    pam_limits.so" >> /etc/pam.d/sudo
+#echo "elasticsearch     -    nofile    65536" >> /etc/security/limits.conf
+#echo "elasticsearch     -    memlock   unlimited" >> /etc/security/limits.conf
+#echo "session    required    pam_limits.so" >> /etc/pam.d/su
+#echo "session    required    pam_limits.so" >> /etc/pam.d/common-session
+#echo "session    required    pam_limits.so" >> /etc/pam.d/common-session-noninteractive
+#echo "session    required    pam_limits.so" >> /etc/pam.d/sudo
 
 #--------------- TEMP (We will use this for the update path yet) ---------------
 #Updating the properties in the existing configuraiton has been a bit sensitve and requires more testing
