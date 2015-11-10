@@ -11,6 +11,9 @@
     "vmDataNodeCount": {
       "value": 3
     },
+    "dataNodesAreMasterEligable": {
+      "value": "No"
+    },
     "virtualNetworkName": {
       "value": "esvnet"
     },

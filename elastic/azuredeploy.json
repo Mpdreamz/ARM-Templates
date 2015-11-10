@@ -163,6 +163,17 @@
         "description": "Number of Elasticsearch data nodes"
       }
     },
+    "dataNodesAreMasterEligable": {
+      "type": "string",
+      "defaultValue": "No",
+      "allowedValues": [
+        "Yes",
+        "No"
+      ],
+      "metadata": {
+        "description": "Make all datanodes master eligable, this can be useful for small elasticsearch cluster deploys"
+      }
+    },
     "esClusterName": {
       "type": "string",
       "defaultValue": "elasticsearch",
@@ -666,6 +677,9 @@
           },
           "vmSize": {
             "value": "[parameters('vmSizeDataNodes')]"
+          },
+          "dataNodesAreMasterEligable": {
+            "value": "[parameters('dataNodesAreMasterEligable')]"
           },
           "vmCount": {
             "value": "[parameters('vmDataNodeCount')]"
