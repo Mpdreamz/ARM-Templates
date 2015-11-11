@@ -293,7 +293,11 @@
       "shieldKibanaPwd": "[parameters('shieldKibanaPassword')]"
     },
     "sharedTemplateUrl": "[concat(variables('templateBaseUrl'), 'shared-resources.json')]",
-    "masterTemplateUrl": "[concat(variables('templateBaseUrl'), 'master-nodes-resources.json')]",
+    "masterTemplates": {
+       "nNo" : "[concat(variables('templateBaseUrl'), 'master-nodes-resources.json')]",
+       "nYes" : "[concat(variables('templateBaseUrl'), 'empty-resources.json')]"
+    },
+    "masterTemplateUrl": "[concat(variables('templateBaseUrl'), variables('masterTemplates')[concat('n',parameters('vmClientNodeCount'))])]",
     "clientTemplates": {
       "n0": "empty-resources.json",
       "n3": "client-nodes-resources.json",
@@ -301,6 +305,11 @@
       "n7": "client-nodes-resources.json"
     },
     "clientTemplateUrl": "[concat(variables('templateBaseUrl'), variables('clientTemplates')[concat('n',parameters('vmClientNodeCount'))])]",
+    "dataNodeShortOpts": {
+      "nNo" : "-zn",
+      "nYes" : "-n",
+    },
+    "dataNodeShortOpt" : "[concat(variables('templateBaseUrl'), variables('dataNodeShortOpts')[concat('n',parameters('dataNodesAreMasterEligable'))])]",
     "lbBackEndPoolsAdded": {
       "backendPools": [
         {
@@ -359,7 +368,7 @@
           "typeHandlerVersion": "1.2",
           "settings": {
             "fileUris": "[variables('ubuntuScripts')]",
-            "commandToExecute": "[concat('bash elasticsearch-ubuntu-install.sh -zn ', variables('esSettings').clusterName, ' -v ', variables('esSettings').version, ' -d ', variables('esSettings').discoveryHosts, ' -l ', variables('esSettings').installPlugins, ' -a ', variables('esSettings').shieldAdmin, ' -A ', variables('esSettings').shieldAdminPwd, ' -r ', variables('esSettings').shieldRead, ' -R ', variables('esSettings').shieldReadPwd, ' -k ', variables('esSettings').shieldKibana, ' -K ', variables('esSettings').shieldKibanaPwd)]"
+            "commandToExecute": "[concat('bash elasticsearch-ubuntu-install.sh ', variables('dataNodeShortOpts'), ' ', variables('esSettings').clusterName, ' -v ', variables('esSettings').version, ' -d ', variables('esSettings').discoveryHosts, ' -l ', variables('esSettings').installPlugins, ' -a ', variables('esSettings').shieldAdmin, ' -A ', variables('esSettings').shieldAdminPwd, ' -r ', variables('esSettings').shieldRead, ' -R ', variables('esSettings').shieldReadPwd, ' -k ', variables('esSettings').shieldKibana, ' -K ', variables('esSettings').shieldKibanaPwd)]"
           }
         }
       }
