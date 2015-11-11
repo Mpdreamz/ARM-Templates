@@ -60,6 +60,7 @@ help()
     echo "-x configure as a dedicated master node"
     echo "-y configure as client only node (no master, no data)"
     echo "-z configure as data node (no master)"
+    echo "-Z <number of nodes> hint to the install script how many data nodes we are provisioning"
     echo "-m marvel host , used for agent config"
     echo "-t type of cluster, Marvel or Elasticsearch"
     echo "-h view this help content"
@@ -102,6 +103,7 @@ DISCOVERY_ENDPOINTS=""
 INSTALL_PLUGINS="true" #We use this because of ARM template limitation
 CLIENT_ONLY_NODE=0
 DATA_NODE=0
+MINIMUM_MASTER_NODES=3
 MASTER_ONLY_NODE=0
 USER_ADMIN="es_admin"
 USER_ADMIN_PWD="changeME"
@@ -112,7 +114,7 @@ USER_KIBANA4_PWD="changeME"
 MARVEL_HOST='"marvel_export:marvelPassw0rd@10.1.0.10:9200","marvel_export:marvelPassw0rd@10.1.0.11:9200","marvel_export:marvelPassw0rd@10.1.0.12:9200"'
 
 #Loop through options passed
-while getopts :n:d:v:l:a:A:r:R:k:K:m:t:xyzsh optname; do
+while getopts :n:d:v:l:a:A:r:R:k:K:m:t:Z:xyzsh optname; do
     log "Option $optname set with value ${OPTARG}"
   case $optname in
     n) #set cluster name
@@ -157,6 +159,9 @@ while getopts :n:d:v:l:a:A:r:R:k:K:m:t:xyzsh optname; do
     z) #client node
       DATA_NODE=1
       ;;
+    Z) #client node
+      MINIMUM_MASTER_NODES=$(((OPTARG/2)+1))
+      ;;
     s) #use OS striped disk volumes
       OS_STRIPED_DISK=1
       ;;
@@ -174,6 +179,8 @@ while getopts :n:d:v:l:a:A:r:R:k:K:m:t:xyzsh optname; do
       ;;
   esac
 done
+
+log "Bootstrapping cluster '$CLUSTER_NAME' with minimum_master_nodes set to $MINIMUM_MASTER_NODES"
 
 # Base path for data disk mount points
 # The script assume format /datadisks/disk1 /datadisks/disk2
@@ -331,9 +338,7 @@ else
     echo "node.data: true" >> /etc/elasticsearch/elasticsearch.yml
 fi
 
-
-
-echo "discovery.zen.minimum_master_nodes: 2" >> /etc/elasticsearch/elasticsearch.yml
+echo "discovery.zen.minimum_master_nodes: $MINIMUM_MASTER_NODES" >> /etc/elasticsearch/elasticsearch.yml
 echo "network.host: _non_loopback_" >> /etc/elasticsearch/elasticsearch.yml
 #echo "bootstrap.mlockall: true" >> /etc/elasticsearch/elasticsearch.yml
 
