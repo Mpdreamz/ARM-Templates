@@ -117,7 +117,7 @@ CLUSTER_USES_DEDICATED_MASTERS=0
 DATANODE_COUNT=0
 
 MINIMUM_MASTER_NODES=3
-UNICAST_HOSTS='["masterVm0:9200","masterVm1:9200","masterVm2:9200"]'
+UNICAST_HOSTS='["masterVm0:3200","masterVm1:9300","masterVm2:9300"]'
 
 #Loop through options passed
 while getopts :n:v:l:a:A:r:R:k:K:m:Z:xyzdh optname; do
@@ -182,12 +182,12 @@ done
 
 if [ ${CLUSTER_USES_DEDICATED_MASTERS} -ne 0 ]; then
     MINIMUM_MASTER_NODES=3
-    UNICAST_HOSTS='["masterVm0:9200","masterVm1:9200","masterVm2:9200"]'
+    UNICAST_HOSTS='["masterVm0:9300","masterVm1:9300","masterVm2:3200"]'
 else 
     MINIMUM_MASTER_NODES=$(((DATANODE_COUNT/2)+1))
     UNICAST_HOSTS='['
     for i in $(seq 0 $((DATANODE_COUNT-1))); do
-        UNICAST_HOSTS="$UNICAST_HOSTS\"esdatavm$i:9200\","
+        UNICAST_HOSTS="$UNICAST_HOSTS\"esdatavm$i:3200\","
     done
     UNICAST_HOSTS="${UNICAST_HOSTS%?}]"
 fi
