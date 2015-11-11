@@ -187,7 +187,7 @@ else
     MINIMUM_MASTER_NODES=$(((DATANODE_COUNT/2)+1))
     UNICAST_HOSTS='['
     for i in $(seq 0 $((DATANODE_COUNT-1))); do
-        UNICAST_HOSTS="$UNICAST_HOSTS\"dataVm$i:9200\","
+        UNICAST_HOSTS="$UNICAST_HOSTS\"esdataVm$i:9200\","
     done
     UNICAST_HOSTS="${UNICAST_HOSTS%?}]"
 fi
