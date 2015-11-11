@@ -297,7 +297,7 @@
        "nNo" : "[concat(variables('templateBaseUrl'), 'master-nodes-resources.json')]",
        "nYes" : "[concat(variables('templateBaseUrl'), 'empty-resources.json')]"
     },
-    "masterTemplateUrl": "[concat(variables('templateBaseUrl'), variables('masterTemplates')[concat('n',parameters('vmDataNodesAreMasterEligable'))])]",
+    "masterTemplateUrl": "[concat(variables('templateBaseUrl'), variables('masterTemplates')[concat('n',parameters('dataNodesAreMasterEligable'))])]",
     "clientTemplates": {
       "n0": "empty-resources.json",
       "n3": "client-nodes-resources.json",
@@ -686,9 +686,6 @@
           },
           "vmSize": {
             "value": "[parameters('vmSizeDataNodes')]"
-          },
-          "dataNodesAreMasterEligable": {
-            "value": "[parameters('dataNodesAreMasterEligable')]"
           },
           "vmCount": {
             "value": "[parameters('vmDataNodeCount')]"
