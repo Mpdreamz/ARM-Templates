@@ -368,7 +368,7 @@
           "typeHandlerVersion": "1.2",
           "settings": {
             "fileUris": "[variables('ubuntuScripts')]",
-            "commandToExecute": "[concat('bash elasticsearch-ubuntu-install.sh ', variables('dataNodeShortOpts'), ' ', variables('esSettings').clusterName, ' -v ', variables('esSettings').version, ' -d ', variables('esSettings').discoveryHosts, ' -l ', variables('esSettings').installPlugins, ' -a ', variables('esSettings').shieldAdmin, ' -A ', variables('esSettings').shieldAdminPwd, ' -r ', variables('esSettings').shieldRead, ' -R ', variables('esSettings').shieldReadPwd, ' -k ', variables('esSettings').shieldKibana, ' -K ', variables('esSettings').shieldKibanaPwd), ' -Z', parameters('vmDataNodeCount')]"
+            "commandToExecute": "[concat('bash elasticsearch-ubuntu-install.sh ', variables('dataNodeShortOpts'), ' ', variables('esSettings').clusterName, ' -v ', variables('esSettings').version, ' -d ', variables('esSettings').discoveryHosts, ' -l ', variables('esSettings').installPlugins, ' -a ', variables('esSettings').shieldAdmin, ' -A ', variables('esSettings').shieldAdminPwd, ' -r ', variables('esSettings').shieldRead, ' -R ', variables('esSettings').shieldReadPwd, ' -k ', variables('esSettings').shieldKibana, ' -K ', variables('esSettings').shieldKibanaPwd), ' -Z ', parameters('vmDataNodeCount')]"
           }
         }
       }
