@@ -44,12 +44,14 @@
 
 help()
 {
-    #TODO: Add help text here
     echo "This script installs Elasticsearch cluster on Ubuntu"
     echo "Parameters:"
     echo "-n elasticsearch cluster name"
-    echo "-d static discovery endpoints 10.0.0.1-3"
     echo "-v elasticsearch version 1.5.0"
+
+    echo "-d cluster uses dedicated masters"
+    echo "-Z <number of nodes> hint to the install script how many data nodes we are provisioning"
+
     echo "-l install plugins true/false"
     echo "-a shield admin"
     echo "-A admin password"
@@ -57,12 +59,13 @@ help()
     echo "-R read password"
     echo "-k shield kibana"
     echo "-K kibana password"
+
     echo "-x configure as a dedicated master node"
     echo "-y configure as client only node (no master, no data)"
     echo "-z configure as data node (no master)"
-    echo "-Z <number of nodes> hint to the install script how many data nodes we are provisioning"
+
     echo "-m marvel host , used for agent config"
-    echo "-t type of cluster, Marvel or Elasticsearch"
+
     echo "-h view this help content"
 }
 
@@ -99,11 +102,9 @@ fi
 #Script Parameters
 CLUSTER_NAME="elasticsearch"
 ES_VERSION="2.0.0"
-DISCOVERY_ENDPOINTS=""
 INSTALL_PLUGINS="true" #We use this because of ARM template limitation
 CLIENT_ONLY_NODE=0
 DATA_NODE=0
-MINIMUM_MASTER_NODES=3
 MASTER_ONLY_NODE=0
 USER_ADMIN="es_admin"
 USER_ADMIN_PWD="changeME"
@@ -112,16 +113,18 @@ USER_READ_PWD="changeME"
 USER_KIBANA4="es_kibana4"
 USER_KIBANA4_PWD="changeME"
 MARVEL_HOST='"marvel_export:marvelPassw0rd@10.1.0.10:9200","marvel_export:marvelPassw0rd@10.1.0.11:9200","marvel_export:marvelPassw0rd@10.1.0.12:9200"'
+CLUSTER_USES_DEDICATED_MASTERS=0
+DATANODE_COUNT=0
+
+MINIMUM_MASTER_NODES=3
+UNICAST_HOSTS='["masterVm0:9200","masterVm1:9200","masterVm2:9200"]'
 
 #Loop through options passed
-while getopts :n:d:v:l:a:A:r:R:k:K:m:t:Z:xyzsh optname; do
+while getopts :n:v:l:a:A:r:R:k:K:m:Z:xyzdh optname; do
     log "Option $optname set with value ${OPTARG}"
   case $optname in
     n) #set cluster name
       CLUSTER_NAME=${OPTARG}
-      ;;
-    d) #static discovery endpoints
-      DISCOVERY_ENDPOINTS=${OPTARG}
       ;;
     v) #elasticsearch version number
       ES_VERSION=${OPTARG}
@@ -159,14 +162,11 @@ while getopts :n:d:v:l:a:A:r:R:k:K:m:t:Z:xyzsh optname; do
     z) #client node
       DATA_NODE=1
       ;;
-    Z) #client node
-      MINIMUM_MASTER_NODES=$(((OPTARG/2)+1))
+    Z) #number of data nodes hints (used to calculate minimum master nodes)
+      DATANODE_COUNT=${OPTARG}
       ;;
-    s) #use OS striped disk volumes
-      OS_STRIPED_DISK=1
-      ;;
-    d) #place data on local resource disk
-      NON_DURABLE=1
+    d) #cluster is using dedicated master nodes
+      CLUSTER_USES_DEDICATED_MASTERS=1
       ;;
     h) #show help
       help
@@ -180,30 +180,24 @@ while getopts :n:d:v:l:a:A:r:R:k:K:m:t:Z:xyzsh optname; do
   esac
 done
 
+if [ ${CLUSTER_USES_DEDICATED_MASTERS} -ne 0 ]; then
+    MINIMUM_MASTER_NODES=3
+    UNICAST_HOSTS='["masterVm0:9200","masterVm1:9200","masterVm2:9200"]'
+else 
+    MINIMUM_MASTER_NODES=$(((DATANODE_COUNT/2)+1))
+    UNICAST_HOSTS='['
+    for i in $(seq 0 $((DATANODE_COUNT-1))); do
+        UNICAST_HOSTS="$UNICAST_HOSTS\"dataVm$i:9200\","
+    done
+    UNICAST_HOSTS="${UNICAST_HOSTS%?}]"
+fi
+
 log "Bootstrapping cluster '$CLUSTER_NAME' with minimum_master_nodes set to $MINIMUM_MASTER_NODES"
+log "Cluster uses dedicated master nodes is set to $CLUSTER_USES_DEDICATED_MASTERS and unicast goes to $UNICAST_HOSTS"
 
 # Base path for data disk mount points
 # The script assume format /datadisks/disk1 /datadisks/disk2
 DATA_BASE="/datadisks"
-
-# Expand a list of successive ip range and filter my local local ip from the list
-# Ip list is represented as a prefix and that is appended with a zero to N index
-# 10.0.0.1-3 would be converted to "10.0.0.10 10.0.0.11 10.0.0.12"
-expand_ip_range() {
-    IFS='-' read -a HOST_IPS <<< "$1"
-
-    #Get the IP Addresses on this machine
-    declare -a MY_IPS=`ifconfig | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' | grep -Eo '([0-9]*\.){3}[0-9]*' | grep -v '127.0.0.1'`
-    declare -a EXPAND_STATICIP_RANGE_RESULTS=()
-    for (( n=0 ; n<("${HOST_IPS[1]}"+0) ; n++))
-    do
-        HOST="${HOST_IPS[0]}${n}"
-        if ! [[ "${MY_IPS[@]}" =~ "${HOST}" ]]; then
-            EXPAND_STATICIP_RANGE_RESULTS+=($HOST)
-        fi
-    done
-    echo "${EXPAND_STATICIP_RANGE_RESULTS[@]}"
-}
 
 # Configure Elasticsearch Data Disk Folder and Permissions
 setup_data_disk()
@@ -285,14 +279,6 @@ setup_data_disk ${RAIDDISK}
 #    log "Configured data directory does not exist for ${HOSTNAME} using defaults"
 #fi
 
-#expand_staticip_range "$IP_RANGE"
-
-S=$(expand_ip_range "$DISCOVERY_ENDPOINTS")
-HOSTS_CONFIG="[\"${S// /\",\"}\"]"
-
-#Format the static discovery host endpoints for Elasticsearch configuration ["",""] format
-#HOSTS_CONFIG="[\"${DISCOVERY_ENDPOINTS//-/\",\"}\"]"
-
 #Configure Elasticsearch settings
 #---------------------------
 #Backup the current Elasticsearch configuration file
@@ -309,9 +295,9 @@ if [ -n "$DATAPATH_CONFIG" ]; then
 fi
 
 # Configure discovery
-log "Update configuration with hosts configuration of $HOSTS_CONFIG"
+log "Update configuration with hosts configuration of $UNICAST_HOSTS"
 echo "discovery.zen.ping.multicast.enabled: false" >> /etc/elasticsearch/elasticsearch.yml
-echo "discovery.zen.ping.unicast.hosts: $HOSTS_CONFIG" >> /etc/elasticsearch/elasticsearch.yml
+echo "discovery.zen.ping.unicast.hosts: $UNICAST_HOSTS" >> /etc/elasticsearch/elasticsearch.yml
 
 
 # Configure Elasticsearch node type

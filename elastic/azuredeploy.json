@@ -283,7 +283,6 @@
     "esSettings": {
       "clusterName": "[parameters('esClusterName')]",
       "version": "[parameters('esVersion')]",
-      "discoveryHosts": "[concat(variables('masterNodesIpPrefix'), '-3')]",
       "installPlugins": "[parameters('esPlugins')]",
       "shieldAdmin": "[parameters('shieldAdminUsername')]",
       "shieldAdminPwd": "[parameters('shieldAdminPassword')]",
@@ -310,6 +309,11 @@
       "nYes" : "-n",
     },
     "dataNodeShortOpt" : "[variables('dataNodeShortOpts')[concat('n',parameters('dataNodesAreMasterEligable'))]]",
+    "dedicatedMasterNodes": {
+      "nNo" : " ",
+      "nYes" : " -d",
+    },
+    "dedicatedMasters" : "[variables('dedicatedMasterNodes')[concat('n',parameters('dataNodesAreMasterEligable'))]]",
     "lbBackEndPoolsAdded": {
       "backendPools": [
         {
@@ -350,7 +354,7 @@
             "typeHandlerVersion": "1.2",
             "settings": {
               "fileUris": "[variables('ubuntuScripts')]",
-              "commandToExecute": "[concat('bash elasticsearch-ubuntu-install.sh -xn ', variables('esSettings').clusterName, ' -v ', variables('esSettings').version, ' -d ', variables('esSettings').discoveryHosts, ' -l ', variables('esSettings').installPlugins, ' -a ', variables('esSettings').shieldAdmin, ' -A ', variables('esSettings').shieldAdminPwd, ' -r ', variables('esSettings').shieldRead, ' -R ', variables('esSettings').shieldReadPwd, ' -k ', variables('esSettings').shieldKibana, ' -K ', variables('esSettings').shieldKibanaPwd)]"
+              "commandToExecute": "[concat('bash elasticsearch-ubuntu-install.sh -xn ', variables('esSettings').clusterName, variables('dedicatedMasters'), ' -v ', variables('esSettings').version, ' -l ', variables('esSettings').installPlugins, ' -a ', variables('esSettings').shieldAdmin, ' -A ', variables('esSettings').shieldAdminPwd, ' -r ', variables('esSettings').shieldRead, ' -R ', variables('esSettings').shieldReadPwd, ' -k ', variables('esSettings').shieldKibana, ' -K ', variables('esSettings').shieldKibanaPwd)]"
             }
           },
         "client": {
@@ -359,7 +363,7 @@
             "typeHandlerVersion": "1.2",
             "settings": {
               "fileUris": "[variables('ubuntuScripts')]",
-              "commandToExecute": "[concat('bash elasticsearch-ubuntu-install.sh -yn ', variables('esSettings').clusterName, ' -v ', variables('esSettings').version, ' -d ', variables('esSettings').discoveryHosts, ' -l ', variables('esSettings').installPlugins, ' -a ', variables('esSettings').shieldAdmin, ' -A ', variables('esSettings').shieldAdminPwd, ' -r ', variables('esSettings').shieldRead, ' -R ', variables('esSettings').shieldReadPwd, ' -k ', variables('esSettings').shieldKibana, ' -K ', variables('esSettings').shieldKibanaPwd)]"
+              "commandToExecute": "[concat('bash elasticsearch-ubuntu-install.sh -yn ', variables('esSettings').clusterName, variables('dedicatedMasters'), ' -v ', variables('esSettings').version, ' -l ', variables('esSettings').installPlugins, ' -a ', variables('esSettings').shieldAdmin, ' -A ', variables('esSettings').shieldAdminPwd, ' -r ', variables('esSettings').shieldRead, ' -R ', variables('esSettings').shieldReadPwd, ' -k ', variables('esSettings').shieldKibana, ' -K ', variables('esSettings').shieldKibanaPwd)]"
             }
           },
         "data": {
@@ -368,7 +372,7 @@
           "typeHandlerVersion": "1.2",
           "settings": {
             "fileUris": "[variables('ubuntuScripts')]",
-            "commandToExecute": "[concat('bash elasticsearch-ubuntu-install.sh ', variables('dataNodeShortOpt'), ' ', variables('esSettings').clusterName, ' -v ', variables('esSettings').version, ' -d ', variables('esSettings').discoveryHosts, ' -l ', variables('esSettings').installPlugins, ' -a ', variables('esSettings').shieldAdmin, ' -A ', variables('esSettings').shieldAdminPwd, ' -r ', variables('esSettings').shieldRead, ' -R ', variables('esSettings').shieldReadPwd, ' -k ', variables('esSettings').shieldKibana, ' -K ', variables('esSettings').shieldKibanaPwd, ' -Z ', parameters('vmDataNodeCount'))]"
+            "commandToExecute": "[concat('bash elasticsearch-ubuntu-install.sh ', variables('dataNodeShortOpt'), ' ', variables('esSettings').clusterName, variables('dedicatedMasters'), ' -v ', variables('esSettings').version, ' -l ', variables('esSettings').installPlugins, ' -a ', variables('esSettings').shieldAdmin, ' -A ', variables('esSettings').shieldAdminPwd, ' -r ', variables('esSettings').shieldRead, ' -R ', variables('esSettings').shieldReadPwd, ' -k ', variables('esSettings').shieldKibana, ' -K ', variables('esSettings').shieldKibanaPwd, ' -Z ', parameters('vmDataNodeCount'))]"
           }
         }
       }
@@ -388,7 +392,7 @@
           "typeHandlerVersion": "1.4",
           "settings": {
             "fileUris": "[variables('windowsScripts')]",
-            "commandToExecute": "[concat('powershell.exe -File elasticsearch-windows-install.ps1 -elasticSearchVersion ', variables('esSettings').version,' -elasticClusterName ', variables('esSettings').clusterName,' -discoveryEndpoints ', variables('esSettings').discoveryHosts,' -masterOnlyNode')]"
+            "commandToExecute": "[concat('powershell.exe -File elasticsearch-windows-install.ps1 -elasticSearchVersion ', variables('esSettings').version,' -elasticClusterName ', variables('esSettings').clusterName,' -masterOnlyNode')]"
           }
         },
         "client": {
@@ -397,7 +401,7 @@
           "typeHandlerVersion": "1.4",
           "settings": {
             "fileUris": "[variables('windowsScripts')]",
-            "commandToExecute": "[concat('powershell.exe -File elasticsearch-windows-install.ps1 -elasticSearchVersion ', variables('esSettings').version,' -elasticClusterName ', variables('esSettings').clusterName,' -discoveryEndpoints ', variables('esSettings').discoveryHosts,' -clientOnlyNode')]"
+            "commandToExecute": "[concat('powershell.exe -File elasticsearch-windows-install.ps1 -elasticSearchVersion ', variables('esSettings').version,' -elasticClusterName ', variables('esSettings').clusterName,' -clientOnlyNode')]"
           }
         },
         "data": {
@@ -406,7 +410,7 @@
           "typeHandlerVersion": "1.4",
           "settings": {
             "fileUris": "[variables('windowsScripts')]",
-            "commandToExecute": "[concat('powershell.exe -File elasticsearch-windows-install.ps1 -elasticSearchVersion ', variables('esSettings').version,' -elasticClusterName ', variables('esSettings').clusterName,' -discoveryEndpoints ', variables('esSettings').discoveryHosts,' -dataOnlyNode')]"
+            "commandToExecute": "[concat('powershell.exe -File elasticsearch-windows-install.ps1 -elasticSearchVersion ', variables('esSettings').version,' -elasticClusterName ', variables('esSettings').clusterName,' -discoveryEndpoints ',' -dataOnlyNode')]"
           }
         }
       }
