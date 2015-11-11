@@ -310,8 +310,8 @@
     },
     "dataNodeShortOpt" : "[variables('dataNodeShortOpts')[concat('n',parameters('dataNodesAreMasterEligable'))]]",
     "dedicatedMasterNodes": {
-      "nNo" : " ",
-      "nYes" : " -d",
+      "nNo" : " -d",
+      "nYes" : " ",
     },
     "dedicatedMasters" : "[variables('dedicatedMasterNodes')[concat('n',parameters('dataNodesAreMasterEligable'))]]",
     "lbBackEndPoolsAdded": {
