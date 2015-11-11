@@ -295,7 +295,7 @@
     "sharedTemplateUrl": "[concat(variables('templateBaseUrl'), 'shared-resources.json')]",
     "masterTemplates": {
        "nNo" : "[concat(variables('templateBaseUrl'), 'master-nodes-resources.json')]",
-       "nYes" : "[concat(variables('templateBaseUrl'), 'empty-resources.json')]"
+       "nYes" : "[concat(variables('templateBaseUrl'), 'no-master-nodes-resources.json')]"
     },
     "masterTemplateUrl": "[concat(variables('templateBaseUrl'), variables('masterTemplates')[concat('n',parameters('dataNodesAreMasterEligable'))])]",
     "clientTemplates": {
