@@ -341,10 +341,9 @@
     "scriptParams": [
       "[concat('version=', parameters('esVersion'), ';')]",
       "[concat('clusterName=', parameters('esClusterName'), ';')]",
-      "[concat('discoveryHosts=', variables('masterNodesIpPrefix'), '-3', ';')]",
-      "[concat('installMarvel=', parameters('marvel'), ';')]"
+      "[concat('discoveryHosts=', variables('masterNodesIpPrefix'), '-3', ';')]"
     ],
-    "scriptParamString":"[concat(variables('scriptParams')[0], variables('scriptParams')[1], variables('scriptParams')[2], variables('scriptParams')[3] )]",
+    "scriptParamString":"[concat(variables('scriptParams')[0], variables('scriptParams')[1], variables('scriptParams')[2])]",
     "ubuntuScripts": [
       "[concat(variables('templateBaseUrl'), 'elasticsearch-ubuntu-install.sh')]",
       "[concat(variables('templateBaseUrl'), 'kibana-install.sh')]",
