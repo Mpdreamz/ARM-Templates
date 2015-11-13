@@ -2,53 +2,21 @@
   "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
-    "adminUsername": {
+    "esVersion": {
       "type": "string",
-      "metadata": {
-        "description": "Admin username used when provisioning virtual machines"
-      }
-    },
-    "adminPassword": {
-      "type": "securestring",
-      "metadata": {
-        "description": "Admin password used when provisioning virtual machines"
-      }
-    },
-    "location": {
-      "type": "string",
+      "defaultValue": "2.0.0",
       "allowedValues": [
-        "ResourceGroup",
-        "West US",
-        "East US",
-        "East US 2",
-        "Central US",
-        "South Central US",
-        "North Central US",
-        "East Asia",
-        "Southeast Asia",
-        "West Europe",
-        "North Europe"
-      ],
-      "defaultValue": "ResourceGroup",
-      "metadata": {
-        "description": "Location where resources will be provisioned.  A value of 'ResourceGroup' will deploy the resource to the same location of the resource group the resources are provisioned into"
-      }
-    },
-    "virtualNetworkName": {
-      "type": "string",
-      "defaultValue": "esvnet",
-      "metadata": {
-        "description": "Virtual Network"
-      }
-    },
-    "OS": {
-      "type": "string",
-      "defaultValue": "ubuntu",
-      "allowedValues": [
-        "ubuntu"
+        "2.0.0"
       ],
       "metadata": {
-        "description": "The operating system to deploy Elasticsearch cluster on"
+        "description": "Elasticsearch version to install"
+      }
+    },
+    "esClusterName": {
+      "type": "string",
+      "defaultValue": "elasticsearch",
+      "metadata": {
+        "description": "The name of the Elasticsearch cluster"
       }
     },
     "loadBalancerType": {
@@ -62,6 +30,28 @@
         "description": "Setup the load balancer internal or external.  If you are setting up Elasticsearch on an external endpoint you will need to secure your nodes with a product like Elasticsearch Shield"
       }
     },
+    "esPlugins": {
+      "type": "string",
+      "allowedValues": [
+        "true",
+        "false"
+      ],
+      "defaultValue": "true",
+      "metadata": {
+        "description": "Install the Plugins - Marvel, Shield, Watcher"
+      }
+    },
+    "kibana":{
+      "type":"string",
+      "defaultValue":"no",
+      "allowedValues": [
+        "yes",
+        "no"
+      ],
+      "metadata": {
+        "description": "Provision a machine with Kibana on it"
+      }
+    },
     "jumpbox": {
       "type": "string",
       "defaultValue": "Yes",
@@ -71,67 +61,6 @@
       ],
       "metadata": {
         "description": "Optionally add a virtual machine to the deployment which you can use to connect and manage virtual machines on the internal network"
-      }
-    },
-    "vmClientNodeCount": {
-      "type": "int",
-      "defaultValue": 0,
-      "allowedValues": [
-        0,
-        3,
-        5,
-        7
-      ],
-      "metadata": {
-        "description": "Number of Elasticsearch client nodes to provision (Setting this to zero puts the data nodes on the load balancer)"
-      }
-    },
-    "vmSizeClientNodes": {
-      "type": "string",
-      "defaultValue": "Standard_A2",
-      "allowedValues": [
-        "Standard_D1",
-        "Standard_D2",
-        "Standard_D3",
-        "Standard_D4",
-      	"Standard_A0",
-      	"Standard_A1",
-        "Standard_A2",
-        "Standard_A3",
-        "Standard_A4",
-        "Standard_A7",
-        "Standard_DS1",
-        "Standard_DS2",
-        "Standard_DS3",
-        "Standard_DS4",
-        "Standard_DS13"
-      ],
-      "metadata": {
-        "description": "Size of the Elasticsearch cluster client nodes"
-      }
-    },
-    "vmSizeMasterNodes": {
-      "type": "string",
-      "defaultValue": "Standard_A1",
-      "allowedValues": [
-        "Standard_D1",
-        "Standard_D2",
-        "Standard_D3",
-        "Standard_D4",
-      	"Standard_A0",
-      	"Standard_A1",
-        "Standard_A2",
-        "Standard_A3",
-        "Standard_A4",
-        "Standard_A7",
-        "Standard_DS1",
-        "Standard_DS2",
-        "Standard_DS3",
-        "Standard_DS4",
-        "Standard_DS13"
-      ],
-      "metadata": {
-        "description": "Size of the Elasticsearch master nodes"
       }
     },
     "vmSizeDataNodes": {
@@ -174,32 +103,77 @@
         "description": "Make all datanodes master eligable, this can be useful for small elasticsearch cluster deploys"
       }
     },
-    "esClusterName": {
+    "vmSizeMasterNodes": {
       "type": "string",
-      "defaultValue": "elasticsearch",
-      "metadata": {
-        "description": "The name of the Elasticsearch cluster"
-      }
-    },
-    "esVersion": {
-      "type": "string",
-      "defaultValue": "2.0.0",
+      "defaultValue": "Standard_A1",
       "allowedValues": [
-        "2.0.0"
+        "Standard_D1",
+        "Standard_D2",
+        "Standard_D3",
+        "Standard_D4",
+      	"Standard_A0",
+      	"Standard_A1",
+        "Standard_A2",
+        "Standard_A3",
+        "Standard_A4",
+        "Standard_A7",
+        "Standard_DS1",
+        "Standard_DS2",
+        "Standard_DS3",
+        "Standard_DS4",
+        "Standard_DS13"
       ],
       "metadata": {
-        "description": "Elasticsearch version to install"
+        "description": "Size of the Elasticsearch master nodes, if data nodes are not master eligable 3 of these will be provisioned"
       }
     },
-    "esPlugins": {
-      "type": "string",
+    "vmClientNodeCount": {
+      "type": "int",
+      "defaultValue": 0,
       "allowedValues": [
-        "true",
-        "false"
+        0,
+        3,
+        5,
+        7
       ],
-      "defaultValue": "true",
       "metadata": {
-        "description": "Install the Plugins - Marvel, Shield, Watcher"
+        "description": "Number of Elasticsearch client nodes to provision (Setting this to zero puts the data nodes on the load balancer)"
+      }
+    },
+    "vmSizeClientNodes": {
+      "type": "string",
+      "defaultValue": "Standard_A2",
+      "allowedValues": [
+        "Standard_D1",
+        "Standard_D2",
+        "Standard_D3",
+        "Standard_D4",
+      	"Standard_A0",
+      	"Standard_A1",
+        "Standard_A2",
+        "Standard_A3",
+        "Standard_A4",
+        "Standard_A7",
+        "Standard_DS1",
+        "Standard_DS2",
+        "Standard_DS3",
+        "Standard_DS4",
+        "Standard_DS13"
+      ],
+      "metadata": {
+        "description": "Size of the Elasticsearch cluster client nodes"
+      }
+    },
+    "adminUsername": {
+      "type": "string",
+      "metadata": {
+        "description": "Admin username used when provisioning virtual machines"
+      }
+    },
+    "adminPassword": {
+      "type": "securestring",
+      "metadata": {
+        "description": "Admin password used when provisioning virtual machines"
       }
     },
     "shieldAdminUsername": {
@@ -243,9 +217,37 @@
       "metadata": {
         "description": "Shield password must be > 6 characters"
       }
+    },
+    "location": {
+      "type": "string",
+      "allowedValues": [
+        "ResourceGroup",
+        "West US",
+        "East US",
+        "East US 2",
+        "Central US",
+        "South Central US",
+        "North Central US",
+        "East Asia",
+        "Southeast Asia",
+        "West Europe",
+        "North Europe"
+      ],
+      "defaultValue": "ResourceGroup",
+      "metadata": {
+        "description": "Location where resources will be provisioned.  A value of 'ResourceGroup' will deploy the resource to the same location of the resource group the resources are provisioned into"
+      }
+    },
+    "virtualNetworkName": {
+      "type": "string",
+      "defaultValue": "esvnet",
+      "metadata": {
+        "description": "Virtual Network"
+      }
     }
   },
   "variables": {
+    "templateBaseUrl": "https://raw.githubusercontent.com/Mpdreamz/ARM-Templates/master/elastic/",
     "locationMap": {
         "ResourceGroup":"[resourceGroup().location]",
         "West US":"[parameters('location')]",
@@ -260,7 +262,6 @@
         "North Europe":"[parameters('location')]"
     },
     "location":"[variables('locationMap')[parameters('location')]]",
-    "templateBaseUrl": "https://raw.githubusercontent.com/Mpdreamz/ARM-Templates/master/elastic/",
     "storageAccountPrefix": "elastic",
     "storageAccountNameShared": "[concat(variables('storageAccountPrefix'), 's', uniqueString(resourceGroup().id, deployment().name))]",
     "masterNodesIpPrefix": "10.0.0.1",
@@ -332,8 +333,21 @@
     "jumpboxTemplateYes": "jumpbox-resources.json",
     "jumpboxTemplateNo": "empty-resources.json",
     "jumpboxTemplateUrl": "[concat(variables('templateBaseUrl'), variables(concat('jumpboxTemplate',parameters('jumpbox'))))]",
+    "kibanaTemplates": {
+      "yes": "kibana-resources.json",
+      "no": "empty-resources.json"
+    },
+    "kibanaTemplateUrl":"[concat(variables('templateBaseUrl'), variables('kibanaTemplates')[parameters('kibana')], '')]",
+    "scriptParams": [
+      "[concat('version=', parameters('esVersion'), ';')]",
+      "[concat('clusterName=', parameters('esClusterName'), ';')]",
+      "[concat('discoveryHosts=', variables('masterNodesIpPrefix'), '-3', ';')]",
+      "[concat('installMarvel=', parameters('marvel'), ';')]"
+    ],
+    "scriptParamString":"[concat(variables('scriptParams')[0], variables('scriptParams')[1], variables('scriptParams')[2], variables('scriptParams')[3] )]",
     "ubuntuScripts": [
       "[concat(variables('templateBaseUrl'), 'elasticsearch-ubuntu-install.sh')]",
+      "[concat(variables('templateBaseUrl'), 'kibana-install.sh')]",
       "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/shared_scripts/ubuntu/vm-disk-utils-0.1.sh"
     ],
     "windowsScripts": [
@@ -373,6 +387,15 @@
           "settings": {
             "fileUris": "[variables('ubuntuScripts')]",
             "commandToExecute": "[concat('bash elasticsearch-ubuntu-install.sh ', variables('dataNodeShortOpt'), ' ', variables('esSettings').clusterName, variables('dedicatedMasters'), ' -v ', variables('esSettings').version, ' -l ', variables('esSettings').installPlugins, ' -a ', variables('esSettings').shieldAdmin, ' -A ', variables('esSettings').shieldAdminPwd, ' -r ', variables('esSettings').shieldRead, ' -R ', variables('esSettings').shieldReadPwd, ' -k ', variables('esSettings').shieldKibana, ' -K ', variables('esSettings').shieldKibanaPwd, ' -Z ', parameters('vmDataNodeCount'))]"
+          }
+        },
+        "kibana": {
+          "publisher": "Microsoft.OSTCExtensions",
+          "type": "CustomScriptForLinux",
+          "typeHandlerVersion": "1.2",
+          "settings": {
+            "fileUris": "[variables('ubuntuScripts')]",
+            "commandToExecute": "[concat('bash kibana-install.sh')]"
           }
         }
       }
@@ -415,7 +438,8 @@
         }
       }
     },
-    "osSettings": "[variables(concat(parameters('OS'), 'Settings'))]",
+    "OS" : "ubuntu",
+    "osSettings": "[variables(concat(variables('OS'), 'Settings'))]",
     "dataSkuSettings": {
       "Standard_D1": {
         "dataDisks":2,
@@ -737,6 +761,41 @@
           },
           "osSettings": {
             "value": "[variables('osSettings')]"
+          }
+        }
+      }
+    },
+    {
+      "name": "kibana",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "dependsOn": [
+        "[concat('Microsoft.Resources/deployments/', 'data-nodes')]"
+      ],
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('kibanaTemplateUrl')]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "storageAccountName": {
+            "value": "[variables('storageAccountNameShared')]"
+          },
+          "adminUsername": {
+            "value": "[parameters('adminUsername')]"
+          },
+          "adminPassword": {
+            "value": "[parameters('adminPassword')]"
+          },
+          "location": {
+            "value": "[variables('location')]"
+          },
+          "subnet": {
+            "value": "[variables('networkSettings').subnet.data]"
+          },
+          "osSettings": {
+            "value": "[variables('ubuntuSettings')]"
           }
         }
       }

@@ -23,25 +23,7 @@
 # SOFTWARE.
 #
 # Trent Swanson (Full Scale 180 Inc)
-# Modified - 7-15-15, 8-3-15 Chad Pryor
-### Remaining work items
-### -Alternate discovery options (Azure Storage)
-### -Implement Idempotency and Configuration Change Support
-### -Implement OS Disk Striping Option (Currently using multiple Elasticsearch data paths)
-### -Implement Non-Durable Option (Put data on resource disk)
-### -Configure Work/Log Paths
-### -Recovery Settings (These can be changed via API)
-### -Add shield user/password
-### -Add logic for marvel only/monitoring cluster
-### -Add Marvel configs - marvel.agent.exporter.es.hosts: ["es-mon-1:9200","es-mon-2:9200"]
-### -Add more config - http.cors.enabled: true | http.cors.allow-origin: /.*/ | http.cors.allow-credentials: true
-### -Add role based configs or link to file source - CLUSTER_TYPE. Need to add to parameters and extend logic
-### -Issue with KOPF and 1.6.2+
-
-# Modified Martijn Laarman
-### resynced with azure-quick-start
-### 2.0 changes reflectect
-
+#
 help()
 {
     echo "This script installs Elasticsearch cluster on Ubuntu"
@@ -406,7 +388,7 @@ exit 0
 #echo "bootstrap.mlockall: true" >> /etc/elasticsearch/elasticsearch.yml
 
 # Verify this is necessary on azure
-#echo "elasticsearch     -    nofile    65536" >> /etc/security/limits.conf
+#echo "elasticsearch    -    nofile    65536" >> /etc/security/limits.conf
 #echo "elasticsearch     -    memlock   unlimited" >> /etc/security/limits.conf
 #echo "session    required    pam_limits.so" >> /etc/pam.d/su
 #echo "session    required    pam_limits.so" >> /etc/pam.d/common-session
