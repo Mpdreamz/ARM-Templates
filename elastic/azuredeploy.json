@@ -43,7 +43,7 @@
     },
     "kibana":{
       "type":"string",
-      "defaultValue":"no",
+      "defaultValue":"No",
       "allowedValues": [
         "Yes",
         "No"
@@ -268,7 +268,7 @@
       "No" : "d",
       "Yes" : ""
     },
-    "dedicatedMastersNodesShortOpt" : "[variables('dedicatedMasterNodesShortOpts')[parameters('dataNodesAreMasterEligable')]]",
+    "dedicatedMasterNodesShortOpt" : "[variables('dedicatedMasterNodesShortOpts')[parameters('dataNodesAreMasterEligable')]]",
     "installPluginsShortOpts": {
       "No" : "l",
       "Yes" : ""
