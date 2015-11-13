@@ -306,12 +306,12 @@
     "clientTemplateUrl": "[concat(variables('templateBaseUrl'), variables('clientTemplates')[concat('n',parameters('vmClientNodeCount'))])]",
     "dataNodeShortOpts": {
       "nNo" : "-zn",
-      "nYes" : "-n",
+      "nYes" : "-n"
     },
     "dataNodeShortOpt" : "[variables('dataNodeShortOpts')[concat('n',parameters('dataNodesAreMasterEligable'))]]",
     "dedicatedMasterNodes": {
       "nNo" : " -d",
-      "nYes" : " ",
+      "nYes" : " "
     },
     "dedicatedMasters" : "[variables('dedicatedMasterNodes')[concat('n',parameters('dataNodesAreMasterEligable'))]]",
     "lbBackEndPoolsAdded": {
