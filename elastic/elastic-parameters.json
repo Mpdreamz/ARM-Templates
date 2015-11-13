@@ -38,21 +38,13 @@
     "esPlugins": {
       "value":"true"
     },
-    "shieldAdminUsername": {      
-      "value":"es_admin"
-    },
     "shieldAdminPassword": {
       "value":"changeme"
-    },
-    "shieldReadUsername": {
-      "value":"es_read"
     },
     "shieldReadPassword": {
       "value":"changeme"
     },
-    "shieldKibanaUsername": {
-      "value":"es_kibana4"
-    },
     "shieldKibanaPassword": {
       "value":"changeme"
     }
+}

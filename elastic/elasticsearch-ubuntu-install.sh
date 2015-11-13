@@ -34,17 +34,15 @@ help()
     echo "-d cluster uses dedicated masters"
     echo "-Z <number of nodes> hint to the install script how many data nodes we are provisioning"
 
-    echo "-l install plugins true/false"
-    echo "-a shield admin"
     echo "-A admin password"
-    echo "-r shield read only"
     echo "-R read password"
-    echo "-k shield kibana"
-    echo "-K kibana password"
+    echo "-K kibana user password"
+    echo "-S kibana server password"
 
     echo "-x configure as a dedicated master node"
     echo "-y configure as client only node (no master, no data)"
     echo "-z configure as data node (no master)"
+    echo "-l install plugins"
 
     echo "-m marvel host , used for agent config"
 
@@ -84,16 +82,11 @@ fi
 #Script Parameters
 CLUSTER_NAME="elasticsearch"
 ES_VERSION="2.0.0"
-INSTALL_PLUGINS="true" #We use this because of ARM template limitation
+INSTALL_PLUGINS=0
 CLIENT_ONLY_NODE=0
 DATA_NODE=0
 MASTER_ONLY_NODE=0
-USER_ADMIN="es_admin"
-USER_ADMIN_PWD="changeME"
-USER_READ="es_read"
-USER_READ_PWD="changeME"
-USER_KIBANA4="es_kibana4"
-USER_KIBANA4_PWD="changeME"
+
 MARVEL_HOST='"marvel_export:marvelPassw0rd@10.1.0.10:9200","marvel_export:marvelPassw0rd@10.1.0.11:9200","marvel_export:marvelPassw0rd@10.1.0.12:9200"'
 CLUSTER_USES_DEDICATED_MASTERS=0
 DATANODE_COUNT=0
@@ -101,9 +94,14 @@ DATANODE_COUNT=0
 MINIMUM_MASTER_NODES=3
 UNICAST_HOSTS='["masterVm0:9300","masterVm1:9300","masterVm2:9300"]'
 
+USER_ADMIN_PWD="changeME"
+USER_READ_PWD="changeME"
+USER_KIBANA4_PWD="changeME"
+USER_KIBANA4_SERVER_PWD="changeME"
+
 #Loop through options passed
-while getopts :n:v:l:a:A:r:R:k:K:m:Z:xyzdh optname; do
-    log "Option $optname set with value ${OPTARG}"
+while getopts :n:v:A:R:K:S:m:Z:xyzldh optname; do
+  log "Option $optname set with value ${OPTARG}"
   case $optname in
     n) #set cluster name
       CLUSTER_NAME=${OPTARG}
@@ -111,29 +109,23 @@ while getopts :n:v:l:a:A:r:R:k:K:m:Z:xyzdh optname; do
     v) #elasticsearch version number
       ES_VERSION=${OPTARG}
       ;;
-    l) #install plugins
-      INSTALL_PLUGINS=${OPTARG}
-      ;;
-    a) #add shield admin
-      USER_ADMIN=${OPTARG}
-      ;;
     A) #shield admin pwd
       USER_ADMIN_PWD=${OPTARG}
       ;;
-    r) #add shield user
-      USER_READ=${OPTARG}
-      ;;
-    R) #shield admin pwd
+    R) #shield readonly pwd
       USER_READ_PWD=${OPTARG}
       ;;
-    k) #add shield kibana4
-      USER_KIBANA=${OPTARG}
+    K) #shield kibana user pwd
+      USER_KIBANA4_PWD=${OPTARG}
       ;;
-    K) #shield admin pwd
-      USER_ADMIN_PWD=${OPTARG}
+    S) #shield kibana server pwd
+      USER_KIBANA4_SERVER_PWD=${OPTARG}
       ;;
     m) #marvel host
       MARVEL_HOST=${OPTARG}
+      ;;
+    Z) #number of data nodes hints (used to calculate minimum master nodes)
+      DATANODE_COUNT=${OPTARG}
       ;;
     x) #master node
       MASTER_ONLY_NODE=1
@@ -144,8 +136,8 @@ while getopts :n:v:l:a:A:r:R:k:K:m:Z:xyzdh optname; do
     z) #client node
       DATA_NODE=1
       ;;
-    Z) #number of data nodes hints (used to calculate minimum master nodes)
-      DATANODE_COUNT=${OPTARG}
+    l) #install plugins
+      INSTALL_PLUGINS=1
       ;;
     d) #cluster is using dedicated master nodes
       CLUSTER_USES_DEDICATED_MASTERS=1
@@ -334,40 +326,35 @@ echo "ES_HEAP_SIZE=${ES_HEAP}m" >> /etc/default/elasticsearch
 
 #Optionally Install Marvel
 log "Plugin install set to ${INSTALL_PLUGINS}"
-if [ "${INSTALL_PLUGINS}" == "true" ]; then
+if [ ${INSTALL_PLUGINS} -ne 0 ]; then
     log "Installing Plugins Shield, Marvel, Watcher"
     sudo /usr/share/elasticsearch/bin/plugin install elasticsearch/license/latest
     sudo /usr/share/elasticsearch/bin/plugin install elasticsearch/shield/latest
     sudo /usr/share/elasticsearch/bin/plugin install elasticsearch/wa/tcher/latest
     sudo /usr/share/elasticsearch/bin/plugin install marvel-agent
 
-	#should not be necessary and should use -Des.path.conf see:
-	# https://www.elastic.co/guide/en/shield/shield-1.3/installing-shield.html
-	#
-	#sudo cp -r /usr/share/elasticsearch/config/shield /etc/elasticsearch/
+    log " Start adding es_admin"
+    sudo /usr/share/elasticsearch/bin/shield/esusers useradd "es_admin" -p "${USER_ADMIN_PWD}" -r admin
+    log " Finished adding es_admin"
 
-	log " finished plugin install"
-    log " Start Adding Shield Users ${USER_ADMIN}"
-    log " Start adding ${USER_ADMIN}"
-    sudo /usr/share/elasticsearch/bin/shield/esusers useradd "${USER_ADMIN}" -p "${USER_ADMIN_PWD}" -r admin
-    log " Finished adding ${USER_ADMIN}"
+    log " Start adding es_read"
+    sudo /usr/share/elasticsearch/bin/shield/esusers useradd "es_read" -p "${USER_READ_PWD}" -r user
+    log " Finished adding es_read"
 
-	log " Start adding ${USER_READ}"
-    sudo /usr/share/elasticsearch/bin/shield/esusers useradd "${USER_READ}" -p "${USER_READ_PWD}" -r user
-    log " Finished adding ${USER_READ}"
+    log " Start adding es_kibana"
+    sudo /usr/share/elasticsearch/bin/shield/esusers useradd "es_kibana" -p "${USER_KIBANA4_PWD}" -r kibana4
+    log " Finished adding es_kibina"
 
-	log " Start adding ${USER_KIBANA4}"
-    sudo /usr/share/elasticsearch/bin/shield/esusers useradd "${USER_KIBANA4}" -p "${USER_KIBANA4_PWD}" -r kibana4
-    log " Finished adding ${USER_KIBANA4}"
+    log " Start adding es_kibana_server"
+    sudo /usr/share/elasticsearch/bin/shield/esusers useradd "es_kibana_server" -p "${USER_KIBANA4_SERVER_PWD}" -r kibana4_server
+    log " Finished adding es_kibana_server"
 
-	log " adding marvel_agent "
-	sudo /usr/share/elasticsearch/bin/shield/esusers useradd marvel_export -p marvelPassw0rd -r marvel_agent
+    log " adding marvel_agent "
+    sudo /usr/share/elasticsearch/bin/shield/esusers useradd marvel_export -p marvelPassw0rd -r marvel_agent
     log " finished adding Shield Users"
-    log "Finished Plugin install and shield users"
 
-
-	echo "marvel.agent.exporter.es.hosts: [ $MARVEL_HOST ]" >> /etc/elasticsearch/elasticsearch.yml
-	echo "marvel.agent.enabled: true" >> /etc/elasticsearch/elasticsearch.yml
+    echo "marvel.agent.exporter.es.hosts: [ $MARVEL_HOST ]" >> /etc/elasticsearch/elasticsearch.yml
+    echo "marvel.agent.enabled: true" >> /etc/elasticsearch/elasticsearch.yml
 fi
 
 
