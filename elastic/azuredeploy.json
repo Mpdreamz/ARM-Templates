@@ -92,7 +92,7 @@
         "description": "Number of Elasticsearch data nodes"
       }
     },
-    "dataNodesAreMasterEligable": {
+    "dataNodesAreMasterEligible": {
       "type": "string",
       "defaultValue": "No",
       "allowedValues": [
@@ -100,7 +100,7 @@
         "No"
       ],
       "metadata": {
-        "description": "Make all datanodes master eligable, this can be useful for small elasticsearch cluster deploys"
+        "description": "Make all datanodes master eligible, this can be useful for small elasticsearch cluster deploys"
       }
     },
     "vmSizeMasterNodes": {
@@ -124,7 +124,7 @@
         "Standard_DS13"
       ],
       "metadata": {
-        "description": "Size of the Elasticsearch master nodes, if data nodes are not master eligable 3 of these will be provisioned"
+        "description": "Size of the Elasticsearch master nodes, if data nodes are not master eligible 3 of these will be provisioned"
       }
     },
     "vmClientNodeCount": {
@@ -232,7 +232,7 @@
        "No" : "master-nodes-resources.json",
        "Yes" : "no-master-nodes-resources.json"
     },
-    "masterTemplateUrl": "[concat(variables('templateBaseUrl'), variables('masterTemplates')[parameters('dataNodesAreMasterEligable')])]",
+    "masterTemplateUrl": "[concat(variables('templateBaseUrl'), variables('masterTemplates')[parameters('dataNodesAreMasterEligible')])]",
     "jumpboxTemplates": {
        "No" : "empty-resources.json",
        "Yes" : "jumpbox-resources.json"
@@ -263,12 +263,12 @@
       "No" : "z",
       "Yes" : ""
     },
-    "dataNodeShortOpt" : "[variables('dataNodeShortOpts')[parameters('dataNodesAreMasterEligable')]]",
+    "dataNodeShortOpt" : "[variables('dataNodeShortOpts')[parameters('dataNodesAreMasterEligible')]]",
     "dedicatedMasterNodesShortOpts": {
       "No" : "d",
       "Yes" : ""
     },
-    "dedicatedMasterNodesShortOpt" : "[variables('dedicatedMasterNodesShortOpts')[parameters('dataNodesAreMasterEligable')]]",
+    "dedicatedMasterNodesShortOpt" : "[variables('dedicatedMasterNodesShortOpts')[parameters('dataNodesAreMasterEligible')]]",
     "installPluginsShortOpts": {
       "No" : "",
       "Yes" : "l"

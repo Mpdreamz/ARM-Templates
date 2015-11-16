@@ -11,7 +11,7 @@
     "vmDataNodeCount": {
       "value": 3
     },
-    "dataNodesAreMasterEligable": {
+    "dataNodesAreMasterEligible": {
       "value": "No"
     },
     "virtualNetworkName": {
