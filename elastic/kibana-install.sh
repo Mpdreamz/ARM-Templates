@@ -106,9 +106,9 @@ if [ ${INSTALL_PLUGINS} -ne 0 ]; then
 fi
 
 # install the marvel plugin
-/opt/kibana/bin/kibana plugin --install elasticsearch/marvel/latest
 # install the sense plugin (but only if the template user also chose to install shield)
 if [ ${INSTALL_PLUGINS} -ne 0 ]; then
+    /opt/kibana/bin/kibana plugin --install elasticsearch/marvel/latest
     /opt/kibana/bin/kibana plugin --install elastic/sense
 fi
 
