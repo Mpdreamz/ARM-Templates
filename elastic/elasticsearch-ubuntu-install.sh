@@ -212,9 +212,8 @@ install_es()
 install_ntp()
 {
     log "installing ntp deamon"
-    sudo apt-get -y install ntp
-    sudo ntpdate pool.ntp.org
-    ntpdate -s ntp.ubuntu.com
+    apt-get -y install ntp
+    ntpdate pool.ntp.org
     log "installed ntp deamon and ntpdate"
 }
 
@@ -360,6 +359,19 @@ fi
 
 #Install Monit
 #TODO - Install Monit to monitor the process (Although load balancer probes can accomplish this)
+apt-get -y install monit
+echo "set daemon 30" >> /etc/monit/monitrc
+echo "set httpd port 2812 and" >> /etc/monit/monitrc
+echo "    use address localhost" >> /etc/monit/monitrc
+echo "    allow localhost" >> /etc/monit/monitrc
+sudo touch /etc/monit/conf.d/elasticsearch.conf
+"check process elasticsearch with pidfile \"/var/run/elasticsearch/elasticsearch.pid\"" >> /etc/monit/conf.d/elasticsearch.conf
+echo "group elasticsearch" >> /etc/monit/conf.d/elasticsearch.conf
+echo "start program = \"/etc/init.d/elasticsearch start\"" >> /etc/monit/conf.d/elasticsearch.conf
+echo "stop program = \"/etc/init.d/elasticsearch stop\"" >> /etc/monit/conf.d/elasticsearch.conf
+
+sudo /etc/init.d/monit start
+sudo monit start all
 
 #and... start the service
 log "Starting Elasticsearch on ${HOSTNAME}"
