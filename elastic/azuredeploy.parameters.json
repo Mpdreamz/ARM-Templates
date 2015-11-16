@@ -28,9 +28,9 @@
     },
     "vmClientNodeCount": {
       "value": 0
+    },
     "kibana": {
-      "value": "yes"
-    }
+      "value": "Yes"
     }
   }
 }

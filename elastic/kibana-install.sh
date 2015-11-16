@@ -38,7 +38,7 @@ help()
 }
 
 #hit the loadbalancers internal IP
-ELASTICSEARCH_URL="http://10.0.1.100:9200"
+ELASTICSEARCH_URL="http://10.0.0.100:9200"
 
 #Script Parameters
 CLUSTER_NAME="elasticsearch"
@@ -49,7 +49,7 @@ USER_KIBANA4_SERVER_PWD="changeME"
 
 #Loop through options passed
 while getopts :n:v:S:lh optname; do
-  log "Option $optname set with value ${OPTARG}"
+  log "Option $optname set"
   case $optname in
     n) #set cluster name
       CLUSTER_NAME=${OPTARG}
@@ -74,6 +74,9 @@ while getopts :n:v:S:lh optname; do
       ;;
   esac
 done
+
+echo "installing kibana for Elasticsearch $ES_VERSION cluster: $CLUSTER_NAME"
+echo "installing kibana plugins is set to: $INSTALL_PLUGINS"
 
 # Install Oracle Java
 install_java()

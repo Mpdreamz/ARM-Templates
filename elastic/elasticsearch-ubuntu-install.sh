@@ -87,7 +87,6 @@ CLIENT_ONLY_NODE=0
 DATA_NODE=0
 MASTER_ONLY_NODE=0
 
-MARVEL_HOST='"marvel_export:marvelPassw0rd@10.1.0.10:9200","marvel_export:marvelPassw0rd@10.1.0.11:9200","marvel_export:marvelPassw0rd@10.1.0.12:9200"'
 CLUSTER_USES_DEDICATED_MASTERS=0
 DATANODE_COUNT=0
 
@@ -100,8 +99,8 @@ USER_KIBANA4_PWD="changeME"
 USER_KIBANA4_SERVER_PWD="changeME"
 
 #Loop through options passed
-while getopts :n:v:A:R:K:S:m:Z:xyzldh optname; do
-  log "Option $optname set with value ${OPTARG}"
+while getopts :n:v:A:R:K:S:Z:xyzldh optname; do
+  log "Option $optname set"
   case $optname in
     n) #set cluster name
       CLUSTER_NAME=${OPTARG}
@@ -120,9 +119,6 @@ while getopts :n:v:A:R:K:S:m:Z:xyzldh optname; do
       ;;
     S) #shield kibana server pwd
       USER_KIBANA4_SERVER_PWD=${OPTARG}
-      ;;
-    m) #marvel host
-      MARVEL_HOST=${OPTARG}
       ;;
     Z) #number of data nodes hints (used to calculate minimum master nodes)
       DATANODE_COUNT=${OPTARG}
@@ -166,8 +162,9 @@ else
     UNICAST_HOSTS="${UNICAST_HOSTS%?}]"
 fi
 
-log "Bootstrapping cluster '$CLUSTER_NAME' with minimum_master_nodes set to $MINIMUM_MASTER_NODES"
+log "Bootstrapping an Elasticsearch $ES_VERSION cluster named '$CLUSTER_NAME' with minimum_master_nodes set to $MINIMUM_MASTER_NODES"
 log "Cluster uses dedicated master nodes is set to $CLUSTER_USES_DEDICATED_MASTERS and unicast goes to $UNICAST_HOSTS"
+log "Cluster install script is set to $INSTALL_PLUGIN"
 
 # Base path for data disk mount points
 # The script assume format /datadisks/disk1 /datadisks/disk2
@@ -199,8 +196,7 @@ install_java()
 # Install Elasticsearch
 install_es()
 {
-
-	# Elasticsearch 2.0.0 uses a different download path
+    # Elasticsearch 2.0.0 uses a different download path
     if [[ "${ES_VERSION}" == \2* ]]; then
         DOWNLOAD_URL="https://download.elasticsearch.org/elasticsearch/release/org/elasticsearch/distribution/deb/elasticsearch/$ES_VERSION/elasticsearch-$ES_VERSION.deb"
     else
@@ -208,7 +204,7 @@ install_es()
     fi
 
     log "Installing Elaticsearch Version - $ES_VERSION"
-	log "Download location - $DOWNLOAD_URL"
+    log "Download location - $DOWNLOAD_URL"
     sudo wget -q "$DOWNLOAD_URL" -O elasticsearch.deb
     sudo dpkg -i elasticsearch.deb
 }
@@ -305,7 +301,7 @@ echo "network.host: _non_loopback_" >> /etc/elasticsearch/elasticsearch.yml
 #echo "bootstrap.mlockall: true" >> /etc/elasticsearch/elasticsearch.yml
 
 # DNS Retry
-echo "options timeout:1 attempts:5" >> /etc/resolvconf/resolv.conf.d/head
+echo "options timeout:10 attempts:5" >> /etc/resolvconf/resolv.conf.d/head
 resolvconf -u
 
 # Increase maximum mmap count
@@ -330,7 +326,7 @@ if [ ${INSTALL_PLUGINS} -ne 0 ]; then
     log "Installing Plugins Shield, Marvel, Watcher"
     sudo /usr/share/elasticsearch/bin/plugin install elasticsearch/license/latest
     sudo /usr/share/elasticsearch/bin/plugin install elasticsearch/shield/latest
-    sudo /usr/share/elasticsearch/bin/plugin install elasticsearch/wa/tcher/latest
+    sudo /usr/share/elasticsearch/bin/plugin install elasticsearch/watcher/latest
     sudo /usr/share/elasticsearch/bin/plugin install marvel-agent
 
     log " Start adding es_admin"
@@ -349,11 +345,6 @@ if [ ${INSTALL_PLUGINS} -ne 0 ]; then
     sudo /usr/share/elasticsearch/bin/shield/esusers useradd "es_kibana_server" -p "${USER_KIBANA4_SERVER_PWD}" -r kibana4_server
     log " Finished adding es_kibana_server"
 
-    log " adding marvel_agent "
-    sudo /usr/share/elasticsearch/bin/shield/esusers useradd marvel_export -p marvelPassw0rd -r marvel_agent
-    log " finished adding Shield Users"
-
-    echo "marvel.agent.exporter.es.hosts: [ $MARVEL_HOST ]" >> /etc/elasticsearch/elasticsearch.yml
     echo "marvel.agent.enabled: true" >> /etc/elasticsearch/elasticsearch.yml
 fi
 
