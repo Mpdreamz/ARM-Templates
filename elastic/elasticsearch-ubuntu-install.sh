@@ -209,10 +209,19 @@ install_es()
     sudo dpkg -i elasticsearch.deb
 }
 
+install_ntp()
+{
+    log "installing ntp deamon"
+    sudo apt-get -y install ntp
+    sudo ntpdate pool.ntp.org
+    ntpdate -s ntp.ubuntu.com
+    log "installed ntp deamon and ntpdate"
+}
+
 # Primary Install Tasks
 #########################
-#NOTE: These first three could be changed to run in parallel
-#      Future enhancement - (export the functions and use background/wait to run in parallel)
+
+install_ntp
 
 #Format data disks (Find data disks then partition, format, and mount them as seperate drives)
 # using the -s paramater causing disks under /datadisks/* to be raid0'ed
