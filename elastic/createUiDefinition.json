@@ -6,24 +6,46 @@
     ],
     "steps": [
       {
-        "name": "pluginsConfiguration",
-        "label": "Plugins Configuration",
+        "name": "elasticsearchStep",
+        "label": "Elasticsearch",
         "subLabel": {
-          "preValidation": "Configure plugins",
+          "preValidation": "TODO",
           "postValidation": "Done"
         },
-        "bladeTitle": "Plugins Configuration",
+        "bladeTitle": "Elasticsearch",
         "elements": [
         ]
       },
       {
-        "name": "nodesConfiguration",
-        "label": "Nodes Configuration",
+        "name": "pluginsStep",
+        "label": "Plugins",
         "subLabel": {
-          "preValidation": "Configure nodes",
+          "preValidation": "TODO",
           "postValidation": "Done"
         },
-        "bladeTitle": "Nodes Configuration",
+        "bladeTitle": "Plugins",
+        "elements": [
+        ]
+      },
+      {
+        "name": "externalAccessStep",
+        "label": "External access",
+        "subLabel": {
+          "preValidation": "TODO",
+          "postValidation": "Done"
+        },
+        "bladeTitle": "No",
+        "elements": [
+        ]
+      },
+      {
+        "name": "nodesStep",
+        "label": "Nodes",
+        "subLabel": {
+          "preValidation": "TODO",
+          "postValidation": "Done"
+        },
+        "bladeTitle": "No",
         "elements": [
         ]
       }
