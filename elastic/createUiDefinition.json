@@ -10,7 +10,8 @@
         "toolTip": "TODO",
         "constraints": {
           "required": true
-        }
+        },
+        "osPlatform": "Linux"
       },
       {
         "name": "credentials",
@@ -176,9 +177,9 @@
 		{
 		    "name": "vmCountDataNodes",
 		    "type": "Microsoft.Common.TextBox",
-		    "label": "Some text box",
-		    "defaultValue": "foobar",
-		    "toolTip": "Halp!",
+		    "label": "Number of data nodes",
+		    "defaultValue": "3",
+		    "toolTip": "TODO",
 		    "constraints": {
 		      "required": true,
 		      "regex": "^[1-9]\\d*$",
