@@ -1,0 +1,23 @@
+{
+  "handler": "Microsoft.Compute.MultiVm",
+  "version": "0.0.1-preview",
+  "parameters": {
+    "basics": [
+    ],
+    "steps": [
+      {
+        "name": "myFirstStep",
+        "label": "My First Step",
+        "subLabel": {
+          "preValidation": "Set up my first step",
+          "postValidation": "Done"
+        },
+        "bladeTitle": "My first step",
+        "elements": [
+        ]
+      }
+    ],
+    "outputs": {
+    }
+  }
+}
