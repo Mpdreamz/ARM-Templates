@@ -103,71 +103,75 @@
             }
           },
           {
-            "name": "shieldAdminPasswordSection",
+            "name": "Shield passwords",
             "type": "Microsoft.Common.Section",
-            "label": "Shield admin password",
+            "label": "Shield passwords",
             "elements": [
               {
-                "name": "shieldAdminPassword",
-                "type": "Microsoft.Common.PasswordBox",
-
-                "label": {
-                  "password": "Admin password",
-                  "confirmPassword": "Confirm admin password"
-                },
-                "toolTip": "TODO",
-                "constraints": {
-                  "required": true
-                },
-                "options": {
-                  "hideConfirmation": false
-                }
-              }
-            ]
-          },
-          {
-            "name": "shieldReadPasswordSection",
-            "type": "Microsoft.Common.Section",
-            "label": "Shield read password",
-            "elements": [
+                "name": "Admin password",
+                "type": "Microsoft.Common.Section",
+                "label": "Admin password",
+                "elements": [
+                  {
+                    "name": "adminPassword",
+                    "type": "Microsoft.Common.PasswordBox",
+                    "label": {
+                      "password": "Password",
+                      "confirmPassword": "Confirm password"
+                    },
+                    "toolTip": "TODO",
+                    "constraints": {
+                      "required": true
+                    },
+                    "options": {
+                      "hideConfirmation": false
+                    }
+                  }
+                ]
+              },
               {
-                "name": "shieldReadPassword",
-                "type": "Microsoft.Common.PasswordBox",
-
-                "label": {
-                  "password": "Read password",
-                  "confirmPassword": "Confirm read password"
-                },
-                "toolTip": "TODO",
-                "constraints": {
-                  "required": true
-                },
-                "options": {
-                  "hideConfirmation": false
-                }
-              }
-            ]
-          },
-          {
-            "name": "shieldKibanaPasswordSection",
-            "type": "Microsoft.Common.Section",
-            "label": "Shield Kibana password",
-            "elements": [
+                "name": "Read password",
+                "type": "Microsoft.Common.Section",
+                "label": "Read password",
+                "elements": [
+                  {
+                    "name": "readPassword",
+                    "type": "Microsoft.Common.PasswordBox",
+                    "label": {
+                      "password": "Password",
+                      "confirmPassword": "Confirm password"
+                    },
+                    "toolTip": "TODO",
+                    "constraints": {
+                      "required": true
+                    },
+                    "options": {
+                      "hideConfirmation": false
+                    }
+                  }
+                ]
+              },
               {
-                "name": "shieldKibanaPassword",
-                "type": "Microsoft.Common.PasswordBox",
-
-                "label": {
-                  "password": "Kibana password",
-                  "confirmPassword": "Confirm Kibana password"
-                },
-                "toolTip": "TODO",
-                "constraints": {
-                  "required": true
-                },
-                "options": {
-                  "hideConfirmation": false
-                }
+                "name": "Kibana password",
+                "type": "Microsoft.Common.Section",
+                "label": "Kibana password",
+                "elements": [
+                  {
+                    "name": "kibanaPassword",
+                    "type": "Microsoft.Common.PasswordBox",
+                    "label": {
+                      "password": "Password",
+                      "confirmPassword": "Confirm password"
+                    },
+                    "toolTip": "TODO",
+                    "constraints": {
+                      "required": true
+                    },
+                    "options": {
+                      "hideConfirmation": false
+                    }
+                  }
+                ]
               }
             ]
           }
