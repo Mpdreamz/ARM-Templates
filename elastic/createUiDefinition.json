@@ -201,9 +201,32 @@
                   "allowedSizes": [],
                   "excludedSizes": []
                 },
-                {
-                  "label": "No",
-                  "value": "no"
+                "osPlatform": "Linux",
+                "imageReference": {
+                  "publisher": "Canonical",
+                  "offer": "UbuntuServer",
+                  "sku": "14.04.2-LTS",
+                  "version": "latest"
+                },
+                "count": "[steps('nodesStep').Data.vmCountDataNodes]"
+              },
+              {
+                "name": "dataNodesAreMasterEligible",
+                "type": "Microsoft.Common.OptionsGroup",
+                "label": "Data nodes are master eligable",
+                "defaultValue": "no",
+                "toolTip": "TODO",
+                "constraints": {
+                  "allowedValues": [
+                    {
+                      "label": "Yes",
+                      "value": "yes"
+                    },
+                    {
+                      "label": "No",
+                      "value": "no"
+                    }
+                  ]
                 }
               }
               ]
@@ -280,7 +303,7 @@
                   "sku": "14.04.2-LTS",
                   "version": "latest"
                 },
-                "count": "[steps('nodesStep').vmCountClientNodes]"
+                "count": "[steps('nodesStep').Client.vmCountClientNodes]"
               }
               ]
 }
