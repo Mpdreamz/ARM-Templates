@@ -7,23 +7,8 @@
    <img alt="Deploy to Azure" src="http://azuredeploy.net/deploybutton.png"/>
 </a>
 
-1. Fill in the mandatory parameters - clustername, client/master/data count, VNET name, public DNS name, a storage account to hold VM image, shield users and password.
 
-2. Fill in other info and click "OK".
+# Marketplace ui test url
 
-## Using the cluster
+[click here](https://portal.azure.com/?clientOptimizations=false#blade/Microsoft_Azure_Compute/CreateMultiVmWizardBlade/internal_bladeCallId/anything/internal_bladeCallerParams/{"initialData":{},"providerConfig":{"createUiDefinition":"https%3A%2F%2Fraw.githubusercontent.com%2FMpdreamz%2FARM-Templates%2Fmaster%2Felastic%2FcreateUiDefinition.json"}}
 
-Simply SSH to the jumpBox, Or access the cluster via LB public IP:9200 with shield crendentials. 
-or LBIP:9200/_plugin/kopf
-
-## Parameters
-
-| Name   | Description    |  Default
-|:--- |:---|:---|
-| dnsName | Unique public dns name where the master node will be exposed | |
-| newStorageAccountName | Unique DNS Name for the Storage Account where the Virtual Machine's disks will be placed ||
-| adminUserName | User name for the Virtual Machine. ||
-| adminPassword | password of the admin user ||
-| vmSize | Instance size of the VM worker node ||
-| scaleUnit | Number of Data nodes in the cluster ||
-| location | This is the location where the availability set will be deployed ||
