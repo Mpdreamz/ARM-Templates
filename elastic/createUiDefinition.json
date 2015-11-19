@@ -4,6 +4,15 @@
   "parameters": {
     "basics": [
       {
+        "name": "userName",
+        "type": "Microsoft.Compute.UserNameTextBox",
+        "label": "User name",
+        "toolTip": "TODO",
+        "constraints": {
+          "required": true
+        }
+      },
+      {
         "name": "credentials",
         "type": "Microsoft.Compute.CredentialsCombo",
         "label": {
