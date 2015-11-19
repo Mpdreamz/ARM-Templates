@@ -182,7 +182,7 @@
                   "sku": "14.04.2-LTS",
                   "version": "latest"
                 },
-                "count": "[steps('nodesStep')['Data Nodes'].vmCountDataNodes]"
+                "count": "[steps('nodesStep').vmCountDataNodes]"
               },
               {
                 "name": "dataNodesAreMasterEligible",
@@ -262,7 +262,7 @@
                   "sku": "14.04.2-LTS",
                   "version": "latest"
                 },
-                "count": "[steps('nodesStep')['Client Nodes'].vmCountDataNodes]"
+                "count": "[steps('nodesStep').vmCountClientNodes]"
               }
             ]
       }
