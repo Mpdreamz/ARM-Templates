@@ -14,6 +14,31 @@
         },
         "bladeTitle": "Elasticsearch",
         "elements": [
+          {
+            "name": "version",
+            "type": "Microsoft.Common.DropDown",
+            "label": "Elasticsearch Version",
+            "defaultValue": "v2.0.0",
+            "toolTip": "TODO",
+            "constraints": {
+              "allowedValues": [
+                {
+                  "label": "v2.0.0",
+                  "value": "2.0.0"
+                }
+              ]
+            }
+          },
+          {
+            "name": "clusterName",
+            "type": "Microsoft.Common.TextBox",
+            "label": "Cluster Name",
+            "toolTip": "TODO",
+            "constraints": {
+              "required": true,
+              "validationMessage": "TODO"
+            }
+          }
         ]
       },
       {
