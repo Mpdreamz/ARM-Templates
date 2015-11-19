@@ -104,7 +104,7 @@
           {
             "name": "shieldSection",
             "type": "Microsoft.Common.Section",
-            "label": "Shield credentials"
+            "label": "Shield credentials",
             "elements": [
               {
                 "name": "shieldAdminPassword",
