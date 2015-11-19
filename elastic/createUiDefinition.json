@@ -87,7 +87,7 @@
             "name": "installPlugins",
             "type": "Microsoft.Common.OptionsGroup",
             "label": "Install plugins?",
-            "defaultValue": "Yes",
+            "defaultValue": "yes",
             "toolTip": "TODO",
             "constraints": {
               "allowedValues": [
@@ -103,16 +103,17 @@
             }
           },
           {
-            "name": "shieldSection",
+            "name": "shieldAdminPasswordSection",
             "type": "Microsoft.Common.Section",
-            "label": "Shield credentials",
+            "label": "Shield admin password",
             "elements": [
               {
                 "name": "shieldAdminPassword",
                 "type": "Microsoft.Common.PasswordBox",
+
                 "label": {
                   "password": "Admin password",
-                  "confirmPassword": "Confirm password"
+                  "confirmPassword": "Confirm admin password"
                 },
                 "toolTip": "TODO",
                 "constraints": {
@@ -121,13 +122,21 @@
                 "options": {
                   "hideConfirmation": false
                 }
-              },
+              }
+            ]
+          },
+          {
+            "name": "shieldReadPasswordSection",
+            "type": "Microsoft.Common.Section",
+            "label": "Shield read password",
+            "elements": [
               {
                 "name": "shieldReadPassword",
                 "type": "Microsoft.Common.PasswordBox",
+
                 "label": {
                   "password": "Read password",
-                  "confirmPassword": "Confirm password"
+                  "confirmPassword": "Confirm read password"
                 },
                 "toolTip": "TODO",
                 "constraints": {
@@ -136,13 +145,21 @@
                 "options": {
                   "hideConfirmation": false
                 }
-              },
+              }
+            ]
+          },
+          {
+            "name": "shieldKibanaPasswordSection",
+            "type": "Microsoft.Common.Section",
+            "label": "Shield Kibana password",
+            "elements": [
               {
                 "name": "shieldKibanaPassword",
                 "type": "Microsoft.Common.PasswordBox",
+
                 "label": {
                   "password": "Kibana password",
-                  "confirmPassword": "Confirm password"
+                  "confirmPassword": "Confirm Kibana password"
                 },
                 "toolTip": "TODO",
                 "constraints": {
@@ -164,8 +181,7 @@
           "postValidation": "Done"
         },
         "bladeTitle": "No",
-        "elements": [
-        ]
+        "elements": []
       },
       {
         "name": "nodesStep",
@@ -315,7 +331,6 @@
         ]
       }
     ],
-    "outputs": {
-    }
+    "outputs": {}
   }
 }
