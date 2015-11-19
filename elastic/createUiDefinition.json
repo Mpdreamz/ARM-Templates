@@ -83,23 +83,11 @@
         },
         "bladeTitle": "Plugins",
         "elements": [
-          {
-            "name": "shieldAdminSelector",
-            "type": "Microsoft.Common.Selector",
-            "label": "Shield admin access",
-            "sublabel": {
-              "preValidation": "Configure Shield admin access",
-              "postValidation": "Shield admin access configured"
-            },
-            "toolTip": "TODO",
-            "bladeTitle": "Shield admin access",
-            "bladeSubtitle": "Choose a password",
-            "elements": [
               {
                 "name": "shieldAdminPassword",
                 "type": "Microsoft.Common.PasswordBox",
                 "label": {
-                  "password": "Password",
+                  "password": "Shield es_admin password",
                   "confirmPassword": "Confirm password"
                 },
                 "toolTip": "TODO",
@@ -107,28 +95,14 @@
                   "required": true
                 },
                 "options": {
-                  "hideConfirmation": false
+                  "hideConfirmation": true
                 }
-              }
-            ]
-          },
-          {
-            "name": "shieldReadSelector",
-            "type": "Microsoft.Common.Selector",
-            "label": "Shield Read access",
-            "sublabel": {
-              "preValidation": "Configure Shield read access",
-              "postValidation": "Shield read access configured"
-            },
-            "toolTip": "TODO",
-            "bladeTitle": "Shield read access",
-            "bladeSubtitle": "Choose a password",
-            "elements": [
+              },
               {
                 "name": "shieldReadPassword",
                 "type": "Microsoft.Common.PasswordBox",
                 "label": {
-                  "password": "Password",
+                  "password": "Shield es_read password",
                   "confirmPassword": "Confirm password"
                 },
                 "toolTip": "TODO",
@@ -136,28 +110,14 @@
                   "required": true
                 },
                 "options": {
-                  "hideConfirmation": false
+                  "hideConfirmation": true
                 }
-              }
-            ]
-          },
-          {
-            "name": "shieldKibanaSelector",
-            "type": "Microsoft.Common.Selector",
-            "label": "Kibana security",
-            "sublabel": {
-              "preValidation": "Configure Kibana security",
-              "postValidation": "Kibana security configured"
-            },
-            "toolTip": "TODO",
-            "bladeTitle": "Kibana security",
-            "bladeSubtitle": "Choose a password to access Kibana",
-            "elements": [
+              },
               {
                 "name": "shieldKibanaPassword",
                 "type": "Microsoft.Common.PasswordBox",
                 "label": {
-                  "password": "Password",
+                  "password": "Shield es_kibana password",
                   "confirmPassword": "Confirm password"
                 },
                 "toolTip": "TODO",
@@ -165,12 +125,10 @@
                   "required": true
                 },
                 "options": {
-                  "hideConfirmation": false
+                  "hideConfirmation": true
                 }
               }
             ]
-          }
-        ]
       },
       {
         "name": "externalAccessStep",
@@ -191,11 +149,6 @@
         },
         "bladeTitle": "No",
         "elements": [
-          {
-            "name": "Data Nodes",
-            "type": "Microsoft.Common.Section",
-            "label": "Data Nodes",
-            "elements": [
               {
                 "name": "vmCountDataNodes",
                 "type": "Microsoft.Common.TextBox",
@@ -249,15 +202,8 @@
                     }
                   ]
                 }
-              }
-            ]
-          },
-          {
-            "name": "Master Nodes",
-            "type": "Microsoft.Common.Section",
-            "label": "Master Nodes",
-            "elements": [
-              {
+              },
+             {
                 "name": "vmMasterNodes",
                 "type": "Microsoft.Compute.SizeSelector",
                 "label": "Master Node VM Size",
@@ -279,14 +225,7 @@
                   "version": "latest"
                 },
                 "count": "3"
-              }
-            ]
-          },
-          {
-            "name": "Client Nodes",
-            "type": "Microsoft.Common.Section",
-            "label": "Client Nodes",
-            "elements": [
+              },
               {
                 "name": "vmCountClientNodes",
                 "type": "Microsoft.Common.DropDown",
@@ -326,8 +265,6 @@
                 "count": "[steps('nodesStep')['Client Nodes'].vmCountDataNodes]"
               }
             ]
-          }
-        ]
       }
     ],
     "outputs": {}
