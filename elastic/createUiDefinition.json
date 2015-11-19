@@ -3,6 +3,28 @@
   "version": "0.0.1-preview",
   "parameters": {
     "basics": [
+      {
+        "name": "credentials",
+        "type": "Microsoft.Compute.CredentialsCombo",
+        "label": {
+          "authenticationType": "Authentication type",
+          "password": "Password",
+          "confirmPassword": "Confirm password",
+          "sshPublicKey": "SSH public key"
+        },
+        "toolTip": {
+          "authenticationType": "TODO",
+          "password": "TODO",
+          "sshPublicKey": "TODO"
+        },
+        "constraints": {
+          "required": true
+        },
+        "options": {
+          "hideConfirmation": false
+        },
+        "osPlatform": "Linux"
+      }
     ],
     "steps": [
       {
