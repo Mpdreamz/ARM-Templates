@@ -84,94 +84,68 @@
         "bladeTitle": "Plugins",
         "elements": [
           {
-            "name": "installPlugins",
-            "type": "Microsoft.Common.OptionsGroup",
-            "label": "Install plugins?",
-            "defaultValue": "yes",
-            "toolTip": "TODO",
-            "constraints": {
-              "allowedValues": [
-                {
-                  "label": "Yes",
-                  "value": "yes"
-                },
-                {
-                  "label": "No",
-                  "value": "no"
-                }
-              ]
-            }
-          },
-          {
-            "name": "Shield passwords",
-            "type": "Microsoft.Common.Section",
-            "label": "Shield passwords",
+            "name": "shieldAdminSelector",
+            "type": "Microsoft.Common.Selector",
+            "label": "Shield Admin",
             "elements": [
               {
-                "name": "Admin password",
-                "type": "Microsoft.Common.Section",
-                "label": "Admin password",
-                "elements": [
-                  {
-                    "name": "adminPassword",
-                    "type": "Microsoft.Common.PasswordBox",
-                    "label": {
-                      "password": "Password",
-                      "confirmPassword": "Confirm password"
-                    },
-                    "toolTip": "TODO",
-                    "constraints": {
-                      "required": true
-                    },
-                    "options": {
-                      "hideConfirmation": false
-                    }
-                  }
-                ]
-              },
+                "name": "shieldAdminPassword",
+                "type": "Microsoft.Common.PasswordBox",
+                "label": {
+                  "password": "Password",
+                  "confirmPassword": "Confirm password"
+                },
+                "toolTip": "TODO",
+                "constraints": {
+                  "required": true
+                },
+                "options": {
+                  "hideConfirmation": false
+                }
+              }
+            ]
+          },
+          {
+            "name": "shieldReadSelector",
+            "type": "Microsoft.Common.Selector",
+            "label": "Shield Read",
+            "elements": [
               {
-                "name": "Read password",
-                "type": "Microsoft.Common.Section",
-                "label": "Read password",
-                "elements": [
-                  {
-                    "name": "readPassword",
-                    "type": "Microsoft.Common.PasswordBox",
-                    "label": {
-                      "password": "Password",
-                      "confirmPassword": "Confirm password"
-                    },
-                    "toolTip": "TODO",
-                    "constraints": {
-                      "required": true
-                    },
-                    "options": {
-                      "hideConfirmation": false
-                    }
-                  }
-                ]
-              },
+                "name": "shieldReadPassword",
+                "type": "Microsoft.Common.PasswordBox",
+                "label": {
+                  "password": "Password",
+                  "confirmPassword": "Confirm password"
+                },
+                "toolTip": "TODO",
+                "constraints": {
+                  "required": true
+                },
+                "options": {
+                  "hideConfirmation": false
+                }
+              }
+            ]
+          },
+          {
+            "name": "shieldKibanaSelector",
+            "type": "Microsoft.Common.Selector",
+            "label": "Shield Kibana",
+            "elements": [
               {
-                "name": "Kibana password",
-                "type": "Microsoft.Common.Section",
-                "label": "Kibana password",
-                "elements": [
-                  {
-                    "name": "kibanaPassword",
-                    "type": "Microsoft.Common.PasswordBox",
-                    "label": {
-                      "password": "Password",
-                      "confirmPassword": "Confirm password"
-                    },
-                    "toolTip": "TODO",
-                    "constraints": {
-                      "required": true
-                    },
-                    "options": {
-                      "hideConfirmation": false
-                    }
-                  }
-                ]
+                "name": "shieldKibanaPassword",
+                "type": "Microsoft.Common.PasswordBox",
+                "label": {
+                  "password": "Password",
+                  "confirmPassword": "Confirm password"
+                },
+                "toolTip": "TODO",
+                "constraints": {
+                  "required": true
+                },
+                "options": {
+                  "hideConfirmation": false
+                }
               }
             ]
           }
@@ -201,60 +175,60 @@
             "type": "Microsoft.Common.Section",
             "label": "Data Nodes",
             "elements": [
-		{
-		    "name": "vmCountDataNodes",
-		    "type": "Microsoft.Common.TextBox",
-		    "label": "Number of data nodes",
-		    "defaultValue": "3",
-		    "toolTip": "TODO",
-		    "constraints": {
-		      "required": true,
-		      "regex": "^[1-9]\\d*$",
-		      "validationMessage": "Atleast 1 or higher"
-		    } 
-		},
-		{
-		  "name": "vmDataNodes",
-		  "type": "Microsoft.Compute.SizeSelector",
-		  "label": "Data Node VM Size",
-		  "toolTip": "",
-		  "recommendedSizes": [
-		     "Standard_D1",
-		     "Standard_D2",
-		     "Standard_D3"
-		  ],
-		  "constraints": {
-		     "allowedSizes": [],
-		     "excludedSizes": []
-		   },
-		   "osPlatform": "Linux",
-		   "imageReference": {
-		      "publisher": "Canonical",
-		      "offer": "UbuntuServer",
-		      "sku": "14.04.2-LTS",
-		      "version": "latest"
-		   },
-		  "count": "[steps('nodesStep')['Data Nodes'].vmCountDataNodes]" 
-		},
-                {
-		    "name": "dataNodesAreMasterEligible",
-		    "type": "Microsoft.Common.OptionsGroup",
-		    "label": "Data nodes are master eligable",
-		    "defaultValue": "no",
-		    "toolTip": "TODO",
-		    "constraints": {
-		      "allowedValues": [
-			{
-			  "label": "Yes",
-			  "value": "yes"
-			},
-			{
-			  "label": "No",
-			  "value": "no"
-			}
-		      ]
-		    }
-               }
+              {
+                "name": "vmCountDataNodes",
+                "type": "Microsoft.Common.TextBox",
+                "label": "Number of data nodes",
+                "defaultValue": "3",
+                "toolTip": "TODO",
+                "constraints": {
+                  "required": true,
+                  "regex": "^[1-9]\\d*$",
+                  "validationMessage": "Atleast 1 or higher"
+                }
+              },
+              {
+                "name": "vmDataNodes",
+                "type": "Microsoft.Compute.SizeSelector",
+                "label": "Data Node VM Size",
+                "toolTip": "",
+                "recommendedSizes": [
+                  "Standard_D1",
+                  "Standard_D2",
+                  "Standard_D3"
+                ],
+                "constraints": {
+                  "allowedSizes": [],
+                  "excludedSizes": []
+                },
+                "osPlatform": "Linux",
+                "imageReference": {
+                  "publisher": "Canonical",
+                  "offer": "UbuntuServer",
+                  "sku": "14.04.2-LTS",
+                  "version": "latest"
+                },
+                "count": "[steps('nodesStep')['Data Nodes'].vmCountDataNodes]"
+              },
+              {
+                "name": "dataNodesAreMasterEligible",
+                "type": "Microsoft.Common.OptionsGroup",
+                "label": "Data nodes are master eligable",
+                "defaultValue": "no",
+                "toolTip": "TODO",
+                "constraints": {
+                  "allowedValues": [
+                    {
+                      "label": "Yes",
+                      "value": "yes"
+                    },
+                    {
+                      "label": "No",
+                      "value": "no"
+                    }
+                  ]
+                }
+              }
             ]
           },
           {
@@ -262,29 +236,29 @@
             "type": "Microsoft.Common.Section",
             "label": "Master Nodes",
             "elements": [
-		{
-		  "name": "vmMasterNodes",
-		  "type": "Microsoft.Compute.SizeSelector",
-		  "label": "Master Node VM Size",
-		  "toolTip": "",
-		  "recommendedSizes": [
-		     "Standard_D1",
-		     "Standard_D2",
-		     "Standard_D3"
-		  ],
-		  "constraints": {
-		     "allowedSizes": [],
-		     "excludedSizes": []
-		   },
-		   "osPlatform": "Linux",
-		   "imageReference": {
-		      "publisher": "Canonical",
-		      "offer": "UbuntuServer",
-		      "sku": "14.04.2-LTS",
-		      "version": "latest"
-		   },
-		  "count": "3" 
-		}
+              {
+                "name": "vmMasterNodes",
+                "type": "Microsoft.Compute.SizeSelector",
+                "label": "Master Node VM Size",
+                "toolTip": "",
+                "recommendedSizes": [
+                  "Standard_D1",
+                  "Standard_D2",
+                  "Standard_D3"
+                ],
+                "constraints": {
+                  "allowedSizes": [],
+                  "excludedSizes": []
+                },
+                "osPlatform": "Linux",
+                "imageReference": {
+                  "publisher": "Canonical",
+                  "offer": "UbuntuServer",
+                  "sku": "14.04.2-LTS",
+                  "version": "latest"
+                },
+                "count": "3"
+              }
             ]
           },
           {
@@ -292,44 +266,44 @@
             "type": "Microsoft.Common.Section",
             "label": "Client Nodes",
             "elements": [
-		  {
-		    "name": "vmCountClientNodes",
-		    "type": "Microsoft.Common.DropDown",
-		    "label": "Number of client nodes",
-		    "defaultValue": "0",
-		    "toolTip": "TODO",
-		    "constraints": {
-		      "allowedValues": [
-			{
-			  "label": "0",
-			  "value": "0"
-			}
-		      ]
-		    }
-		  },
-		{
-		  "name": "vmClientNodes",
-		  "type": "Microsoft.Compute.SizeSelector",
-		  "label": "Client Node VM Size",
-		  "toolTip": "",
-		  "recommendedSizes": [
-		     "Standard_D1",
-		     "Standard_D2",
-		     "Standard_D3"
-		  ],
-		  "constraints": {
-		     "allowedSizes": [],
-		     "excludedSizes": []
-		   },
-		   "osPlatform": "Linux",
-		   "imageReference": {
-		      "publisher": "Canonical",
-		      "offer": "UbuntuServer",
-		      "sku": "14.04.2-LTS",
-		      "version": "latest"
-		   },
-		  "count": "[steps('nodesStep')['Client Nodes'].vmCountDataNodes]" 
-		}
+              {
+                "name": "vmCountClientNodes",
+                "type": "Microsoft.Common.DropDown",
+                "label": "Number of client nodes",
+                "defaultValue": "0",
+                "toolTip": "TODO",
+                "constraints": {
+                  "allowedValues": [
+                    {
+                      "label": "0",
+                      "value": "0"
+                    }
+                  ]
+                }
+              },
+              {
+                "name": "vmClientNodes",
+                "type": "Microsoft.Compute.SizeSelector",
+                "label": "Client Node VM Size",
+                "toolTip": "",
+                "recommendedSizes": [
+                  "Standard_D1",
+                  "Standard_D2",
+                  "Standard_D3"
+                ],
+                "constraints": {
+                  "allowedSizes": [],
+                  "excludedSizes": []
+                },
+                "osPlatform": "Linux",
+                "imageReference": {
+                  "publisher": "Canonical",
+                  "offer": "UbuntuServer",
+                  "sku": "14.04.2-LTS",
+                  "version": "latest"
+                },
+                "count": "[steps('nodesStep')['Client Nodes'].vmCountDataNodes]"
+              }
             ]
           }
         ]
