@@ -7,6 +7,7 @@
         "name": "userName",
         "type": "Microsoft.Compute.UserNameTextBox",
         "label": "User name",
+        "defaultValue": "",
         "toolTip": "TODO",
         "constraints": {
           "required": true
