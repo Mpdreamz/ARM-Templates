@@ -101,49 +101,55 @@
             }
           },
           {
-            "name": "shieldAdminPassword",
-            "type": "Microsoft.Common.PasswordBox",
-            "label": {
-              "password": "Admin password",
-              "confirmPassword": "Confirm passwod"
-            },
-            "toolTip": "TODO",
-            "constraints": {
-              "required": true
-            },
-            "options": {
-              "hideConfirmation": false
-            }
-          },
-          {
-            "name": "shieldReadPassword",
-            "type": "Microsoft.Common.PasswordBox",
-            "label": {
-              "password": "Read password",
-              "confirmPassword": "Confirm password"
-            },
-            "toolTip": "TODO",
-            "constraints": {
-              "required": true
-            },
-            "options": {
-              "hideConfirmation": false
-            }
-          },
-          {
-            "name": "shieldKibanaPassword",
-            "type": "Microsoft.Common.PasswordBox",
-            "label": {
-              "password": "Kibana password",
-              "confirmPassword": "Confirm password"
-            },
-            "toolTip": "TODO",
-            "constraints": {
-              "required": true
-            },
-            "options": {
-              "hideConfirmation": false
-            }
+            "name": "shieldSection",
+            "type": "Microsoft.Common.Section",
+            "elements": [
+              {
+                "name": "shieldAdminPassword",
+                "type": "Microsoft.Common.PasswordBox",
+                "label": {
+                  "password": "Admin password",
+                  "confirmPassword": "Confirm password"
+                },
+                "toolTip": "TODO",
+                "constraints": {
+                  "required": true
+                },
+                "options": {
+                  "hideConfirmation": false
+                }
+              },
+              {
+                "name": "shieldReadPassword",
+                "type": "Microsoft.Common.PasswordBox",
+                "label": {
+                  "password": "Read password",
+                  "confirmPassword": "Confirm password"
+                },
+                "toolTip": "TODO",
+                "constraints": {
+                  "required": true
+                },
+                "options": {
+                  "hideConfirmation": false
+                }
+              },
+              {
+                "name": "shieldKibanaPassword",
+                "type": "Microsoft.Common.PasswordBox",
+                "label": {
+                  "password": "Kibana password",
+                  "confirmPassword": "Confirm password"
+                },
+                "toolTip": "TODO",
+                "constraints": {
+                  "required": true
+                },
+                "options": {
+                  "hideConfirmation": false
+                }
+              }
+            ]
           }
         ]
       },
@@ -155,7 +161,8 @@
           "postValidation": "Done"
         },
         "bladeTitle": "No",
-        "elements": []
+        "elements": [
+        ]
       },
       {
         "name": "nodesStep",
@@ -166,44 +173,45 @@
         },
         "bladeTitle": "No",
         "elements": [
-          {
-            "name": "vmCountDataNodes",
-            "type": "Microsoft.Common.TextBox",
-            "label": "Some text box",
-            "defaultValue": "foobar",
-            "toolTip": "Halp!",
-            "constraints": {
-              "required": true,
-              "regex": "^[1-9]\\d*$",
-              "validationMessage": "Atleast 1 or higher"
-            }
-          },
-          {
-            "name": "vmDataNodes",
-            "type": "Microsoft.Compute.SizeSelector",
-            "label": "Size",
-            "toolTip": "",
-            "recommendedSizes": [
-              "Standard_D1",
-              "Standard_D2",
-              "Standard_D3"
-            ],
-            "constraints": {
-              "allowedSizes": [],
-              "excludedSizes": []
-            },
-            "osPlatform": "Linux",
-            "imageReference": {
-              "publisher": "Canonical",
-              "offer": "UbuntuServer",
-              "sku": "14.04.2-LTS",
-              "version": "latest"
-            },
-            "count": "[steps('nodesStep').vmCountDataNodes]"
-          }
+		{
+		    "name": "vmCountDataNodes",
+		    "type": "Microsoft.Common.TextBox",
+		    "label": "Some text box",
+		    "defaultValue": "foobar",
+		    "toolTip": "Halp!",
+		    "constraints": {
+		      "required": true,
+		      "regex": "^[1-9]\\d*$",
+		      "validationMessage": "Atleast 1 or higher"
+		    } 
+		},
+		{
+		  "name": "vmDataNodes",
+		  "type": "Microsoft.Compute.SizeSelector",
+		  "label": "Size",
+		  "toolTip": "",
+		  "recommendedSizes": [
+		     "Standard_D1",
+		     "Standard_D2",
+		     "Standard_D3"
+		  ],
+		  "constraints": {
+		     "allowedSizes": [],
+		     "excludedSizes": []
+		   },
+		   "osPlatform": "Linux",
+		   "imageReference": {
+		      "publisher": "Canonical",
+		      "offer": "UbuntuServer",
+		      "sku": "14.04.2-LTS",
+		      "version": "latest"
+		   },
+		  "count": "[steps('nodesStep').vmCountDataNodes]" 
+		}
         ]
       }
     ],
-    "outputs": {}
+    "outputs": {
+    }
   }
 }
