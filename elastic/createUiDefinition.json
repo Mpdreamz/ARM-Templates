@@ -193,9 +193,16 @@
         "bladeTitle": "No",
         "elements": [
           {
-            "name": "Data Nodes",
-            "type": "Microsoft.Common.Section",
-            "label": "Data Nodes",
+             "name": "dataNodesSelector",
+             "type": "Microsoft.Common.Selector",
+             "label": "Data Nodes",
+             "sublabel": {
+               "prevalidation": "Configure data nodes",
+               "postvalidation": "Data nodes configured"
+             },
+             "toolTip": "TODO",
+             "bladeTitle": "Data Nodes",
+             "bladeSubtitle": "Configure the data nodes",
             "elements": [
 		{
 		    "name": "vmCountDataNodes",
@@ -230,7 +237,7 @@
 		      "sku": "14.04.2-LTS",
 		      "version": "latest"
 		   },
-		  "count": "[steps('nodesStep')['Data Nodes'].vmCountDataNodes]" 
+		  "count": "[steps('nodesStep').dataNodesSelector.vmCountDataNodes]" 
 		},
                 {
 		    "name": "dataNodesAreMasterEligible",
@@ -254,9 +261,16 @@
             ]
           },
           {
-            "name": "Master Nodes",
-            "type": "Microsoft.Common.Section",
-            "label": "Master Nodes",
+             "name": "masterNodesSelector",
+             "type": "Microsoft.Common.Selector",
+             "label": "Master Nodes",
+             "sublabel": {
+               "prevalidation": "Configure master nodes",
+               "postvalidation": "Master nodes configured"
+             },
+             "toolTip": "TODO",
+             "bladeTitle": "Master Nodes",
+             "bladeSubtitle": "Configure the master nodes",
             "elements": [
 		{
 		  "name": "vmMasterNodes",
@@ -284,9 +298,16 @@
             ]
           },
           {
-            "name": "Client Nodes",
-            "type": "Microsoft.Common.Section",
-            "label": "Client Nodes",
+             "name": "clientNodesSelector",
+             "type": "Microsoft.Common.Selector",
+             "label": "Client Nodes",
+             "sublabel": {
+               "prevalidation": "Configure client nodes",
+               "postvalidation": "Client nodes configured"
+             },
+             "toolTip": "TODO",
+             "bladeTitle": "Client Nodes",
+             "bladeSubtitle": "Configure the client nodes",
             "elements": [
 		  {
 		    "name": "vmCountClientNodes",
@@ -324,7 +345,7 @@
 		      "sku": "14.04.2-LTS",
 		      "version": "latest"
 		   },
-		  "count": "[steps('nodesStep')['Client Nodes'].vmCountDataNodes]" 
+		  "count": "[steps('nodesStep').clientNodesSelector.vmCountDataNodes]" 
 		}
             ]
           }
