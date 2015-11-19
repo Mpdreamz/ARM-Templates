@@ -6,13 +6,24 @@
     ],
     "steps": [
       {
-        "name": "myFirstStep",
-        "label": "My First Step",
+        "name": "pluginsConfiguration",
+        "label": "Plugins Configuration",
         "subLabel": {
-          "preValidation": "Set up my first step",
+          "preValidation": "Configure plugins",
           "postValidation": "Done"
         },
-        "bladeTitle": "My first step",
+        "bladeTitle": "Plugins Configuration",
+        "elements": [
+        ]
+      },
+      {
+        "name": "nodesConfiguration",
+        "label": "Nodes Configuration",
+        "subLabel": {
+          "preValidation": "Configure nodes",
+          "postValidation": "Done"
+        },
+        "bladeTitle": "Nodes Configuration",
         "elements": [
         ]
       }
