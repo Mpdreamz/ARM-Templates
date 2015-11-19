@@ -86,7 +86,7 @@
             "name": "installPlugins",
             "type": "Microsoft.Common.OptionsGroup",
             "label": "Install plugins?",
-            "defaultValue": "Yes",
+            "defaultValue": "yes",
             "toolTip": "TODO",
             "constraints": {
               "allowedValues": [
@@ -102,16 +102,17 @@
             }
           },
           {
-            "name": "shieldSection",
+            "name": "shieldAdminPasswordSection",
             "type": "Microsoft.Common.Section",
-            "label": "Shield credentials",
+            "label": "Shield admin password",
             "elements": [
               {
                 "name": "shieldAdminPassword",
                 "type": "Microsoft.Common.PasswordBox",
+
                 "label": {
                   "password": "Admin password",
-                  "confirmPassword": "Confirm password"
+                  "confirmPassword": "Confirm admin password"
                 },
                 "toolTip": "TODO",
                 "constraints": {
@@ -120,13 +121,21 @@
                 "options": {
                   "hideConfirmation": false
                 }
-              },
+              }
+            ]
+          },
+          {
+            "name": "shieldReadPasswordSection",
+            "type": "Microsoft.Common.Section",
+            "label": "Shield read password",
+            "elements": [
               {
                 "name": "shieldReadPassword",
                 "type": "Microsoft.Common.PasswordBox",
+
                 "label": {
                   "password": "Read password",
-                  "confirmPassword": "Confirm password"
+                  "confirmPassword": "Confirm read password"
                 },
                 "toolTip": "TODO",
                 "constraints": {
@@ -135,13 +144,21 @@
                 "options": {
                   "hideConfirmation": false
                 }
-              },
+              }
+            ]
+          },
+          {
+            "name": "shieldKibanaPasswordSection",
+            "type": "Microsoft.Common.Section",
+            "label": "Shield Kibana password",
+            "elements": [
               {
                 "name": "shieldKibanaPassword",
                 "type": "Microsoft.Common.PasswordBox",
+
                 "label": {
                   "password": "Kibana password",
-                  "confirmPassword": "Confirm password"
+                  "confirmPassword": "Confirm Kibana password"
                 },
                 "toolTip": "TODO",
                 "constraints": {
@@ -163,8 +180,7 @@
           "postValidation": "Done"
         },
         "bladeTitle": "No",
-        "elements": [
-        ]
+        "elements": []
       },
       {
         "name": "nodesStep",
@@ -175,45 +191,44 @@
         },
         "bladeTitle": "No",
         "elements": [
-		{
-		    "name": "vmCountDataNodes",
-		    "type": "Microsoft.Common.TextBox",
-		    "label": "Number of data nodes",
-		    "defaultValue": "3",
-		    "toolTip": "TODO",
-		    "constraints": {
-		      "required": true,
-		      "regex": "^[1-9]\\d*$",
-		      "validationMessage": "Atleast 1 or higher"
-		    } 
-		},
-		{
-		  "name": "vmDataNodes",
-		  "type": "Microsoft.Compute.SizeSelector",
-		  "label": "Size",
-		  "toolTip": "",
-		  "recommendedSizes": [
-		     "Standard_D1",
-		     "Standard_D2",
-		     "Standard_D3"
-		  ],
-		  "constraints": {
-		     "allowedSizes": [],
-		     "excludedSizes": []
-		   },
-		   "osPlatform": "Linux",
-		   "imageReference": {
-		      "publisher": "Canonical",
-		      "offer": "UbuntuServer",
-		      "sku": "14.04.2-LTS",
-		      "version": "latest"
-		   },
-		  "count": "[steps('nodesStep').vmCountDataNodes]" 
-		}
+          {
+            "name": "vmCountDataNodes",
+            "type": "Microsoft.Common.TextBox",
+            "label": "Number of data nodes",
+            "defaultValue": "3",
+            "toolTip": "TODO",
+            "constraints": {
+              "required": true,
+              "regex": "^[1-9]\\d*$",
+              "validationMessage": "Atleast 1 or higher"
+            }
+          },
+          {
+            "name": "vmDataNodes",
+            "type": "Microsoft.Compute.SizeSelector",
+            "label": "Size",
+            "toolTip": "",
+            "recommendedSizes": [
+              "Standard_D1",
+              "Standard_D2",
+              "Standard_D3"
+            ],
+            "constraints": {
+              "allowedSizes": [],
+              "excludedSizes": []
+            },
+            "osPlatform": "Linux",
+            "imageReference": {
+              "publisher": "Canonical",
+              "offer": "UbuntuServer",
+              "sku": "14.04.2-LTS",
+              "version": "latest"
+            },
+            "count": "[steps('nodesStep').vmCountDataNodes]"
+          }
         ]
       }
     ],
-    "outputs": {
-    }
+    "outputs": {}
   }
 }
