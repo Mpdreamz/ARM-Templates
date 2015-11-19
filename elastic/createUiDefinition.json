@@ -72,6 +72,76 @@
         },
         "bladeTitle": "Plugins",
         "elements": [
+          {
+            "name": "installPlugins",
+            "type": "Microsoft.Common.OptionsGroup",
+            "label": "Install plugins?",
+            "defaultValue": "Yes",
+            "toolTip": "TODO",
+            "constraints": {
+              "allowedValues": [
+                {
+                  "label": "Yes",
+                  "value": "yes"
+                },
+                {
+                  "label": "No",
+                  "value": "no"
+                }
+              ]
+            }
+          },
+          {
+            "name": "shieldSection",
+            "type": "Microsoft.Common.Section",
+            "elements": [
+              {
+                "name": "shieldAdminPassword",
+                "type": "Microsoft.Common.PasswordBox",
+                "label": {
+                  "password": "Admin password",
+                  "confirmPassword": "Confirm password"
+                },
+                "toolTip": "TODO",
+                "constraints": {
+                  "required": true
+                },
+                "options": {
+                  "hideConfirmation": false
+                }
+              },
+              {
+                "name": "shieldReadPassword",
+                "type": "Microsoft.Common.PasswordBox",
+                "label": {
+                  "password": "Read password",
+                  "confirmPassword": "Confirm password"
+                },
+                "toolTip": "TODO",
+                "constraints": {
+                  "required": true
+                },
+                "options": {
+                  "hideConfirmation": false
+                }
+              },
+              {
+                "name": "shieldKibanaPassword",
+                "type": "Microsoft.Common.PasswordBox",
+                "label": {
+                  "password": "Kibana password",
+                  "confirmPassword": "Confirm password"
+                },
+                "toolTip": "TODO",
+                "constraints": {
+                  "required": true
+                },
+                "options": {
+                  "hideConfirmation": false
+                }
+              }
+            ]
+          }
         ]
       },
       {
