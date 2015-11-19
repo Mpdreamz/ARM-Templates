@@ -149,6 +149,11 @@
         },
         "bladeTitle": "No",
         "elements": [
+{
+  "name": "Data",
+  "type": "Microsoft.Common.Section",
+  "label": "Data",
+  "elements": [
               {
                 "name": "vmCountDataNodes",
                 "type": "Microsoft.Common.TextBox",
@@ -202,7 +207,15 @@
                     }
                   ]
                 }
-              },
+              }
+              ]
+},
+
+{
+  "name": "Master",
+  "type": "Microsoft.Common.Section",
+  "label": "Master",
+  "elements": [
              {
                 "name": "vmMasterNodes",
                 "type": "Microsoft.Compute.SizeSelector",
@@ -225,20 +238,27 @@
                   "version": "latest"
                 },
                 "count": "3"
-              },
+              }
+              ]
+},
+
+
+
+{
+  "name": "Client",
+  "type": "Microsoft.Common.Section",
+  "label": "Client",
+  "elements": [
               {
                 "name": "vmCountClientNodes",
-                "type": "Microsoft.Common.DropDown",
+                "type": "Microsoft.Common.TextBox",
                 "label": "Number of client nodes",
-                "defaultValue": "0",
+                "defaultValue": "3",
                 "toolTip": "TODO",
                 "constraints": {
-                  "allowedValues": [
-                    {
-                      "label": "0",
-                      "value": "0"
-                    }
-                  ]
+                  "required": true,
+                  "regex": "^[1-9]\\d*$",
+                  "validationMessage": "Atleast 1 or higher"
                 }
               },
               {
@@ -264,7 +284,10 @@
                 },
                 "count": "[steps('nodesStep').vmCountClientNodes]"
               }
-            ]
+              ]
+}
+
+        ]
       }
     ],
     "outputs": {}
