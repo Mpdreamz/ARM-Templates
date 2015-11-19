@@ -75,19 +75,24 @@
         ]
       },
       {
-        "name": "pluginsStep",
-        "label": "Plugins",
+        "name": "shieldStep",
+        "label": "Shield",
         "subLabel": {
           "preValidation": "TODO",
           "postValidation": "Done"
         },
-        "bladeTitle": "Plugins",
+        "bladeTitle": "Shield",
         "elements": [
+          {
+            "name": "es_admin",
+            "type": "Microsoft.Common.Section",
+            "label": "es_admin",
+            "elements": [
               {
                 "name": "shieldAdminPassword",
                 "type": "Microsoft.Common.PasswordBox",
                 "label": {
-                  "password": "Shield es_admin password",
+                  "password": "Password",
                   "confirmPassword": "Confirm password"
                 },
                 "toolTip": "TODO",
@@ -95,14 +100,21 @@
                   "required": true
                 },
                 "options": {
-                  "hideConfirmation": true
+                  "hideConfirmation": false
                 }
-              },
+              }
+            ]
+          },
+          {
+            "name": "es_read",
+            "type": "Microsoft.Common.Section",
+            "label": "es_read",
+            "elements": [
               {
                 "name": "shieldReadPassword",
                 "type": "Microsoft.Common.PasswordBox",
                 "label": {
-                  "password": "Shield es_read password",
+                  "password": "Password",
                   "confirmPassword": "Confirm password"
                 },
                 "toolTip": "TODO",
@@ -110,14 +122,21 @@
                   "required": true
                 },
                 "options": {
-                  "hideConfirmation": true
+                  "hideConfirmation": false
                 }
-              },
+              }
+            ]
+          },
+          {
+            "name": "es_kibana",
+            "type": "Microsoft.Common.Section",
+            "label": "es_kibana",
+            "elements": [
               {
                 "name": "shieldKibanaPassword",
                 "type": "Microsoft.Common.PasswordBox",
                 "label": {
-                  "password": "Shield es_kibana password",
+                  "password": "Password",
                   "confirmPassword": "Confirm password"
                 },
                 "toolTip": "TODO",
@@ -125,10 +144,12 @@
                   "required": true
                 },
                 "options": {
-                  "hideConfirmation": true
+                  "hideConfirmation": false
                 }
               }
             ]
+          }
+        ]
       },
       {
         "name": "externalAccessStep",
