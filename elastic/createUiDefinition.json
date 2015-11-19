@@ -290,6 +290,8 @@
         ]
       }
     ],
-    "outputs": {}
+    "outputs": {
+       "asdasd" : "[steps('nodesStep').Client.vmCountClientNodes]"
+    }
   }
 }
