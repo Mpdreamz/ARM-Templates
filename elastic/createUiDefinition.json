@@ -350,7 +350,24 @@
       }
     ],
     "outputs": {
-      "count": "[steps('nodesStep').vmCountClientNodes]"
+      "esVersion": "[steps('bb').vmCountClientNodes]",
+      "esClusterName": "[steps('bb').vmCountClientNodes]",
+      "loadBalancerType": "[steps('bb').vmCountClientNodes]",
+      "esPlugins": "Yes",
+      "kibana": "Yes",
+      "jumpbox": "Yes",
+      "vmSizeDataNodes": "Yes",
+      "vmDataNodeCount": "Yes",
+      "dataNodesAreMasterEligble": "Yes",
+      "vmSizeMasterNodes": "Yes",
+      "vmClientNodeCount": "Yes",
+      "vmSizeClientNodes": "Yes",
+      "adminPassword": "Yes",
+      "shieldAdminPassword": "Yes",
+      "shieldReadPassword": "Yes",
+      "shieldKibanaPassword": "Yes",
+      "location": "ResourceGroup",
+      "virtualNetworkName" : "esvnet"
     }
   }
 }
