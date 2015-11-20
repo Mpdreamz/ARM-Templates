@@ -159,7 +159,67 @@
           "postValidation": "Done"
         },
         "bladeTitle": "No",
-        "elements": []
+        "elements": [
+              {
+                "name": "externalLoadBalancer",
+                "type": "Microsoft.Common.OptionsGroup",
+                "label": "Loadbalancer",
+                "defaultValue": "internal",
+                "toolTip": "TODO",
+                "constraints": {
+                  "allowedValues": [
+                    {
+                      "label": "Internal",
+                      "value": "internal"
+                    },
+                    {
+                      "label": "External",
+                      "value": "external"
+                    }
+                  ]
+                }
+              },
+
+              {
+                "name": "provisionKibana",
+                "type": "Microsoft.Common.OptionsGroup",
+                "label": "Kibana",
+                "defaultValue": "yes",
+                "toolTip": "TODO",
+                "constraints": {
+                  "allowedValues": [
+                    {
+                      "label": "Yes",
+                      "value": "yes"
+                    },
+                    {
+                      "label": "No",
+                      "value": "no"
+                    }
+                  ]
+                }
+              },
+
+              {
+                "name": "provisionJumpbox",
+                "type": "Microsoft.Common.OptionsGroup",
+                "label": "Jumpbox",
+                "defaultValue": "no",
+                "toolTip": "TODO",
+                "constraints": {
+                  "allowedValues": [
+                    {
+                      "label": "Yes",
+                      "value": "yes"
+                    },
+                    {
+                      "label": "No",
+                      "value": "no"
+                    }
+                  ]
+                }
+              }
+        ]
       },
       {
         "name": "nodesStep",
@@ -290,7 +350,7 @@
       }
     ],
     "outputs": {
-      "count": "[steps('nodesStep').Client.vmCountClientNodes]"
+      "count": "[steps('nodesStep').vmCountClientNodes]"
     }
   }
 }
