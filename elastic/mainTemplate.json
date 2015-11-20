@@ -202,14 +202,6 @@
       "allowedValues": [
         "ResourceGroup",
         "westus",
-        "East US",
-        "East US 2",
-        "Central US",
-        "South Central US",
-        "North Central US",
-        "East Asia",
-        "Southeast Asia",
-        "West Europe",
         "North Europe"
       ],
       "defaultValue": "ResourceGroup",
