@@ -159,7 +159,67 @@
           "postValidation": "Done"
         },
         "bladeTitle": "No",
-        "elements": []
+        "elements": [
+              {
+                "name": "externalLoadBalancer",
+                "type": "Microsoft.Common.OptionsGroup",
+                "label": "Loadbalancer",
+                "defaultValue": "internal",
+                "toolTip": "TODO",
+                "constraints": {
+                  "allowedValues": [
+                    {
+                      "label": "Internal",
+                      "value": "internal"
+                    },
+                    {
+                      "label": "External",
+                      "value": "external"
+                    }
+                  ]
+                }
+              },
+
+              {
+                "name": "provisionKibana",
+                "type": "Microsoft.Common.OptionsGroup",
+                "label": "Kibana",
+                "defaultValue": "yes",
+                "toolTip": "TODO",
+                "constraints": {
+                  "allowedValues": [
+                    {
+                      "label": "Yes",
+                      "value": "yes"
+                    },
+                    {
+                      "label": "No",
+                      "value": "no"
+                    }
+                  ]
+                }
+              },
+
+              {
+                "name": "provisionJumpbox",
+                "type": "Microsoft.Common.OptionsGroup",
+                "label": "Jumpbox",
+                "defaultValue": "no",
+                "toolTip": "TODO",
+                "constraints": {
+                  "allowedValues": [
+                    {
+                      "label": "Yes",
+                      "value": "yes"
+                    },
+                    {
+                      "label": "No",
+                      "value": "no"
+                    }
+                  ]
+                }
+              }
+        ]
       },
       {
         "name": "nodesStep",
@@ -290,7 +350,29 @@
       }
     ],
     "outputs": {
-      "count": "[steps('nodesStep').Client.vmCountClientNodes]"
+      "esVersion": "[steps('elasticsearchStep').version]",
+      "esClusterName": "[steps('elasticsearchStep').clusterName]",
+
+      "loadBalancerType": "[steps('externalAccesStep').externalLoadBalancer]",
+      "esPlugins": "Yes",
+      "kibana": "[steps('externalAccesStep').provisionKibana]",
+      "jumpbox": "[steps('externalAccesStep').provisionJumpbox]",
+
+      "vmSizeDataNodes": "[steps('nodesStep').vmDataNodes]",
+      "vmDataNodeCount": "[steps('nodesStep').vmCountDataNodes]",
+      "dataNodesAreMasterEligble": "[steps('nodesStep').dataNodesAreMasterEligible]",
+      "vmSizeMasterNodes": "[steps('nodesStep').vmMasterNodes]",
+      "vmClientNodeCount": "[steps('nodesStep').vmClientNodes]",
+      "vmSizeClientNodes": "[steps('nodesStep').vmCountClientNodes]",
+
+      "adminPassword": "[basics('credentials')",
+      "adminUsername": "[basics('userName')",
+      "shieldAdminPassword": "[steps('shieldStep').es_admin.shieldAdminPassword",
+      "shieldReadPassword": "[steps('shieldStep').es_admin.shieldReadPassword",
+      "shieldKibanaPassword": "[steps('shieldStep').es_admin.shieldKibanaPassword",
+
+      "location": "[location()]",
+      "virtualNetworkName" : "esvnet"
     }
   }
 }
