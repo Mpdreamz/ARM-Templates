@@ -39,13 +39,13 @@
     ],
     "steps": [
       {
-        "name": "elasticsearchStep",
-        "label": "Elasticsearch",
+        "name": "clusterSettingsStep",
+        "label": "Cluster Settings",
         "subLabel": {
           "preValidation": "Required",
           "postValidation": "Done"
         },
-        "bladeTitle": "Elasticsearch Settings",
+        "bladeTitle": "Cluster Settings",
         "elements": [
           {
             "name": "esVersion",
@@ -377,8 +377,8 @@
       }
     ],
     "outputs": {
-      "esVersion": "[steps('elasticsearchStep').esVersion]",
-      "esClusterName": "[steps('elasticsearchStep').esClusterName]",
+      "esVersion": "[steps('clusterSettingsStep').esVersion]",
+      "esClusterName": "[steps('clusterSettingsStep').esClusterName]",
       "loadBalancerType": "[steps('externalAccessStep').loadBalancerType]",
       "kibana": "[steps('externalAccessStep').kibana]",
       "jumpbox": "[steps('externalAccessStep').jumpbox]",
