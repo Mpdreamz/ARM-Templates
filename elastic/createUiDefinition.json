@@ -350,23 +350,28 @@
       }
     ],
     "outputs": {
-      "esVersion": "[steps('bb').vmCountClientNodes]",
-      "esClusterName": "[steps('bb').vmCountClientNodes]",
-      "loadBalancerType": "[steps('bb').vmCountClientNodes]",
+      "esVersion": "[steps('elasticsearchStep').version]",
+      "esClusterName": "[steps('elasticsearchStep').clusterName]",
+
+      "loadBalancerType": "[steps('externalAccesStep').externalLoadBalancer]",
       "esPlugins": "Yes",
-      "kibana": "Yes",
-      "jumpbox": "Yes",
-      "vmSizeDataNodes": "Yes",
-      "vmDataNodeCount": "Yes",
-      "dataNodesAreMasterEligble": "Yes",
-      "vmSizeMasterNodes": "Yes",
-      "vmClientNodeCount": "Yes",
-      "vmSizeClientNodes": "Yes",
-      "adminPassword": "Yes",
-      "shieldAdminPassword": "Yes",
-      "shieldReadPassword": "Yes",
-      "shieldKibanaPassword": "Yes",
-      "location": "ResourceGroup",
+      "kibana": "[steps('externalAccesStep').provisionKibana]",
+      "jumpbox": "[steps('externalAccesStep').provisionJumpbox]",
+
+      "vmSizeDataNodes": "[steps('nodesStep').vmDataNodes]",
+      "vmDataNodeCount": "[steps('nodesStep').vmCountDataNodes]",
+      "dataNodesAreMasterEligble": "[steps('nodesStep').dataNodesAreMasterEligible]",
+      "vmSizeMasterNodes": "[steps('nodesStep').vmMasterNodes]",
+      "vmClientNodeCount": "[steps('nodesStep').vmClientNodes]",
+      "vmSizeClientNodes": "[steps('nodesStep').vmCountClientNodes]",
+
+      "adminPassword": "[basics('credentials')",
+      "adminUsername": "[basics('userName')",
+      "shieldAdminPassword": "[steps('shieldStep').es_admin.shieldAdminPassword",
+      "shieldReadPassword": "[steps('shieldStep').es_admin.shieldReadPassword",
+      "shieldKibanaPassword": "[steps('shieldStep').es_admin.shieldKibanaPassword",
+
+      "location": "[location()]",
       "virtualNetworkName" : "esvnet"
     }
   }
