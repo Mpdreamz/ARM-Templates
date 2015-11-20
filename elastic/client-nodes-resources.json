@@ -99,7 +99,7 @@
       }
     },
     {
-      "name": "[concat('osProfile', copyindex())]",
+      "name": "[concat('osProfileClient', copyindex())]",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
       "copy": {
@@ -137,7 +137,7 @@
       "dependsOn": [
         "[concat('Microsoft.Network/networkInterfaces/', variables('nicName'), copyindex())]",
         "[concat('Microsoft.Compute/availabilitySets/', 'elasticsearchClient')]",
-        "[concat('Microsoft.Resources/deployments/', 'osProfile', copyindex())]"
+        "[concat('Microsoft.Resources/deployments/', 'osProfileClient', copyindex())]"
       ],
       "properties": {
         "availabilitySet": {
@@ -146,7 +146,7 @@
         "hardwareProfile": {
           "vmSize": "[parameters('vmSize')]"
         },
-        "osProfile": "[reference(concat('Microsoft.Resources/deployments/osProfile', copyindex()), '2015-01-01').outputs.osProfile.value]",
+        "osProfile": "[reference(concat('Microsoft.Resources/deployments/osProfileClient', copyindex()), '2015-01-01').outputs.osProfile.value]",
         "storageProfile": {
           "imageReference": "[parameters('osSettings').imageReference]",
           "osDisk": {

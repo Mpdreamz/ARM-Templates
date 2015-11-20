@@ -120,7 +120,7 @@
       }
     },
     {
-      "name": "osProfile",
+      "name": "osProfileJumpbox",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
       "properties": {
@@ -149,13 +149,13 @@
       "location": "[parameters('location')]",
       "dependsOn": [
         "[concat('Microsoft.Network/networkInterfaces/', variables('nicName'))]",
-        "[concat('Microsoft.Resources/deployments/', 'osProfile')]"
+        "[concat('Microsoft.Resources/deployments/', 'osProfileJumpbox')]"
       ],
       "properties": {
         "hardwareProfile": {
           "vmSize": "[variables('vmSize')]"
         },
-        "osProfile": "[reference('Microsoft.Resources/deployments/osProfile'), '2015-01-01').outputs.osProfile.value]",
+        "osProfile": "[reference('Microsoft.Resources/deployments/osProfileJumpbox', '2015-01-01').outputs.osProfile.value]",
         "storageProfile": {
           "imageReference": "[parameters('osSettings').imageReference]",
           "osDisk": {
