@@ -354,7 +354,6 @@
       "esClusterName": "[steps('elasticsearchStep').clusterName]",
 
       "loadBalancerType": "[steps('externalAccesStep').externalLoadBalancer]",
-      "esPlugins": "Yes",
       "kibana": "[steps('externalAccesStep').provisionKibana]",
       "jumpbox": "[steps('externalAccesStep').provisionJumpbox]",
 
@@ -371,8 +370,7 @@
       "shieldReadPassword": "[steps('shieldStep').es_admin.shieldReadPassword",
       "shieldKibanaPassword": "[steps('shieldStep').es_admin.shieldKibanaPassword",
 
-      "location": "[location()]",
-      "virtualNetworkName" : "esvnet"
+      "location": "[location()]"
     }
   }
 }
