@@ -361,8 +361,8 @@
       "vmDataNodeCount": "[steps('nodesStep').vmCountDataNodes]",
       "dataNodesAreMasterEligble": "[steps('nodesStep').dataNodesAreMasterEligible]",
       "vmSizeMasterNodes": "[steps('nodesStep').vmMasterNodes]",
-      "vmClientNodeCount": "[steps('nodesStep').vmClientNodes]",
-      "vmSizeClientNodes": "[steps('nodesStep').vmCountClientNodes]",
+      "vmClientNodeCount": "[steps('nodesStep').vmCountClientNodes]",
+      "vmSizeClientNodes": "[steps('nodesStep').vmClientNodes]",
 
       "adminPassword": "[basics('credentials')]",
       "adminUsername": "[basics('userName')]",
