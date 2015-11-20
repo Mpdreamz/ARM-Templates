@@ -48,7 +48,7 @@
         "bladeTitle": "Deployment Settings",
         "elements": [
           {
-            "name": "version",
+            "name": "esVersion",
             "type": "Microsoft.Common.DropDown",
             "label": "Elasticsearch Version",
             "defaultValue": "v2.0.0",
@@ -67,7 +67,7 @@
             }
           },
           {
-            "name": "clusterName",
+            "name": "esClusterName",
             "type": "Microsoft.Common.TextBox",
             "label": "Cluster Name",
             "defaultValue": "changeME_clusterName",
@@ -350,6 +350,9 @@
         ]
       }
     ],
-    "outputs": {}
+    "outputs": {
+      "esVersion": "[steps('elasticsearchStep').esVersion]",
+      "esClusterName": "[steps('elasticsearchStep').esClusterName]"
+    }
   }
 }
