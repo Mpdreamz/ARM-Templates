@@ -353,8 +353,8 @@
       "esVersion": "[steps('elasticsearchStep').version]",
       "esClusterName": "[steps('elasticsearchStep').clusterName]",
 
-      "loadBalancerType": "[steps('externalAccesStep').externalLoadBalancer]",
-      "kibana": "[steps('externalAccesStep').provisionKibana]",
+      "loadBalancerType": "[steps('externalAccessStep').externalLoadBalancer]",
+      "kibana": "[steps('externalAccessStep').provisionKibana]",
       "jumpbox": "[steps('externalAccesStep').provisionJumpbox]",
 
       "vmSizeDataNodes": "[steps('nodesStep').vmDataNodes]",
@@ -366,9 +366,9 @@
 
       "adminPassword": "[basics('credentials')]",
       "adminUsername": "[basics('userName')]",
-      "shieldAdminPassword": "[steps('shieldStep').es_admin.shieldAdminPassword",
-      "shieldReadPassword": "[steps('shieldStep').es_admin.shieldReadPassword",
-      "shieldKibanaPassword": "[steps('shieldStep').es_admin.shieldKibanaPassword",
+      "shieldAdminPassword": "[steps('shieldStep').es_admin.shieldAdminPassword]",
+      "shieldReadPassword": "[steps('shieldStep').es_read.shieldReadPassword]",
+      "shieldKibanaPassword": "[steps('shieldStep').es_kibana.shieldKibanaPassword]",
 
       "location": "[location()]"
     }
