@@ -362,7 +362,7 @@
       "dataNodesAreMasterEligible": "[steps('nodesStep').dataNodesAreMasterEligible]",
       "vmSizeMasterNodes": "[steps('nodesStep').vmSizeMasterNodes]",
       "vmClientNodeCount": "[steps('nodesStep').vmClientNodeCount]",
-      "vmSizeClientNodes": "[steps('nodesStep').vmSizeClientNodes]",
+      "vmSizeClientNodes": "[steps('nodesStep').vmSizeClientNodes]"
     }
   }
 }
