@@ -312,6 +312,7 @@
       }
     ],
     "outputs": {
+      "count": "[steps('nodesStep').Client.vmCountClientNodes]"
     }
   }
 }
