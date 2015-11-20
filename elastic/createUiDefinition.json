@@ -170,11 +170,31 @@
         },
         "bladeTitle": "No",
         "elements": [
-{
-  "name": "Data",
-  "type": "Microsoft.Common.Section",
-  "label": "Data",
-  "elements": [
+             {
+                "name": "vmMasterNodes",
+                "type": "Microsoft.Compute.SizeSelector",
+                "label": "Master Node VM Size",
+                "toolTip": "",
+                "recommendedSizes": [
+                  "Standard_D1",
+                  "Standard_D2",
+                  "Standard_D3"
+                ],
+                "constraints": {
+                  "allowedSizes": [],
+                  "excludedSizes": []
+                },
+                "osPlatform": "Linux",
+                "imageReference": {
+                  "publisher": "Canonical",
+                  "offer": "UbuntuServer",
+                  "sku": "14.04.2-LTS",
+                  "version": "latest"
+                },
+                "count": "3"
+              },
+
+
               {
                 "name": "vmCountDataNodes",
                 "type": "Microsoft.Common.TextBox",
@@ -208,7 +228,7 @@
                   "sku": "14.04.2-LTS",
                   "version": "latest"
                 },
-                "count": "[steps('nodesStep').Data.vmCountDataNodes]"
+                "count": "[steps('nodesStep').vmCountDataNodes]"
               },
               {
                 "name": "dataNodesAreMasterEligible",
@@ -228,48 +248,8 @@
                     }
                   ]
                 }
-              }
-              ]
-},
+              },
 
-{
-  "name": "Master",
-  "type": "Microsoft.Common.Section",
-  "label": "Master",
-  "elements": [
-             {
-                "name": "vmMasterNodes",
-                "type": "Microsoft.Compute.SizeSelector",
-                "label": "Master Node VM Size",
-                "toolTip": "",
-                "recommendedSizes": [
-                  "Standard_D1",
-                  "Standard_D2",
-                  "Standard_D3"
-                ],
-                "constraints": {
-                  "allowedSizes": [],
-                  "excludedSizes": []
-                },
-                "osPlatform": "Linux",
-                "imageReference": {
-                  "publisher": "Canonical",
-                  "offer": "UbuntuServer",
-                  "sku": "14.04.2-LTS",
-                  "version": "latest"
-                },
-                "count": "3"
-              }
-              ]
-},
-
-
-
-{
-  "name": "Client",
-  "type": "Microsoft.Common.Section",
-  "label": "Client",
-  "elements": [
               {
                 "name": "vmCountClientNodes",
                 "type": "Microsoft.Common.TextBox",
@@ -303,10 +283,8 @@
                   "sku": "14.04.2-LTS",
                   "version": "latest"
                 },
-                "count": "[steps('nodesStep').Client.vmCountClientNodes]"
+                "count": "[steps('nodesStep').vmCountClientNodes]"
               }
-              ]
-}
 
         ]
       }
