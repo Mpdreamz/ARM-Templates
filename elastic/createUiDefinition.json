@@ -364,8 +364,8 @@
       "vmClientNodeCount": "[steps('nodesStep').vmClientNodes]",
       "vmSizeClientNodes": "[steps('nodesStep').vmCountClientNodes]",
 
-      "adminPassword": "[basics('credentials')",
-      "adminUsername": "[basics('userName')",
+      "adminPassword": "[basics('credentials')]",
+      "adminUsername": "[basics('userName')]",
       "shieldAdminPassword": "[steps('shieldStep').es_admin.shieldAdminPassword",
       "shieldReadPassword": "[steps('shieldStep').es_admin.shieldReadPassword",
       "shieldKibanaPassword": "[steps('shieldStep').es_admin.shieldKibanaPassword",
