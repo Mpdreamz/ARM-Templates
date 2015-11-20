@@ -236,7 +236,7 @@
           {
             "name": "vmSizeMasterNodes",
             "type": "Microsoft.Compute.SizeSelector",
-            "label": "Master Node VM Size",
+            "label": "Master node VM size",
             "toolTip": "Choose VM SKU, Standard D1, D2, D3",
             "defaultValue": "Standard_D1",
             "recommendedSizes": [
