@@ -234,7 +234,7 @@
         "bladeTitle": "Cluster Node Types",
         "elements": [
           {
-            "name": "vmMasterNodes",
+            "name": "vmSizeMasterNodes",
             "type": "Microsoft.Compute.SizeSelector",
             "label": "Master Node VM Size",
             "toolTip": "Choose VM SKU, Standard D1, D2, D3",
@@ -258,7 +258,7 @@
             "count": "3"
           },
           {
-            "name": "vmCountDataNodes",
+            "name": "vmDataNodeCount",
             "type": "Microsoft.Common.TextBox",
             "label": "Number of data nodes",
             "defaultValue": "3",
@@ -270,7 +270,7 @@
             }
           },
           {
-            "name": "vmDataNodes",
+            "name": "vmSizeDataNodes",
             "type": "Microsoft.Compute.SizeSelector",
             "label": "Data Node VM Size",
             "defaultValue": "Standard_D1",
@@ -291,7 +291,7 @@
               "sku": "14.04.2-LTS",
               "version": "latest"
             },
-            "count": "[steps('nodesStep').vmCountDataNodes]"
+            "count": "[steps('nodesStep').vmDataNodeCount]"
           },
           {
             "name": "dataNodesAreMasterEligible",
@@ -313,7 +313,7 @@
             }
           },
           {
-            "name": "vmCountClientNodes",
+            "name": "vmClientNodeCount",
             "type": "Microsoft.Common.TextBox",
             "label": "Number of Client nodes",
             "defaultValue": "0",
@@ -325,7 +325,7 @@
             }
           },
           {
-            "name": "vmClientNodes",
+            "name": "vmSizeClientNodes",
             "type": "Microsoft.Compute.SizeSelector",
             "label": "Client Node VM Size",
             "toolTip": "Choose VM SKU, Standard D1, D2, D3",
@@ -345,7 +345,7 @@
               "sku": "14.04.2-LTS",
               "version": "latest"
             },
-            "count": "[steps('nodesStep').vmCountClientNodes]"
+            "count": "[steps('nodesStep').vmSizeClientNodes]"
           }
         ]
       }
@@ -356,7 +356,13 @@
 
       "loadBalancerType": "[steps('externalAccessStep').loadBalancerType]",
       "kibana": "[steps('externalAccessStep').kibana]",
-      "jumpbox": "[steps('externalAccessStep').jumpbox]"
+      "jumpbox": "[steps('externalAccessStep').jumpbox]",
+      "vmSizeDataNodes": "[steps('nodesStep').vmSizeDataNodes]",
+      "vmDataNodeCount": "[steps('nodesStep').vmDataNodeCount]",
+      "dataNodesAreMasterEligible": "[steps('nodesStep').dataNodesAreMasterEligible]",
+      "vmSizeMasterNodes": "[steps('nodesStep').vmSizeMasterNodes]",
+      "vmClientNodeCount": "[steps('nodesStep').vmClientNodeCount]",
+      "vmSizeClientNodes": "[steps('nodesStep').vmSizeClientNodes]",
     }
   }
 }
