@@ -201,7 +201,7 @@
       "type": "string",
       "allowedValues": [
         "ResourceGroup",
-        "West US",
+        "westus",
         "East US",
         "East US 2",
         "Central US",
