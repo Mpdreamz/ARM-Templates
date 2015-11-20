@@ -45,7 +45,7 @@
           "preValidation": "Required",
           "postValidation": "Done"
         },
-        "bladeTitle": "Deployment Settings",
+        "bladeTitle": "Elasticsearch Settings",
         "elements": [
           {
             "name": "esVersion",
@@ -86,7 +86,7 @@
           "preValidation": "Required",
           "postValidation": "Done"
         },
-        "bladeTitle": "Shield Users & Roles",
+        "bladeTitle": "Shield Configuration",
         "elements": [
           {
             "name": "es_admin",
@@ -158,7 +158,7 @@
       },
       {
         "name": "externalAccessStep",
-        "label": "External access",
+        "label": "External Access",
         "subLabel": {
           "preValidation": "Required",
           "postValidation": "Done"
@@ -231,7 +231,7 @@
           "preValidation": "Required",
           "postValidation": "Done"
         },
-        "bladeTitle": "Cluster Node Types",
+        "bladeTitle": "Node Configuration",
         "elements": [
           {
             "name": "vmSizeMasterNodes",
