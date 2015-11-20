@@ -317,11 +317,30 @@
         "bladeTitle": "External Access Control",
         "elements": [
           {
+            "name": "kibana",
+            "type": "Microsoft.Common.OptionsGroup",
+            "label": "Install Kibana?",
+            "defaultValue": "yes",
+            "toolTip": "Yes, to provision a single Kibana instance.",
+            "constraints": {
+              "allowedValues": [
+                {
+                  "label": "Yes",
+                  "value": "yes"
+                },
+                {
+                  "label": "No",
+                  "value": "no"
+                }
+              ]
+            }
+          },
+          {
             "name": "jumpbox",
             "type": "Microsoft.Common.OptionsGroup",
-            "label": "Jumpbox",
-            "defaultValue": "yes",
-            "toolTip": "Create a jump box for cluster infrastructure access.",
+            "label": "Use a jump box?",
+            "defaultValue": "no",
+            "toolTip": "A jump box allows you to connect to your cluster from a public access point like SSH. This is usually not necessary if Kibana is installed, since Kibana itself acts as a jump box.",
             "constraints": {
               "allowedValues": [
                 {
@@ -340,7 +359,7 @@
             "type": "Microsoft.Common.OptionsGroup",
             "label": "Load balancer type",
             "defaultValue": "external",
-            "toolTip": "Public or internal, load balancer network access to data nodes.",
+            "toolTip": "Choose whether the load balancer should be public facing or internal.",
             "constraints": {
               "allowedValues": [
                 {
@@ -350,25 +369,6 @@
                 {
                   "label": "External",
                   "value": "external"
-                }
-              ]
-            }
-          },
-          {
-            "name": "kibana",
-            "type": "Microsoft.Common.OptionsGroup",
-            "label": "Kibana",
-            "defaultValue": "yes",
-            "toolTip": "Yes, to provision a single Kibana instance.",
-            "constraints": {
-              "allowedValues": [
-                {
-                  "label": "Yes",
-                  "value": "yes"
-                },
-                {
-                  "label": "No",
-                  "value": "no"
                 }
               ]
             }
