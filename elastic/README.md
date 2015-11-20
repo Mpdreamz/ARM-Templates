@@ -10,6 +10,8 @@
 
 # Marketplace ui test url
 
+[click here](https://portal.azure.com/?clientOptimizations=false#blade/Microsoft_Azure_Compute/CreateMultiVmWizardBlade/internal_bladeCallId/anything/internal_bladeCallerParams/{"initialData":{},"providerConfig":{"createUiDefinition":"https%3A%2F%2Fraw.githubusercontent.com%2FMpdreamz%2FARM-Templates%2Fmaster%2Felastic%2FcreateUiDefinition.json"}})
+
 <a href="https://portal.azure.com/#blade/Microsoft_Azure_Compute/CreateMultiVmWizardBlade/internal_bladeCallId/anything/internal_bladeCallerParams/{"initialData":{},"providerConfig":{"createUiDefinition":"https%3A%2F%2Fraw.githubusercontent.com%2FMpdreamz%2FARM-Templates%2Fmaster%2Felastic%2FcreateUiDefinition.json"}}" target="_blank">click here</a>
 
 
