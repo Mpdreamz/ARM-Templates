@@ -18,7 +18,7 @@
           "adminUsername": "[parameters('adminUsername')]",
           "adminPassword": "[parameters('password').password]"
         },
-        "sshAuthentication_osProfile": {
+        "sshPublicKey_osProfile": {
           "computername": "[parameters('computerName')]",
             "adminUsername": "[parameters('adminUsername')]",
             "linuxConfiguration": {
