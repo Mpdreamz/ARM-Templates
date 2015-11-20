@@ -261,7 +261,7 @@
             "name": "vmDataNodeCount",
             "type": "Microsoft.Common.DropDown",
             "label": "Number of data nodes",
-            "defaultValue": 3,
+            "defaultValue": "3",
             "toolTip": "Specify the number of data nodes for this cluster.",
             "constraints": {
               "allowedValues": [
@@ -331,7 +331,7 @@
             "name": "vmClientNodeCount",
             "type": "Microsoft.Common.DropDown",
             "label": "Number of client nodes",
-            "defaultValue": 0,
+            "defaultValue": "0",
             "toolTip": "Specify the number of client nodes for this cluster (optional).",
             "constraints": {
               "allowedValues": [
