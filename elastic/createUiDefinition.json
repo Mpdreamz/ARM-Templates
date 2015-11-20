@@ -7,8 +7,8 @@
         "name": "adminUsername",
         "type": "Microsoft.Compute.UserNameTextBox",
         "label": "User name",
-        "defaultValue": "changeME_userName",
-        "toolTip": "Admin username for the virtual machines.",
+        "defaultValue": "",
+        "toolTip": "Specify a user for accessing the virtual machines within your cluster.",
         "constraints": {
           "required": true
         },
@@ -25,7 +25,7 @@
         },
         "toolTip": {
           "authenticationType": "Choose Authentication type Password or PublicKey(SSH).",
-          "password": "Admin password for the virtual machines.",
+          "password": "Enter the password for the specified user name.",
           "sshPublicKey": "Copy Public key into field."
         },
         "constraints": {
@@ -40,7 +40,7 @@
     "steps": [
       {
         "name": "elasticsearchStep",
-        "label": "Elastic Cluster Settings",
+        "label": "Elasticsearch",
         "subLabel": {
           "preValidation": "Required",
           "postValidation": "Done"
@@ -50,9 +50,9 @@
           {
             "name": "esVersion",
             "type": "Microsoft.Common.DropDown",
-            "label": "Elasticsearch Version",
+            "label": "Elasticsearch version",
             "defaultValue": "v2.0.0",
-            "toolTip": "Choose your version of Elastic",
+            "toolTip": "Choose a version of Elasticsearch.",
             "constraints": {
               "allowedValues": [
                 {
@@ -69,9 +69,9 @@
           {
             "name": "esClusterName",
             "type": "Microsoft.Common.TextBox",
-            "label": "Cluster Name",
-            "defaultValue": "changeME_clusterName",
-            "toolTip": "Name your Elastic Cluster.",
+            "label": "Cluster name",
+            "defaultValue": "",
+            "toolTip": "Name your Elasticsearch cluster.",
             "constraints": {
               "required": true,
               "validationMessage": "TODO"
@@ -81,12 +81,12 @@
       },
       {
         "name": "shieldStep",
-        "label": "Shield Security",
+        "label": "Shield",
         "subLabel": {
           "preValidation": "Required",
           "postValidation": "Done"
         },
-        "bladeTitle": "Elastic Users & Roles",
+        "bladeTitle": "Shield Users & Roles",
         "elements": [
           {
             "name": "es_admin",
@@ -97,10 +97,10 @@
                 "name": "shieldAdminPassword",
                 "type": "Microsoft.Common.PasswordBox",
                 "label": {
-                  "password": "Password",
+                  "password": "es_admin Password",
                   "confirmPassword": "Confirm password"
                 },
-                "toolTip": "Read Write All Indices, Admin Role",
+                "toolTip": "Password to use for the es_admin Shield user.",
                 "constraints": {
                   "required": true
                 },
@@ -119,10 +119,10 @@
                 "name": "shieldReadPassword",
                 "type": "Microsoft.Common.PasswordBox",
                 "label": {
-                  "password": "Password",
+                  "password": "es_read Password",
                   "confirmPassword": "Confirm password"
                 },
-                "toolTip": "Read Only All Indices, Read Only Role",
+                "toolTip": "Password to use for the es_read Shield user.",
                 "constraints": {
                   "required": true
                 },
@@ -141,10 +141,10 @@
                 "name": "shieldKibanaPassword",
                 "type": "Microsoft.Common.PasswordBox",
                 "label": {
-                  "password": "Password",
+                  "password": "es_kibana Password",
                   "confirmPassword": "Confirm password"
                 },
-                "toolTip": "Kibana Access Role",
+                "toolTip": "Password to use for the es_kibana Shield user.",
                 "constraints": {
                   "required": true
                 },
@@ -168,9 +168,9 @@
           {
             "name": "jumpbox",
             "type": "Microsoft.Common.OptionsGroup",
-            "label": "Create a Jumpbox: Internal Access",
+            "label": "Jumpbox",
             "defaultValue": "yes",
-            "toolTip": "Create a Jump box for cluster infrastructure access, admin services",
+            "toolTip": "Create a jump box for cluster infrastructure access.",
             "constraints": {
               "allowedValues": [
                 {
@@ -187,9 +187,9 @@
           {
             "name": "loadBalancerType",
             "type": "Microsoft.Common.OptionsGroup",
-            "label": "Loadbalancer",
+            "label": "Load balancer type",
             "defaultValue": "external",
-            "toolTip": "Public or Internal, Load Balancer Network Access, for Kibana or Data Nodes.",
+            "toolTip": "Public or internal, load balancer network access to data nodes.",
             "constraints": {
               "allowedValues": [
                 {
@@ -206,9 +206,9 @@
           {
             "name": "kibana",
             "type": "Microsoft.Common.OptionsGroup",
-            "label": "Provision a Kibana Instance",
+            "label": "Kibana",
             "defaultValue": "yes",
-            "toolTip": "Yes, to create am Single Kibana Instance. ",
+            "toolTip": "Yes, to provision a single Kibana instance.",
             "constraints": {
               "allowedValues": [
                 {
@@ -262,17 +262,17 @@
             "type": "Microsoft.Common.TextBox",
             "label": "Number of data nodes",
             "defaultValue": "3",
-            "toolTip": "Create x number of Data Nodes",
+            "toolTip": "Specify the number of data nodes for this cluster.",
             "constraints": {
               "required": true,
               "regex": "^[1-9]\\d*$",
-              "validationMessage": "Atleast 1 or higher"
+              "validationMessage": "Must specify at least 1 data node."
             }
           },
           {
             "name": "vmSizeDataNodes",
             "type": "Microsoft.Compute.SizeSelector",
-            "label": "Data Node VM Size",
+            "label": "Data node VM size",
             "defaultValue": "Standard_D1",
             "toolTip": "Choose VM SKU, Standard D1, D2, D3",
             "recommendedSizes": [
@@ -296,9 +296,9 @@
           {
             "name": "dataNodesAreMasterEligible",
             "type": "Microsoft.Common.OptionsGroup",
-            "label": "Data nodes are master eligable",
+            "label": "Data nodes are master eligible",
             "defaultValue": "no",
-            "toolTip": "Enable Master Role on Data Nodes, not recommended with dedicated Master Nodes",
+            "toolTip": "Allow data nodes to be master eligible (not recommended if you're using dedicated master nodes.)",
             "constraints": {
               "allowedValues": [
                 {
@@ -315,9 +315,9 @@
           {
             "name": "vmClientNodeCount",
             "type": "Microsoft.Common.TextBox",
-            "label": "Number of Client nodes",
+            "label": "Number of client nodes",
             "defaultValue": "0",
-            "toolTip": "Create x number of Client Nodes",
+            "toolTip": "Specify the number of client nodes for this cluster (optional).",
             "constraints": {
               "required": true,
               "regex": "^\\d+$",
@@ -327,7 +327,7 @@
           {
             "name": "vmSizeClientNodes",
             "type": "Microsoft.Compute.SizeSelector",
-            "label": "Client Node VM Size",
+            "label": "Client node VM size",
             "toolTip": "Choose VM SKU, Standard D1, D2, D3",
             "recommendedSizes": [
               "Standard_D1",
