@@ -261,25 +261,25 @@
             "name": "vmDataNodeCount",
             "type": "Microsoft.Common.DropDown",
             "label": "Number of data nodes",
-            "defaultValue": "3",
+            "defaultValue": 3,
             "toolTip": "Specify the number of data nodes for this cluster.",
             "constraints": {
               "allowedValues": [
                 {
                   "label": "1",
-                  "value": "1"
+                  "value": 1
                 },
                 {
                   "label": "3",
-                  "value": "3"
+                  "value": 3
                 },
                 {
                   "label": "6",
-                  "value": "6"
+                  "value": 6
                 },
                 {
                   "label": "9",
-                  "value": "9"
+                  "value": 9
                 }
               ]
             }
@@ -331,21 +331,21 @@
             "name": "vmClientNodeCount",
             "type": "Microsoft.Common.DropDown",
             "label": "Number of client nodes",
-            "defaultValue": "0",
+            "defaultValue": 0,
             "toolTip": "Specify the number of client nodes for this cluster (optional).",
             "constraints": {
               "allowedValues": [
                 {
                   "label": "0",
-                  "value": "0"
+                  "value": 0
                 },
                 {
                   "label": "3",
-                  "value": "3"
+                  "value": 3
                 },
                 {
                   "label": "6",
-                  "value": "6"
+                  "value": 6
                 }
               ]
             }
