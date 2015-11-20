@@ -166,7 +166,7 @@
         "bladeTitle": "External Access Control",
         "elements": [
           {
-            "name": "provisionJumpbox",
+            "name": "jumpbox",
             "type": "Microsoft.Common.OptionsGroup",
             "label": "Create a Jumpbox: Internal Access",
             "defaultValue": "yes",
@@ -185,7 +185,7 @@
             }
           },
           {
-            "name": "externalLoadBalancer",
+            "name": "loadBalancerType",
             "type": "Microsoft.Common.OptionsGroup",
             "label": "Loadbalancer",
             "defaultValue": "external",
@@ -204,7 +204,7 @@
             }
           },
           {
-            "name": "provisionKibana",
+            "name": "kibana",
             "type": "Microsoft.Common.OptionsGroup",
             "label": "Provision a Kibana Instance",
             "defaultValue": "yes",
@@ -352,7 +352,11 @@
     ],
     "outputs": {
       "esVersion": "[steps('elasticsearchStep').esVersion]",
-      "esClusterName": "[steps('elasticsearchStep').esClusterName]"
+      "esClusterName": "[steps('elasticsearchStep').esClusterName]",
+
+      "loadBalancerType": "[steps('externalAccessStep').loadBalancerType]",
+      "kibana": "[steps('externalAccessStep').kibana]",
+      "jumpbox": "[steps('externalAccesStep').jumpbox]"
     }
   }
 }
