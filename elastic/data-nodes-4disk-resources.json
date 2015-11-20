@@ -8,8 +8,8 @@
         "description": "Admin username used when provisioning virtual machines"
       }
     },
-    "adminPassword": {
-      "type": "securestring",
+    "password": {
+      "type": "object",
       "metadata": {
         "description": "Admin password used when provisioning virtual machines"
       }
@@ -127,6 +127,34 @@
       }
     },
     {
+      "name": "[concat('osProfile', copyindex())]",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "copy": {
+        "name": "osProfileLoop",
+        "count": "[parameters('vmCount')]"
+      },
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[concat(variables('templateBaseUrl'), '/osProfile-resources.json')]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "adminUserName" : {
+                  "value": "[concat(parameters('namespace'), 'vm', copyIndex())]"
+              },
+              "password" : {
+                  "value": "[parameters('password')]"
+              },
+              "computerName" : {
+                  "value": "[concat(parameters('namespace'), 'vm', copyindex())]"
+              }
+          }
+       }
+    },
+
+    {
       "apiVersion": "2015-06-15",
       "type": "Microsoft.Compute/virtualMachines",
       "name": "[concat(parameters('namespace'), 'vm', copyindex())]",
@@ -137,7 +165,8 @@
       },
       "dependsOn": [
         "[concat('Microsoft.Network/networkInterfaces/', parameters('namespace'), 'nic', copyindex())]",
-        "[concat('Microsoft.Storage/storageAccounts/', variables('storageAccountName'), parameters('storageSettings').mapping[copyindex()])]"
+        "[concat('Microsoft.Storage/storageAccounts/', variables('storageAccountName'), parameters('storageSettings').mapping[copyindex()])]",
+        "[concat('Microsoft.Resources/deployments/', 'osProfile', copyindex())]"
       ],
       "properties": {
         "availabilitySet": {
@@ -146,11 +175,7 @@
         "hardwareProfile": {
           "vmSize": "[parameters('vmSize')]"
         },
-        "osProfile": {
-          "computername": "[concat(parameters('namespace'), 'vm', copyIndex())]",
-          "adminUsername": "[parameters('adminUsername')]",
-          "adminPassword": "[parameters('adminPassword')]"
-        },
+        "osProfile": "[reference(concat('Microsoft.Resources/deployments/osProfile', copyindex()), '2015-01-01').outputs.osProfile.value]",
         "storageProfile": {
           "imageReference": "[parameters('osSettings').imageReference]",
           "osDisk": {

@@ -33,8 +33,8 @@
         "description": "Administrator user name used when provisioning virtual machines"
       }
     },
-    "adminPassword": {
-      "type": "securestring",
+    "password": {
+      "type": "secureObject",
       "metadata": {
         "description": "Administrator password used when provisioning virtual machines"
       }
@@ -119,22 +119,42 @@
       }
     },
     {
+      "name": "osProfile",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[concat(variables('templateBaseUrl'), '/osProfile-resources.json')]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "adminUserName" : {
+                  "value": "[parameters('adminUsername')]"
+              },
+              "password" : {
+                  "value": "[parameters('password')]"
+              },
+              "computerName" : {
+                  "value": "[variables('vmName')]"
+              }
+          }
+       }
+    },
+    {
       "apiVersion": "2015-06-15",
       "type": "Microsoft.Compute/virtualMachines",
       "name": "[variables('vmName')]",
       "location": "[parameters('location')]",
       "dependsOn": [
-        "[concat('Microsoft.Network/networkInterfaces/', variables('nicName'))]"
+        "[concat('Microsoft.Network/networkInterfaces/', variables('nicName'))]",
+        "[concat('Microsoft.Resources/deployments/', 'osProfile')]"
       ],
       "properties": {
         "hardwareProfile": {
           "vmSize": "[variables('vmSize')]"
         },
-        "osProfile": {
-          "computername": "[variables('vmName')]",
-          "adminUsername": "[parameters('adminUsername')]",
-          "adminPassword": "[parameters('adminPassword')]"
-        },
+        "osProfile": "[reference('Microsoft.Resources/deployments/osProfile'), '2015-01-01').outputs.osProfile.value]",
         "storageProfile": {
           "imageReference": "[parameters('osSettings').imageReference]",
           "osDisk": {
