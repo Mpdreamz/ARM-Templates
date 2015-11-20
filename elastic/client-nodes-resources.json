@@ -9,7 +9,7 @@
       }
     },
     "password": {
-      "type": "secureobject",
+      "type": "object",
       "metadata": {
         "description": "Admin password used when provisioning virtual machines"
       }
