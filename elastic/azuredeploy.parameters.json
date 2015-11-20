@@ -1,0 +1,23 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "esVersion":{"value":"2.0.0"},
+        "esClusterName":{"value":"changeME_clusterName"},
+        "loadBalancerType":{"value":"external"},
+        "kibana":{"value":"Yes"},
+        "jumpbox":{"value":"Yes"},
+        "vmSizeDataNodes":{"value":"Standard_D1"},
+        "vmDataNodeCount":{"value":3},
+        "dataNodesAreMasterEligible":{"value":"No"},
+        "vmSizeMasterNodes":{"value":"Standard_D1"},
+        "vmClientNodeCount":{"value":0},
+        "vmSizeClientNodes":{"value":"Standard_D1"},
+        "adminPassword":{"value":"Elastic12"},
+        "adminUsername":{"value":"changeME_userName"},
+        "shieldAdminPassword":{"value":"Elastic12"},
+        "shieldReadPassword":{"value":"Elastic12"},
+        "shieldKibanaPassword":{"value":"Elastic12"},
+        "location":{"value":"westus"}
+        }
+}
