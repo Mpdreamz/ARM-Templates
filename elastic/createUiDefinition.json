@@ -356,7 +356,7 @@
 
       "loadBalancerType": "[steps('externalAccessStep').loadBalancerType]",
       "kibana": "[steps('externalAccessStep').kibana]",
-      "jumpbox": "[steps('externalAccesStep').jumpbox]"
+      "jumpbox": "[steps('externalAccessStep').jumpbox]"
     }
   }
 }
