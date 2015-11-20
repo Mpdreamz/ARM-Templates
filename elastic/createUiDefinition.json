@@ -42,10 +42,10 @@
         "name": "elasticsearchStep",
         "label": "Elastic Cluster Settings",
         "subLabel": {
-          "preValidation": "TODO",
+          "preValidation": "Required",
           "postValidation": "Done"
         },
-        "bladeTitle": "Cluster Settings",
+        "bladeTitle": "Deployment Settings",
         "elements": [
           {
             "name": "version",
@@ -76,17 +76,36 @@
               "required": true,
               "validationMessage": "TODO"
             }
+          },
+          {
+            "name": "provisionKibana",
+            "type": "Microsoft.Common.OptionsGroup",
+            "label": "Provision a Kibana Instance",
+            "defaultValue": "yes",
+            "toolTip": "Yes, to create a ??single?? Kibana Instance. ",
+            "constraints": {
+              "allowedValues": [
+                {
+                  "label": "Yes",
+                  "value": "yes"
+                },
+                {
+                  "label": "No",
+                  "value": "no"
+                }
+              ]
+            }
           }
         ]
       },
       {
         "name": "shieldStep",
-        "label": "Shield",
+        "label": "Shield Security",
         "subLabel": {
           "preValidation": "Required",
           "postValidation": "Done"
         },
-        "bladeTitle": "Cluster Roles",
+        "bladeTitle": "Elastic Users Role",
         "elements": [
           {
             "name": "es_admin",
@@ -169,47 +188,9 @@
         "bladeTitle": "No",
         "elements": [
           {
-            "name": "externalLoadBalancer",
-            "type": "Microsoft.Common.OptionsGroup",
-            "label": "Loadbalancer",
-            "defaultValue": "internal",
-            "toolTip": "Public or Internal, Load Balancer Network Access.",
-            "constraints": {
-              "allowedValues": [
-                {
-                  "label": "Internal",
-                  "value": "internal"
-                },
-                {
-                  "label": "External",
-                  "value": "external"
-                }
-              ]
-            }
-          },
-          {
-            "name": "provisionKibana",
-            "type": "Microsoft.Common.OptionsGroup",
-            "label": "Create a Kibana Node",
-            "defaultValue": "yes",
-            "toolTip": "Yes, to create a ??single?? Kibana Instance. ",
-            "constraints": {
-              "allowedValues": [
-                {
-                  "label": "Yes",
-                  "value": "yes"
-                },
-                {
-                  "label": "No",
-                  "value": "no"
-                }
-              ]
-            }
-          },
-          {
             "name": "provisionJumpbox",
             "type": "Microsoft.Common.OptionsGroup",
-            "label": "Create a Jumpbox: Infrastructure Access",
+            "label": "Create a Jumpbox: Internal Access",
             "defaultValue": "yes",
             "toolTip": "Create a Jump box for cluster infrastructure access, admin services",
             "constraints": {
@@ -224,6 +205,42 @@
                 }
               ]
             }
+          },
+          {
+            "name": "externalLoadBalancer",
+            "type": "Microsoft.Common.OptionsGroup",
+            "label": "Loadbalancer",
+            "defaultValue": "internal",
+            "toolTip": "Public or Internal, Load Balancer Network Access, for ??Kibana??.",
+            "constraints": {
+              "allowedValues": [
+                {
+                  "label": "Internal",
+                  "value": "internal"
+                },
+                {
+                  "label": "External",
+                  "value": "external"
+                }
+              ]
+            }
+          },
+          {
+            "name": "dnsAndPublicIP",
+            "type": "Microsoft.Network.PublicIpAddressCombo",
+            "label": {
+              "publicIpAddress": "Public IP address",
+              "domainNameLabel": "DNS Prefix"
+            },
+            "toolTip": {
+              "domainNameLabel": "DNS Prefix for the VM public IP addresses."
+            },
+            "defaultValue": {
+              "publicIpAddressName": "publicIP"
+            },
+            "options": {
+              "hideNone": true
+            }
           }
         ]
       },
@@ -231,10 +248,10 @@
         "name": "nodesStep",
         "label": "Nodes",
         "subLabel": {
-          "preValidation": "TODO",
+          "preValidation": "Required",
           "postValidation": "Done"
         },
-        "bladeTitle": "No",
+        "bladeTitle": "Cluster Node Types",
         "elements": [
           {
             "name": "vmMasterNodes",
@@ -358,7 +375,7 @@
       "esClusterName": "[steps('elasticsearchStep').clusterName]",
       "loadBalancerType": "[steps('externalAccesStep').externalLoadBalancer]",
       "esPlugins": "Yes",
-      "kibana": "[steps('externalAccesStep').provisionKibana]",
+      "kibana": "[steps('elasticsearchStep').provisionKibana]",
       "jumpbox": "[steps('externalAccesStep').provisionJumpbox]",
       "vmSizeDataNodes": "[steps('nodesStep').vmDataNodes]",
       "vmDataNodeCount": "[steps('nodesStep').vmCountDataNodes]",
@@ -372,7 +389,11 @@
       "shieldReadPassword": "[steps('shieldStep').es_admin.shieldReadPassword",
       "shieldKibanaPassword": "[steps('shieldStep').es_admin.shieldKibanaPassword",
       "location": "[location()]",
-      "virtualNetworkName": "esvnet"
+      "virtualNetworkName": "esvnet",
+      "publicIPAddressName": "[steps('externalAccesStep').DnsAndPublicIP.name]",
+      "dnsNameForPublicIP": "[steps('externalAccesStep').dnsAndPublicIP.domainNameLabel]",
+      "existingIPRGName": "[steps('externalAccesStep').dnsAndPublicIP.resourceGroup]",
+      "publicIPNewOrExisting": "[steps('externalAccesStep').dnsAndPublicIP.newOrExistingOrNone]"
     }
   }
 }
