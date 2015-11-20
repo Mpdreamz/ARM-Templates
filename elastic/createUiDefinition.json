@@ -358,7 +358,7 @@
             "name": "loadBalancerType",
             "type": "Microsoft.Common.OptionsGroup",
             "label": "Load balancer type",
-            "defaultValue": "external",
+            "defaultValue": "internal",
             "toolTip": "Choose whether the load balancer should be public facing or internal.",
             "constraints": {
               "allowedValues": [
