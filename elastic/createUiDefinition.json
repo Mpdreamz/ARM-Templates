@@ -15,7 +15,7 @@
         "osPlatform": "Linux"
       },
       {
-        "name": "adminPassword",
+        "name": "password",
         "type": "Microsoft.Compute.CredentialsCombo",
         "label": {
           "authenticationType": "Authentication type",
@@ -388,7 +388,7 @@
       "vmSizeMasterNodes": "[steps('nodesStep').vmSizeMasterNodes]",
       "vmClientNodeCount": "[steps('nodesStep').vmClientNodeCount]",
       "vmSizeClientNodes": "[steps('nodesStep').vmSizeClientNodes]",
-      "adminPassword": "[basics('adminPassword')]",
+      "password": "[basics('password')]",
       "adminUsername": "[basics('adminUsername')]",
       "shieldAdminPassword": "[steps('shieldStep').es_admin.shieldAdminPassword]",
       "shieldReadPassword": "[steps('shieldStep').es_read.shieldReadPassword]",

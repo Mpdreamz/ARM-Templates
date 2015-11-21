@@ -170,10 +170,10 @@
         "description": "Admin username used when provisioning virtual machines"
       }
     },
-    "adminPassword": {
-      "type": "securestring",
-      "metadata": {
-        "description": "Admin password used when provisioning virtual machines"
+    "password" : {
+      "type" : "object",
+      "metadata" : {
+        "description" : ""
       }
     },
     "shieldAdminPassword": {
@@ -527,8 +527,8 @@
           "adminUsername": {
             "value": "[parameters('adminUsername')]"
           },
-          "adminPassword": {
-            "value": "[parameters('adminPassword')]"
+          "password": {
+            "value": "[parameters('password')]"
           },
           "masterNodesIpPrefix": {
             "value": "[variables('masterNodesIpPrefix')]"
@@ -594,8 +594,8 @@
           "adminUsername": {
             "value": "[parameters('adminUsername')]"
           },
-          "adminPassword": {
-            "value": "[parameters('adminPassword')]"
+          "password": {
+            "value": "[parameters('password')]"
           },
           "storageAccountName": {
             "value": "[variables('storageAccountNameShared')]"
@@ -638,8 +638,8 @@
           "adminUsername": {
             "value": "[parameters('adminUsername')]"
           },
-          "adminPassword": {
-            "value": "[parameters('adminPassword')]"
+          "password": {
+            "value": "[parameters('password')]"
           },
           "location": {
             "value": "[variables('location')]"
@@ -688,8 +688,8 @@
           "adminUsername": {
             "value": "[parameters('adminUsername')]"
           },
-          "adminPassword": {
-            "value": "[parameters('adminPassword')]"
+          "password": {
+            "value": "[parameters('password')]"
           },
           "location": {
             "value": "[variables('location')]"
@@ -723,8 +723,8 @@
           "adminUsername": {
             "value": "[parameters('adminUsername')]"
           },
-          "adminPassword": {
-            "value": "[parameters('adminPassword')]"
+          "password": {
+            "value": "[parameters('password')]"
           },
           "location": {
             "value": "[variables('location')]"

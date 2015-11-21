@@ -8,8 +8,8 @@
         "description": "Admin username used when provisioning virtual machines"
       }
     },
-    "adminPassword": {
-      "type": "securestring",
+    "password": {
+      "type": "object",
       "metadata": {
         "description": "Admin password used when provisioning virtual machines"
       }
@@ -59,6 +59,7 @@
     }
   },
   "variables": {
+    "templateBaseUrl": "https://raw.githubusercontent.com/Mpdreamz/ARM-Templates/master/elastic/",
     "vmStorageAccountContainerName": "vhd",
     "subnetRef": "[concat(resourceId('Microsoft.Network/virtualNetworks', parameters('subnet').vnet), '/subnets/', parameters('subnet').name)]",
     "storageAccountName": "[parameters('storageAccountName')]",
@@ -98,6 +99,33 @@
       }
     },
     {
+      "name": "[concat('osProfileClient', copyindex())]",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "copy": {
+        "name": "osProfileLoop",
+        "count": "[parameters('vmCount')]"
+      },
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[concat(variables('templateBaseUrl'), '/osProfile-resources.json')]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "adminUserName" : {
+                  "value": "[parameters('adminUsername')]"
+              },
+              "password" : {
+                  "value": "[parameters('password')]"
+              },
+              "computerName" : {
+                  "value": "[concat('esClient', copyindex())]"
+              }
+          }
+       }
+    },
+    {
       "apiVersion": "2015-06-15",
       "type": "Microsoft.Compute/virtualMachines",
       "name": "[concat('clientVm', copyindex())]",
@@ -108,7 +136,8 @@
       },
       "dependsOn": [
         "[concat('Microsoft.Network/networkInterfaces/', variables('nicName'), copyindex())]",
-        "[concat('Microsoft.Compute/availabilitySets/', 'elasticsearchClient')]"
+        "[concat('Microsoft.Compute/availabilitySets/', 'elasticsearchClient')]",
+        "[concat('Microsoft.Resources/deployments/', 'osProfileClient', copyindex())]"
       ],
       "properties": {
         "availabilitySet": {
@@ -117,11 +146,7 @@
         "hardwareProfile": {
           "vmSize": "[parameters('vmSize')]"
         },
-        "osProfile": {
-          "computername": "[concat('esClient', copyIndex())]",
-          "adminUsername": "[parameters('adminUsername')]",
-          "adminPassword": "[parameters('adminPassword')]"
-        },
+        "osProfile": "[reference(concat('Microsoft.Resources/deployments/osProfileClient', copyindex()), '2015-01-01').outputs.osProfile.value]",
         "storageProfile": {
           "imageReference": "[parameters('osSettings').imageReference]",
           "osDisk": {
@@ -151,7 +176,7 @@
             "[concat('Microsoft.Compute/virtualMachines/', 'clientVm', copyindex())]"
           ],
           "properties": "[parameters('osSettings').extentionSettings.client]"
-        }   
+        }
       ]
     }
   ]

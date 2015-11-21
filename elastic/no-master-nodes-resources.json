@@ -6,8 +6,8 @@
       "type": "string",
       "defaultValue": ""
     },
-    "adminPassword": {
-      "type": "securestring",
+    "password": {
+      "type": "object",
       "defaultValue": ""
     },
     "storageAccountName": {
