@@ -117,7 +117,7 @@
                   "value": "[parameters('password')]"
               },
               "computerName" : {
-                  "value": "[concat('esMaster', copyindex())]"
+                  "value": "[concat('masterVm', copyindex())]"
               }
           }
        }

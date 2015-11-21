@@ -120,7 +120,7 @@
                   "value": "[parameters('password')]"
               },
               "computerName" : {
-                  "value": "[concat('esClient', copyindex())]"
+                  "value": "[concat('clientVm', copyindex())]"
               }
           }
        }
