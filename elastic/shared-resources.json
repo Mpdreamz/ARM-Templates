@@ -177,8 +177,8 @@
     }
   ],
   "outputs" : {
-    "ip": {
-      "value": "[reference(variables('publicIpId')).ipAddress]",
+    "publicIpId": {
+      "value": "[variables('publicIpId')]",
       "type": "string"
     }
   }
