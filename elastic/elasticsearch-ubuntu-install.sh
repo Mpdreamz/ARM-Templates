@@ -151,7 +151,7 @@ while getopts :n:v:A:R:K:S:Z:xyzldh optname; do
 done
 
 if [ ${CLUSTER_USES_DEDICATED_MASTERS} -ne 0 ]; then
-    MINIMUM_MASTER_NODES=3
+    MINIMUM_MASTER_NODES=2
     UNICAST_HOSTS='["masterVm0:9300","masterVm1:9300","masterVm2:9300"]'
 else 
     MINIMUM_MASTER_NODES=$(((DATANODE_COUNT/2)+1))
@@ -225,7 +225,7 @@ install_ntp
 #Format data disks (Find data disks then partition, format, and mount them as seperate drives)
 # using the -s paramater causing disks under /datadisks/* to be raid0'ed
 #------------------------
-bash vm-disk-utils-0.1.sh -s
+#bash vm-disk-utils-0.1.sh -s
 
 #Install Oracle Java
 #------------------------

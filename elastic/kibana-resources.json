@@ -45,6 +45,12 @@
         "description": "Platform and OS settings"
       }
     },
+    "publicIpId": {
+      "type": "string",
+      "metadata": {
+        "description": "The id of the public ip resource"
+      }
+    },
     "kibanaInstallCommand": {
       "type": "string",
       "metadata": {
@@ -211,7 +217,7 @@
             "typeHandlerVersion": "1.2",
             "settings": {
               "fileUris": "[variables('ubuntuScripts')]",
-              "commandToExecute": "[parameters('kibanaInstallCommand')]"
+              "commandToExecute": "[concat(parameters('kibanaInstallCommand'), reference(parameters('publicIpId')).ipAdress)]"
             }
           }
         }
