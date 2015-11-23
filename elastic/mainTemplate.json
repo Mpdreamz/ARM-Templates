@@ -378,7 +378,7 @@
         "Name": "LBFE",
         "Properties": {
           "subnet": {
-            "Id": "[concat(resourceId('Microsoft.Network/virtualNetworks',parameters('networkSettings').virtualNetworkName), '/subnets/', variables('networkSettings').subnet.master.name)]"
+            "Id": "[concat(resourceId('Microsoft.Network/virtualNetworks',variables('networkSettings').virtualNetworkName), '/subnets/', variables('networkSettings').subnet.master.name)]"
           },
           "privateIPAddress": "10.0.0.100",
           "privateIPAllocationMethod": "Static"
