@@ -54,6 +54,7 @@
   },
   "variables": {
     "templateBaseUrl": "https://raw.githubusercontent.com/Mpdreamz/ARM-Templates/master/elastic/",
+    "ubuntuScripts": [ "[concat(variables('templateBaseUrl'), 'kibana-install.sh')]" ],
     "vmStorageAccountContainerName": "vhd",
     "vmSize": "Standard_A1",
     "subnetRef": "[concat(resourceId('Microsoft.Network/virtualNetworks', parameters('subnet').vnet), '/subnets/', parameters('subnet').name)]",
