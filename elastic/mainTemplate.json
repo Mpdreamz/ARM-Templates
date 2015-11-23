@@ -547,7 +547,9 @@
           "type": "Microsoft.Network/virtualNetworks",
           "name": "[variables('networkSettings').virtualNetworkName]",
           "location": "[variables('location')]",
-          "dependsOn": [ "[concat('Microsoft.Resources/deployments/', 'networking')]" ],
+          "dependsOn": [
+            "[concat('Microsoft.Network/publicIPAddresses/', 'publicIp')]"
+          ],
           "properties": {
             "addressSpace": {
               "addressPrefixes": [
@@ -727,7 +729,7 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
       "dependsOn": [
-        "[concat('Microsoft.Resources/deployments/', 'networking')]"
+        "[concat('Microsoft.Network/loadBalancers/', 'loadBalancer')]"
       ],
       "properties": {
         "mode": "Incremental",
