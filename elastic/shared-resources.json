@@ -39,6 +39,7 @@
     }
   },
   "variables": {
+    "publicIpId" : "[resourceId('Microsoft.Network/publicIPAddresses','publicIp')]",
     "externalFELBConfig": [
       {
         "name": "LBFE",
@@ -174,5 +175,11 @@
         ]
       }
     }
-  ]
+  ],
+  "outputs" : {
+    "ip": {
+      "value": "[reference(variables('publicIpId'),providers('Microsoft.Network', 'publicIPAddresses').apiVersions[0]).ipAddress",
+      "type": "string"
+    }
+  }
 }
