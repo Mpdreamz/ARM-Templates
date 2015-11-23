@@ -555,6 +555,7 @@
           "type": "Microsoft.Network/virtualNetworks",
           "name": "[variables('networkSettings').virtualNetworkName]",
           "location": "[variables('location')]",
+          "dependsOn": [ "[concat('Microsoft.Resources/deployments/', 'networking')]" ],
           "properties": {
             "addressSpace": {
               "addressPrefixes": [
