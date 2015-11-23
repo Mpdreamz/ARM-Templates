@@ -535,6 +535,7 @@
           "name": "[variables('storageAccountNameShared')]",
           "apiVersion": "2015-05-01-preview",
           "location": "[variables('location')]",
+          "dependsOn": [ "[concat('Microsoft.Resources/deployments/', 'networking')]" ],
           "properties": {
             "accountType": "Standard_LRS"
           }
@@ -544,6 +545,7 @@
           "type": "Microsoft.Network/publicIPAddresses",
           "name": "publicIp",
           "location": "[variables('location')]",
+          "dependsOn": [ "[concat('Microsoft.Resources/deployments/', 'networking')]" ],
           "properties": {
             "publicIPAllocationMethod": "Dynamic"
           }
