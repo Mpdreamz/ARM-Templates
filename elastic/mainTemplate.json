@@ -523,25 +523,11 @@
   },
   "resources": [
 
-    {
-      "name": "networking",
-      "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
-      "properties": {
-        "mode": "Incremental",
-        "templateLink": {
-          "uri": "[variables('emptyTemplateUrl')]",
-          "contentVersion": "1.0.0.0"
-        },
-        "parameters": {}
-      },
-      "resources" : [
         {
           "type": "Microsoft.Storage/storageAccounts",
           "name": "[variables('storageAccountNameShared')]",
           "apiVersion": "2015-05-01-preview",
           "location": "[variables('location')]",
-          "dependsOn": [ "[concat('Microsoft.Resources/deployments/', 'networking')]" ],
           "properties": {
             "accountType": "Standard_LRS"
           }
@@ -551,7 +537,7 @@
           "type": "Microsoft.Network/publicIPAddresses",
           "name": "publicIp",
           "location": "[variables('location')]",
-          "dependsOn": [ "[concat('Microsoft.Resources/deployments/', 'networking')]" ],
+          "dependsOn": [ "[concat('Microsoft.Storage/storageAccounts/', variables('storageAccountNameShared'))]" ],
           "properties": {
             "publicIPAllocationMethod": "Dynamic"
           }
@@ -590,7 +576,6 @@
           "type": "Microsoft.Network/loadBalancers",
           "location": "[variables('location')]",
           "dependsOn": [
-            "[concat('Microsoft.Resources/deployments/', 'networking')]",
             "[concat('Microsoft.Network/publicIPAddresses/', 'publicIp')]"
           ],
           "properties": {
@@ -649,19 +634,14 @@
               }
             ]
           }
-        }
-      ]
-    },
+        },
 
 
     {
       "name": "master-nodes",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
-      "dependsOn": [
-        "[concat('Microsoft.Resources/deployments/', 'networking')]",
-        "[concat('Microsoft.Network/loadBalancers/', 'loadBalancer')]"
-      ],
+      "dependsOn": [ "[concat('Microsoft.Network/loadBalancers/', 'loadBalancer')]" ],
       "properties": {
         "mode": "Incremental",
         "templateLink": {
@@ -702,7 +682,6 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
       "dependsOn": [
-        "[concat('Microsoft.Resources/deployments/', 'networking')]",
         "[concat('Microsoft.Network/loadBalancers/', 'loadBalancer')]"
       ],
       "properties": {
@@ -742,6 +721,7 @@
         }
       }
     },
+
     {
       "name": "data-nodes",
       "type": "Microsoft.Resources/deployments",
@@ -795,7 +775,6 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
       "dependsOn": [
-        "[concat('Microsoft.Resources/deployments/', 'networking')]",
         "[concat('Microsoft.Network/loadBalancers/', 'loadBalancer')]"
       ],
       "properties": {
@@ -832,8 +811,7 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
       "dependsOn": [
-        "[concat('Microsoft.Resources/deployments/', 'data-nodes')]",
-        "[concat('Microsoft.Network/loadBalancers/', 'loadBalancer')]"
+        "[concat('Microsoft.Resources/deployments/', 'data-nodes')]"
       ],
       "properties": {
         "mode": "Incremental",
