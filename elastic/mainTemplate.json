@@ -227,7 +227,6 @@
   },
   "variables": {
     "templateBaseUrl": "https://raw.githubusercontent.com/Mpdreamz/ARM-Templates/master/elastic/",
-    "sharedTemplateUrl": "[concat(variables('templateBaseUrl'), 'shared-resources.json')]",
     "masterTemplates": {
        "No" : "master-nodes-resources.json",
        "Yes" : "no-master-nodes-resources.json"
@@ -364,6 +363,30 @@
     "lbBackendPoolsRemoved": {
       "backendPools": []
     },
+    "externalFELBConfig": [
+      {
+        "name": "LBFE",
+        "properties": {
+          "publicIPAddress": {
+            "id": "[resourceId('Microsoft.Network/publicIPAddresses','publicIp')]"
+          }
+        }
+      }
+    ],
+    "internalFELBConfig": [
+      {
+        "Name": "LBFE",
+        "Properties": {
+          "subnet": {
+            "Id": "[concat(resourceId('Microsoft.Network/virtualNetworks',parameters('networkSettings').virtualNetworkName), '/subnets/', variables('networkSettings').subnet.master.name)]"
+          },
+          "privateIPAddress": "10.0.0.100",
+          "privateIPAllocationMethod": "Static"
+        }
+      }
+    ],
+    "feLoadBalancerConfig": "[variables(concat(parameters('loadBalancerType'), 'FELBConfig'))]",
+
     "dataLBSettings0": "[variables('lbBackEndPoolsAdded')]",
     "dataLBSettings3": "[variables('lbBackendPoolsRemoved')]",
     "dataLBSettings5": "[variables('lbBackendPoolsRemoved')]",
@@ -498,12 +521,135 @@
     "dataTemplateUrl": "[concat(variables('templateBaseUrl'), 'data-nodes-', string(variables('dataSkuSettings')[parameters('vmSizeDataNodes')].dataDisks), 'disk-resources.json')]"
   },
   "resources": [
+
+    {
+      "name": "networking",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "properties": {
+        "mode": "Incremental"
+      },
+      "resources" : [
+        {
+          "type": "Microsoft.Storage/storageAccounts",
+          "name": "[variables('storageAccountNameShared')]",
+          "apiVersion": "2015-05-01-preview",
+          "location": "[variables('location')]",
+          "properties": {
+            "accountType": "Standard_LRS"
+          }
+        },
+        {
+          "apiVersion": "2015-06-15",
+          "type": "Microsoft.Network/publicIPAddresses",
+          "name": "publicIp",
+          "location": "[variables('location')]",
+          "properties": {
+            "publicIPAllocationMethod": "Dynamic"
+          }
+        },
+        {
+          "apiVersion": "2015-06-15",
+          "type": "Microsoft.Network/virtualNetworks",
+          "name": "[variables('networkSettings').virtualNetworkName]",
+          "location": "[variables('location')]",
+          "properties": {
+            "addressSpace": {
+              "addressPrefixes": [
+                "[variables('networkSettings').addressPrefix]"
+              ]
+            },
+            "subnets": [
+              {
+                "name": "[variables('networkSettings').subnet.master.name]",
+                "properties": {
+                  "addressPrefix": "[variables('networkSettings').subnet.master.prefix]"
+                }
+              },
+              {
+                "name": "[variables('networkSettings').subnet.data.name]",
+                "properties": {
+                  "addressPrefix": "[variables('networkSettings').subnet.data.prefix]"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "apiVersion": "2015-06-15",
+          "name": "loadBalancer",
+          "type": "Microsoft.Network/loadBalancers",
+          "location": "[variables('location')]",
+          "dependsOn": [
+            "[concat('Microsoft.Network/publicIPAddresses/', 'publicIp')]"
+          ],
+          "properties": {
+            "frontendIPConfigurations": "[variables('feLoadBalancerConfig')]",
+            "backendAddressPools": [
+              {
+                "name": "LBBE"
+              }
+            ],
+            "loadBalancingRules": [
+              {
+                "name": "es",
+                "properties": {
+                  "frontendIPConfiguration": {
+                    "id": "[concat(resourceId('Microsoft.Network/loadBalancers','loadBalancer'),'/frontendIPConfigurations/LBFE')]"
+                  },
+                  "backendAddressPool": {
+                    "id": "[concat(resourceId('Microsoft.Network/loadBalancers','loadBalancer'),'/backendAddressPools/LBBE')]"
+                  },
+                  "protocol": "tcp",
+                  "frontendPort": 9200,
+                  "backendPort": 9200,
+                  "enableFloatingIP": false,
+                  "idleTimeoutInMinutes": 5,
+                  "probe": {
+                    "id": "[concat(resourceId('Microsoft.Network/loadBalancers','loadBalancer'),'/probes/esProbe')]"
+                  }
+                }
+              },
+              {
+                "name": "estransport",
+                "properties": {
+                  "frontendIPConfiguration": {
+                    "id": "[concat(resourceId('Microsoft.Network/loadBalancers','loadBalancer'),'/frontendIPConfigurations/LBFE')]"
+                  },
+                  "backendAddressPool": {
+                    "id": "[concat(resourceId('Microsoft.Network/loadBalancers','loadBalancer'),'/backendAddressPools/LBBE')]"
+                  },
+                  "protocol": "tcp",
+                  "frontendPort": 9300,
+                  "backendPort": 9300,
+                  "enableFloatingIP": false,
+                  "idleTimeoutInMinutes": 5
+                }
+              }
+            ],
+            "probes": [
+              {
+                "name": "esProbe",
+                "properties": {
+                  "protocol": "tcp",
+                  "port": 9200,
+                  "intervalInSeconds": 30,
+                  "numberOfProbes": 3
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+
+
     {
       "name": "master-nodes",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
       "dependsOn": [
-        "[concat('Microsoft.Resources/deployments/', 'shared')]"
+        "[concat('Microsoft.Resources/deployments/', 'networking')]"
       ],
       "properties": {
         "mode": "Incremental",
@@ -539,41 +685,13 @@
         }
       }
     },
-    {
-      "name": "shared",
-      "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
-      "properties": {
-        "mode": "Incremental",
-        "templateLink": {
-          "uri": "[variables('sharedTemplateUrl')]",
-          "contentVersion": "1.0.0.0"
-        },
-        "parameters": {
-          "location": {
-            "value": "[variables('location')]"
-          },
-          "networkSettings": {
-            "value": "[variables('networkSettings')]"
-          },
-          "storageAccountName": {
-            "value": "[variables('storageAccountNameShared')]"
-          },
-          "loadBalancerType": {
-            "value": "[parameters('loadBalancerType')]"
-          },
-          "ilbIpAddress": {
-            "value": "10.0.0.100"
-          }
-        }
-      }
-    },
+
     {
       "name": "client-nodes",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
       "dependsOn": [
-        "[concat('Microsoft.Resources/deployments/', 'shared')]"
+        "[concat('Microsoft.Resources/deployments/', 'networking')]"
       ],
       "properties": {
         "mode": "Incremental",
@@ -617,7 +735,7 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
       "dependsOn": [
-        "[concat('Microsoft.Resources/deployments/', 'shared')]"
+        "[concat('Microsoft.Resources/deployments/', 'networking')]"
       ],
       "properties": {
         "mode": "Incremental",
@@ -659,12 +777,13 @@
         }
       }
     },
+
     {
       "name": "jumpbox",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
       "dependsOn": [
-        "[concat('Microsoft.Resources/deployments/', 'shared')]"
+        "[concat('Microsoft.Resources/deployments/', 'networking')]"
       ],
       "properties": {
         "mode": "Incremental",
@@ -694,6 +813,7 @@
         }
       }
     },
+
     {
       "name": "kibana",
       "type": "Microsoft.Resources/deployments",
@@ -726,12 +846,8 @@
           "osSettings": {
             "value": "[variables('ubuntuSettings')]"
           },
-          "publicIpId": {
-             "value": "[reference('Microsoft.Resources/deployments/shared', '2015-01-01').outputs.publicIpId.value]"
-          },
           "kibanaInstallCommand" : {
-            "value":"[concat('bash kibana-install.sh -', variables('installPluginsShortOpt'), 'n ', variables('esSettings').clusterName, ' -v ', variables('esSettings').version, ' -S ', variables('esSettings').shieldKibanaServerPwd, ' -I ')]"
-       
+            "value":"[concat('bash kibana-install.sh -', variables('installPluginsShortOpt'), 'n ', variables('esSettings').clusterName, ' -v ', variables('esSettings').version, ' -S ', variables('esSettings').shieldKibanaServerPwd, ' -I ', reference(resourceId('Microsoft.Network/publicIPAddresses','publicIp')).ipAddress)]"
           }
         }
       }

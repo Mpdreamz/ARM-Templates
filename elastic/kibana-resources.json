@@ -45,12 +45,6 @@
         "description": "Platform and OS settings"
       }
     },
-    "publicIpId": {
-      "type": "string",
-      "metadata": {
-        "description": "The id of the public ip resource"
-      }
-    },
     "kibanaInstallCommand": {
       "type": "string",
       "metadata": {
@@ -211,13 +205,13 @@
           "dependsOn": [
             "[concat('Microsoft.Compute/virtualMachines/', variables('vmName'))]"
           ],
-          "properties": { 
+          "properties": {
             "publisher": "Microsoft.OSTCExtensions",
             "type": "CustomScriptForLinux",
             "typeHandlerVersion": "1.2",
             "settings": {
               "fileUris": "[variables('ubuntuScripts')]",
-              "commandToExecute": "[concat(parameters('kibanaInstallCommand'), reference(parameters('publicIpId')).ipAdress)]"
+              "commandToExecute": "[concat(parameters('kibanaInstallCommand'), )]"
             }
           }
         }
