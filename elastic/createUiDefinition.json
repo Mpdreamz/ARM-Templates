@@ -165,7 +165,7 @@
             "type": "Microsoft.Common.OptionsGroup",
             "label": "Data nodes are master eligible",
             "defaultValue": "no",
-            "toolTip": "Allow data nodes to be master eligible (not recommended if you're using dedicated master nodes.)",
+            "toolTip": "Allow data nodes to be master eligible, setting this to Yes will no longer deploy the 3 dedicated master nodes",
             "constraints": {
               "allowedValues": [
                 {
