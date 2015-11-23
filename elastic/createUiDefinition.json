@@ -120,22 +120,19 @@
             "toolTip": "Specify the number of data nodes for this cluster.",
             "constraints": {
               "allowedValues": [
-                {
-                  "label": "1",
-                  "value": 1
-                },
-                {
-                  "label": "3",
-                  "value": 3
-                },
-                {
-                  "label": "6",
-                  "value": 6
-                },
-                {
-                  "label": "9",
-                  "value": 9
-                }
+                { "label": "1", "value": 1 },
+                { "label": "3", "value": 3 },
+                { "label": "5", "value": 5 },
+                { "label": "7", "value": 5 },
+                { "label": "9", "value": 5 },
+                { "label": "10", "value": 10 },
+                { "label": "15", "value": 10 },
+                { "label": "20", "value": 20 },
+                { "label": "25", "value": 20 },
+                { "label": "30", "value": 20 },
+                { "label": "40", "value": 20 },
+                { "label": "50", "value": 50 },
+                { "label": "100", "value": 100 }
               ]
             }
           },
@@ -190,18 +187,12 @@
             "toolTip": "Specify the number of client nodes for this cluster (optional).",
             "constraints": {
               "allowedValues": [
-                {
-                  "label": "0",
-                  "value": 0
-                },
-                {
-                  "label": "3",
-                  "value": 3
-                },
-                {
-                  "label": "6",
-                  "value": 6
-                }
+                { "label": "0", "value": 0 },
+                { "label": "3", "value": 3 },
+                { "label": "5", "value": 5 },
+                { "label": "10", "value": 10 },
+                { "label": "20", "value": 20 },
+                { "label": "50", "value": 50 }
               ]
             }
           },
