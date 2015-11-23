@@ -211,7 +211,7 @@
             "typeHandlerVersion": "1.2",
             "settings": {
               "fileUris": "[variables('ubuntuScripts')]",
-              "commandToExecute": "[concat(parameters('kibanaInstallCommand'), )]"
+              "commandToExecute": "[parameters('kibanaInstallCommand')]"
             }
           }
         }
