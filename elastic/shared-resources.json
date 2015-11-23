@@ -178,7 +178,7 @@
   ],
   "outputs" : {
     "ip": {
-      "value": "[reference(variables('publicIpId'),providers('Microsoft.Network', 'publicIPAddresses').apiVersions[0]).ipAddress]",
+      "value": "[reference(variables('publicIpId')).ipAddress]",
       "type": "string"
     }
   }
