@@ -316,15 +316,6 @@
             "fileUris": "[variables('ubuntuScripts')]",
             "commandToExecute": "[concat('bash elasticsearch-ubuntu-install.sh -', variables('dataNodeShortOpt'), variables('commonShortOpts'), variables('commonInstallParams'))]"
           }
-        },
-        "kibana": {
-          "publisher": "Microsoft.OSTCExtensions",
-          "type": "CustomScriptForLinux",
-          "typeHandlerVersion": "1.2",
-          "settings": {
-            "fileUris": "[variables('ubuntuScripts')]",
-            "commandToExecute": "[concat('bash kibana-install.sh -', variables('installPluginsShortOpt'), 'n ', variables('esSettings').clusterName, ' -v ', variables('esSettings').version, ' -S ', variables('esSettings').shieldKibanaServerPwd, ' -I ', reference('Microsoft.Resources/deployments/shared', '2015-01-01').outputs.ip.value)]"
-          }
         }
       }
     },
@@ -734,6 +725,10 @@
           },
           "osSettings": {
             "value": "[variables('ubuntuSettings')]"
+          },
+          "kibanaInstallCommand" : {
+            "value":"[concat('bash kibana-install.sh -', variables('installPluginsShortOpt'), 'n ', variables('esSettings').clusterName, ' -v ', variables('esSettings').version, ' -S ', variables('esSettings').shieldKibanaServerPwd, ' -I ', reference('Microsoft.Resources/deployments/shared', '2015-01-01').outputs.ip.value)]"
+       
           }
         }
       }

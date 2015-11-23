@@ -44,6 +44,12 @@
       "metadata": {
         "description": "Platform and OS settings"
       }
+    },
+    "kibanaInstallCommand": {
+      "type": "string",
+      "metadata": {
+        "description": "Kibana installation command"
+      }
     }
   },
   "variables": {
@@ -198,7 +204,15 @@
           "dependsOn": [
             "[concat('Microsoft.Compute/virtualMachines/', variables('vmName'))]"
           ],
-          "properties": "[parameters('osSettings').extentionSettings.kibana]"
+          "properties": { 
+            "publisher": "Microsoft.OSTCExtensions",
+            "type": "CustomScriptForLinux",
+            "typeHandlerVersion": "1.2",
+            "settings": {
+              "fileUris": "[variables('ubuntuScripts')]",
+              "commandToExecute": "[parameters('kibanaInstallCommand')]"
+            }
+          }
         }
       ]
     }
