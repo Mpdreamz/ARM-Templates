@@ -584,6 +584,7 @@
           "type": "Microsoft.Network/loadBalancers",
           "location": "[variables('location')]",
           "dependsOn": [
+            "[concat('Microsoft.Resources/deployments/', 'networking')]",
             "[concat('Microsoft.Network/publicIPAddresses/', 'publicIp')]"
           ],
           "properties": {
