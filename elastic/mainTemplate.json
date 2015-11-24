@@ -245,11 +245,18 @@
     "kibanaTemplateUrl":"[concat(variables('templateBaseUrl'), variables('kibanaTemplates')[parameters('kibana')])]",
     "clientTemplates": {
       "n0": "empty/empty-resources.json",
+      "n1": "client-nodes-resources.json",
+      "n2": "client-nodes-resources.json",
       "n3": "client-nodes-resources.json",
+      "n4": "client-nodes-resources.json",
       "n5": "client-nodes-resources.json",
-      "n7": "client-nodes-resources.json"
+      "n6": "client-nodes-resources.json",
+      "n7": "client-nodes-resources.json",
+      "n8": "client-nodes-resources.json",
+      "n9": "client-nodes-resources.json"
     },
-    "clientTemplateUrl": "[concat(variables('templateBaseUrl'), variables('clientTemplates')[concat('n',parameters('vmClientNodeCount'))])]",
+    "clientPre" : "[trim(string(parameters('vmClientNodeCount')), '')[0]]",
+    "clientTemplateUrl": "[concat(variables('templateBaseUrl'), variables('clientTemplates')[concat('n',variables('clientPre'))])]",
     "esSettings": {
       "clusterName": "[parameters('esClusterName')]",
       "version": "[parameters('esVersion')]",
