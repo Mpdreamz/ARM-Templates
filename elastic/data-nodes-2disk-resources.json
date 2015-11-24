@@ -143,7 +143,7 @@
           },
           "parameters": {
               "adminUserName" : {
-                  "value": "[concat(parameters('namespace'), 'vm', copyIndex())]"
+                  "value": "[parameters('adminUsername')]"
               },
               "password" : {
                   "value": "[parameters('password')]"
