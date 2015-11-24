@@ -329,7 +329,7 @@
           "typeHandlerVersion": "1.2",
           "settings": {
             "fileUris": "[variables('ubuntuScripts')]",
-            "commandToExecute": "[concat(variables('kibanaClientNodeInstallScript'), ' | ', 'bash kibana-install.sh -', variables('installPluginsShortOpt'), 'n ', variables('esSettings').clusterName, ' -v ', variables('esSettings').version, ' -S ', variables('esSettings').shieldKibanaServerPwd, ' -m ', parameters('loadBalancerType'))]"
+            "commandToExecute": "[concat('bash kibana-install.sh -', variables('installPluginsShortOpt'), 'n ', variables('esSettings').clusterName, ' -v ', variables('esSettings').version, ' -S ', variables('esSettings').shieldKibanaServerPwd)]"
           }
         }
       }

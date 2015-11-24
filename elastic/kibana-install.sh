@@ -38,8 +38,6 @@ help()
     echo "-h view this help content"
 }
 
-#hit the loadbalancers internal IP
-ELASTICSEARCH_URL="http://10.0.0.100:9200"
 
 #Script Parameters
 CLUSTER_NAME="elasticsearch"
