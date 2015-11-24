@@ -336,8 +336,8 @@
           "type": "CustomScriptForLinux",
           "typeHandlerVersion": "1.2",
           "settings": {
-            "fileUris": "[variables('kibanaClientNodeInstallScript')]",
-            "commandToExecute": "[variables('ubuntuScripts')]"
+            "fileUris": "[variables('ubuntuScripts')]",
+            "commandToExecute": "[variables('kibanaClientNodeInstallScript')]"
           }
         }
       }
