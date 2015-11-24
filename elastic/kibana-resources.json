@@ -192,6 +192,16 @@
       "resources": [
         {
           "type": "Microsoft.Compute/virtualMachines/extensions",
+          "name": "[concat(variables('vmName'), '/installkibanaclientwhenneeded')]",
+          "apiVersion": "2015-06-15",
+          "location": "[parameters('location')]",
+          "dependsOn": [
+            "[concat('Microsoft.Compute/virtualMachines/', variables('vmName'))]"
+          ],
+          "properties": "[parameters('osSettings').extentionSettings.kibanaclientnode]"
+        },
+        {
+          "type": "Microsoft.Compute/virtualMachines/extensions",
           "name": "[concat(variables('vmName'), '/installkibana')]",
           "apiVersion": "2015-06-15",
           "location": "[parameters('location')]",

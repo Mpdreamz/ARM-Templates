@@ -10,10 +10,10 @@
 # to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 # copies of the Software, and to permit persons to whom the Software is
 # furnished to do so, subject to the following conditions:
-# 
+#
 # The above copyright notice and this permission notice shall be included in all
 # copies or substantial portions of the Software.
-# 
+#
 # THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 # IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 # FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -33,6 +33,7 @@ help()
 
     echo "-l install plugins true/false"
     echo "-S kibana server password"
+    echo "-m <internal/external> hints whether to use the internal loadbalancer or internal client node (when external loadbalancing)"
 
     echo "-h view this help content"
 }
@@ -44,11 +45,12 @@ ELASTICSEARCH_URL="http://10.0.0.100:9200"
 CLUSTER_NAME="elasticsearch"
 ES_VERSION="2.0.0"
 INSTALL_PLUGINS=0
+HOSTMODE="internal"
 
 USER_KIBANA4_SERVER_PWD="changeME"
 
 #Loop through options passed
-while getopts :n:v:S:lh optname; do
+while getopts :n:v:S:m:lh optname; do
   log "Option $optname set"
   case $optname in
     n) #set cluster name
@@ -59,6 +61,9 @@ while getopts :n:v:S:lh optname; do
       ;;
     S) #shield kibana server pwd
       USER_KIBANA4_SERVER_PWD=${OPTARG}
+      ;;
+    m) #shield kibana server pwd
+      HOSTMODE=${OPTARG}
       ;;
     l) #install plugins
       INSTALL_PLUGINS=1
@@ -75,21 +80,17 @@ while getopts :n:v:S:lh optname; do
   esac
 done
 
+HOST = "10.0.0.100"
+if [ "$HOSTMODE" == "external" ]; then
+    HOST = "127.0.0.1"
+fi
+
+#hit the loadbalancers internal IP
+ELASTICSEARCH_URL="http://$HOST:9200"
+
 echo "installing kibana for Elasticsearch $ES_VERSION cluster: $CLUSTER_NAME"
 echo "installing kibana plugins is set to: $INSTALL_PLUGINS"
-
-# Install Oracle Java
-install_java()
-{
-    log "Installing Java"
-    add-apt-repository -y ppa:webupd8team/java
-    apt-get -y update  > /dev/null
-    echo debconf shared/accepted-oracle-license-v1-1 select true | sudo debconf-set-selections
-    echo debconf shared/accepted-oracle-license-v1-1 seen true | sudo debconf-set-selections
-    apt-get -y install oracle-java8-installer 
-
-    log "Installed Java"
-}
+echo "Kibana will talk to elasticsearch over $ELASTICSEARCH_URL"
 
 sudo groupadd -g 999 kibana
 sudo useradd -u 999 -g 999 kibana
