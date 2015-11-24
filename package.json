@@ -5,8 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "./node_modules/gulp/bin/gulp.js --gulpfile build/gulpfile.js",
-    "test": "eclint check src/**/*.json",
-    "format": "eclint fix src/**/*.json"
+    "postinstall": "npm run build"
   },
   "repository": {
     "type": "git",
@@ -27,6 +26,8 @@
   "devDependencies": {
     "gulp": "^3.9.0",
     "eclint": "^1.1.5",
-    "gulp-jsonlint": "^1.1.1"
+    "gulp-jsonlint": "^1.1.1",
+    "gulp-zip": "^3.0.2",
+    "dateformat": "^1.0.12"
   }
 }
