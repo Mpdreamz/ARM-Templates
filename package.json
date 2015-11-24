@@ -1,0 +1,31 @@
+{
+  "name": "elasticsearch-arm-template",
+  "version": "0.0.0",
+  "description": "The home for the elasticsearch arm template and market place ui",
+  "main": "index.js",
+  "scripts": {
+    "build": "./node_modules/gulp/bin/gulp.js --gulpfile build/gulpfile.js",
+    "test": "eclint check src/**/*.json",
+    "format": "eclint fix src/**/*.json"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/Mpdreamz/ARM-Templates.git"
+  },
+  "keywords": [
+    "azure",
+    "arm",
+    "elasticsearch",
+    "marketplace"
+  ],
+  "author": "Elastic",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Mpdreamz/ARM-Templates/issues"
+  },
+  "homepage": "https://github.com/Mpdreamz/ARM-Templates",
+  "devDependencies": {
+    "gulp": "^3.9.0",
+    "eclint": "^1.1.5"
+  }
+}
