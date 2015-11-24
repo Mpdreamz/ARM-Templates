@@ -107,23 +107,23 @@
         "count": "[parameters('vmCount')]"
       },
       "properties": {
-          "mode": "Incremental",
-          "templateLink": {
-              "uri": "[concat(variables('templateBaseUrl'), '/osProfile-resources.json')]",
-              "contentVersion": "1.0.0.0"
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[concat(variables('templateBaseUrl'), '/osProfile-resources.json')]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "adminUserName": {
+            "value": "[parameters('adminUsername')]"
           },
-          "parameters": {
-              "adminUserName" : {
-                  "value": "[parameters('adminUsername')]"
-              },
-              "password" : {
-                  "value": "[parameters('password')]"
-              },
-              "computerName" : {
-                  "value": "[concat('clientVm', copyindex())]"
-              }
+          "password": {
+            "value": "[parameters('password')]"
+          },
+          "computerName": {
+            "value": "[concat('clientVm', copyindex())]"
           }
-       }
+        }
+      }
     },
     {
       "apiVersion": "2015-06-15",

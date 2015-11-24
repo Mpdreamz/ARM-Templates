@@ -41,9 +41,9 @@
         "description": "Install the Plugins - Marvel, Shield, Watcher"
       }
     },
-    "kibana":{
-      "type":"string",
-      "defaultValue":"No",
+    "kibana": {
+      "type": "string",
+      "defaultValue": "No",
       "allowedValues": [
         "Yes",
         "No"
@@ -111,8 +111,8 @@
         "Standard_D2",
         "Standard_D3",
         "Standard_D4",
-      	"Standard_A0",
-      	"Standard_A1",
+        "Standard_A0",
+        "Standard_A1",
         "Standard_A2",
         "Standard_A3",
         "Standard_A4",
@@ -142,8 +142,8 @@
         "Standard_D2",
         "Standard_D3",
         "Standard_D4",
-      	"Standard_A0",
-      	"Standard_A1",
+        "Standard_A0",
+        "Standard_A1",
         "Standard_A2",
         "Standard_A3",
         "Standard_A4",
@@ -164,10 +164,10 @@
         "description": "Admin username used when provisioning virtual machines"
       }
     },
-    "password" : {
-      "type" : "object",
-      "metadata" : {
-        "description" : ""
+    "password": {
+      "type": "object",
+      "metadata": {
+        "description": ""
       }
     },
     "shieldAdminPassword": {
@@ -223,20 +223,20 @@
     "templateBaseUrl": "https://raw.githubusercontent.com/Mpdreamz/ARM-Templates/master/elastic/",
     "sharedTemplateUrl": "[concat(variables('templateBaseUrl'), 'shared-resources.json')]",
     "masterTemplates": {
-       "No" : "master-nodes-resources.json",
-       "Yes" : "empty/empty-master-nodes-resources.json"
+      "No": "master-nodes-resources.json",
+      "Yes": "empty/empty-master-nodes-resources.json"
     },
     "masterTemplateUrl": "[concat(variables('templateBaseUrl'), variables('masterTemplates')[parameters('dataNodesAreMasterEligible')])]",
     "jumpboxTemplates": {
-       "No" : "empty/empty-resources.json",
-       "Yes" : "jumpbox-resources.json"
+      "No": "empty/empty-resources.json",
+      "Yes": "jumpbox-resources.json"
     },
     "jumpboxTemplateUrl": "[concat(variables('templateBaseUrl'), variables('jumpboxTemplates')[parameters('jumpbox')])]",
     "kibanaTemplates": {
       "No": "empty/empty-resources.json",
       "Yes": "kibana-resources.json"
     },
-    "kibanaTemplateUrl":"[concat(variables('templateBaseUrl'), variables('kibanaTemplates')[parameters('kibana')])]",
+    "kibanaTemplateUrl": "[concat(variables('templateBaseUrl'), variables('kibanaTemplates')[parameters('kibana')])]",
     "clientTemplates": {
       "n0": "empty/empty-resources.json",
       "n1": "client-nodes-resources.json",
@@ -249,7 +249,7 @@
       "n8": "client-nodes-resources.json",
       "n9": "client-nodes-resources.json"
     },
-    "clientPre" : "[split(string(parameters('vmClientNodeCount')), '')[0]]",
+    "clientPre": "[split(string(parameters('vmClientNodeCount')), '')[0]]",
     "clientTemplateUrl": "[concat(variables('templateBaseUrl'), variables('clientTemplates')[concat('n',variables('clientPre'))])]",
     "esSettings": {
       "clusterName": "[parameters('esClusterName')]",
@@ -261,60 +261,60 @@
       "shieldKibanaServerPwd": "[uniqueString(resourceGroup().id, deployment().name)]"
     },
     "dataNodeShortOpts": {
-      "No" : "z",
-      "Yes" : ""
+      "No": "z",
+      "Yes": ""
     },
-    "dataNodeShortOpt" : "[variables('dataNodeShortOpts')[parameters('dataNodesAreMasterEligible')]]",
+    "dataNodeShortOpt": "[variables('dataNodeShortOpts')[parameters('dataNodesAreMasterEligible')]]",
     "dedicatedMasterNodesShortOpts": {
-      "No" : "d",
-      "Yes" : ""
+      "No": "d",
+      "Yes": ""
     },
-    "dedicatedMasterNodesShortOpt" : "[variables('dedicatedMasterNodesShortOpts')[parameters('dataNodesAreMasterEligible')]]",
+    "dedicatedMasterNodesShortOpt": "[variables('dedicatedMasterNodesShortOpts')[parameters('dataNodesAreMasterEligible')]]",
     "installPluginsShortOpts": {
-      "No" : "",
-      "Yes" : "l"
+      "No": "",
+      "Yes": "l"
     },
-    "installPluginsShortOpt" : "[variables('installPluginsShortOpts')[variables('esSettings').installPlugins]]",
-    "commonShortOpts" : "[concat(variables('dedicatedMasterNodesShortOpt'),  variables('installPluginsShortOpt'), 'n ')]",
-    "commonInstallParams" : "[concat(variables('esSettings').clusterName, ' -v ', variables('esSettings').version, ' -A ', variables('esSettings').shieldAdminPwd, ' -R ', variables('esSettings').shieldReadPwd, ' -K ', variables('esSettings').shieldKibanaPwd, ' -S ', variables('esSettings').shieldKibanaServerPwd, ' -Z ', parameters('vmDataNodeCount'))]",
+    "installPluginsShortOpt": "[variables('installPluginsShortOpts')[variables('esSettings').installPlugins]]",
+    "commonShortOpts": "[concat(variables('dedicatedMasterNodesShortOpt'),  variables('installPluginsShortOpt'), 'n ')]",
+    "commonInstallParams": "[concat(variables('esSettings').clusterName, ' -v ', variables('esSettings').version, ' -A ', variables('esSettings').shieldAdminPwd, ' -R ', variables('esSettings').shieldReadPwd, ' -K ', variables('esSettings').shieldKibanaPwd, ' -S ', variables('esSettings').shieldKibanaServerPwd, ' -Z ', parameters('vmDataNodeCount'))]",
     "ubuntuScripts": [
       "[concat(variables('templateBaseUrl'), 'elasticsearch-ubuntu-install.sh')]",
       "[concat(variables('templateBaseUrl'), 'kibana-install.sh')]",
       "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/shared_scripts/ubuntu/vm-disk-utils-0.1.sh"
     ],
-    "clientInstallScript" : "[concat('bash elasticsearch-ubuntu-install.sh -y', variables('commonShortOpts'), variables('commonInstallParams'))]",
-    "kibanaClientNodeInstallScripts" : {
-      "internal" : "echo",
-      "external" : "[variables('clientInstallScript')]"
+    "clientInstallScript": "[concat('bash elasticsearch-ubuntu-install.sh -y', variables('commonShortOpts'), variables('commonInstallParams'))]",
+    "kibanaClientNodeInstallScripts": {
+      "internal": "echo",
+      "external": "[variables('clientInstallScript')]"
     },
-    "kibanaClientNodeInstallScript":"[variables('kibanaClientNodeInstallScripts')[parameters('loadBalancerType')]]",
+    "kibanaClientNodeInstallScript": "[variables('kibanaClientNodeInstallScripts')[parameters('loadBalancerType')]]",
     "ubuntuSettings": {
-      "imageReference":{
+      "imageReference": {
         "publisher": "Canonical",
         "offer": "UbuntuServer",
         "sku": "14.04.2-LTS",
         "version": "latest"
       },
-      "managementPort":"22",
-      "extentionSettings":{
+      "managementPort": "22",
+      "extentionSettings": {
         "master": {
-            "publisher": "Microsoft.OSTCExtensions",
-            "type": "CustomScriptForLinux",
-            "typeHandlerVersion": "1.2",
-            "settings": {
-              "fileUris": "[variables('ubuntuScripts')]",
-              "commandToExecute": "[concat('bash elasticsearch-ubuntu-install.sh -x', variables('commonShortOpts'), variables('commonInstallParams'))]"
-            }
-          },
+          "publisher": "Microsoft.OSTCExtensions",
+          "type": "CustomScriptForLinux",
+          "typeHandlerVersion": "1.2",
+          "settings": {
+            "fileUris": "[variables('ubuntuScripts')]",
+            "commandToExecute": "[concat('bash elasticsearch-ubuntu-install.sh -x', variables('commonShortOpts'), variables('commonInstallParams'))]"
+          }
+        },
         "client": {
-            "publisher": "Microsoft.OSTCExtensions",
-            "type": "CustomScriptForLinux",
-            "typeHandlerVersion": "1.2",
-            "settings": {
-              "fileUris": "[variables('ubuntuScripts')]",
-              "commandToExecute": "[variables('clientInstallScript')]"
-            }
-          },
+          "publisher": "Microsoft.OSTCExtensions",
+          "type": "CustomScriptForLinux",
+          "typeHandlerVersion": "1.2",
+          "settings": {
+            "fileUris": "[variables('ubuntuScripts')]",
+            "commandToExecute": "[variables('clientInstallScript')]"
+          }
+        },
         "data": {
           "publisher": "Microsoft.OSTCExtensions",
           "type": "CustomScriptForLinux",
@@ -335,22 +335,22 @@
         }
       }
     },
-    "OS" : "ubuntu",
+    "OS": "ubuntu",
     "osSettings": "[variables(concat(variables('OS'), 'Settings'))]",
     "locationMap": {
-        "ResourceGroup":"[resourceGroup().location]",
-        "westus":"[parameters('location')]",
-        "eastus":"[parameters('location')]",
-        "eastus2":"[parameters('location')]",
-        "centralus":"[parameters('location')]",
-        "southcentralus":"[parameters('location')]",
-        "northcentralus":"[parameters('location')]",
-        "eastasia":"[parameters('location')]",
-        "southeastasia":"[parameters('location')]",
-        "westeurope":"[parameters('location')]",
-        "northeurope":"[parameters('location')]"
+      "ResourceGroup": "[resourceGroup().location]",
+      "westus": "[parameters('location')]",
+      "eastus": "[parameters('location')]",
+      "eastus2": "[parameters('location')]",
+      "centralus": "[parameters('location')]",
+      "southcentralus": "[parameters('location')]",
+      "northcentralus": "[parameters('location')]",
+      "eastasia": "[parameters('location')]",
+      "southeastasia": "[parameters('location')]",
+      "westeurope": "[parameters('location')]",
+      "northeurope": "[parameters('location')]"
     },
-    "location":"[variables('locationMap')[parameters('location')]]",
+    "location": "[variables('locationMap')[parameters('location')]]",
     "storageAccountPrefix": "elastic",
     "storageAccountNameShared": "[concat(variables('storageAccountPrefix'), 's', uniqueString(resourceGroup().id, deployment().name))]",
     "masterNodesIpPrefix": "10.0.0.1",
@@ -393,72 +393,72 @@
     "dataLBSettings": "[variables(concat('dataLBSettings', variables('clientPre')))]",
     "dataSkuSettings": {
       "Standard_D1": {
-        "dataDisks":2,
-        "nodesPerStorageAccount":6,
-        "storageAccountType":"Standard_LRS"
+        "dataDisks": 2,
+        "nodesPerStorageAccount": 6,
+        "storageAccountType": "Standard_LRS"
       },
       "Standard_D2": {
-        "dataDisks":4,
-        "nodesPerStorageAccount":4,
-        "storageAccountType":"Standard_LRS"
+        "dataDisks": 4,
+        "nodesPerStorageAccount": 4,
+        "storageAccountType": "Standard_LRS"
       },
       "Standard_D3": {
-        "dataDisks":8,
-        "nodesPerStorageAccount":3,
-        "storageAccountType":"Standard_LRS"
+        "dataDisks": 8,
+        "nodesPerStorageAccount": 3,
+        "storageAccountType": "Standard_LRS"
       },
       "Standard_D4": {
-        "dataDisks":16,
-        "nodesPerStorageAccount":2,
-        "storageAccountType":"Standard_LRS"
+        "dataDisks": 16,
+        "nodesPerStorageAccount": 2,
+        "storageAccountType": "Standard_LRS"
       },
       "Standard_DS1": {
-        "dataDisks":2,
-        "nodesPerStorageAccount":6,
-        "storageAccountType":"Premium_LRS"
+        "dataDisks": 2,
+        "nodesPerStorageAccount": 6,
+        "storageAccountType": "Premium_LRS"
       },
       "Standard_DS2": {
-        "dataDisks":4,
-        "nodesPerStorageAccount":4,
-        "storageAccountType":"Premium_LRS"
+        "dataDisks": 4,
+        "nodesPerStorageAccount": 4,
+        "storageAccountType": "Premium_LRS"
       },
       "Standard_DS3": {
-        "dataDisks":8,
-        "nodesPerStorageAccount":4,
-        "storageAccountType":"Premium_LRS"
+        "dataDisks": 8,
+        "nodesPerStorageAccount": 4,
+        "storageAccountType": "Premium_LRS"
       },
       "Standard_DS4": {
-        "dataDisks":16,
-        "nodesPerStorageAccount":2,
-        "storageAccountType":"Premium_LRS"
+        "dataDisks": 16,
+        "nodesPerStorageAccount": 2,
+        "storageAccountType": "Premium_LRS"
       },
       "Standard_DS13": {
-        "dataDisks":16,
-        "nodesPerStorageAccount":2,
-        "storageAccountType":"Premium_LRS"
+        "dataDisks": 16,
+        "nodesPerStorageAccount": 2,
+        "storageAccountType": "Premium_LRS"
       },
       "Standard_A2": {
-        "dataDisks":4,
-        "nodesPerStorageAccount":6,
-        "storageAccountType":"Standard_LRS"
+        "dataDisks": 4,
+        "nodesPerStorageAccount": 6,
+        "storageAccountType": "Standard_LRS"
       },
       "Standard_A3": {
-        "dataDisks":8,
-        "nodesPerStorageAccount":4,
-        "storageAccountType":"Standard_LRS"
+        "dataDisks": 8,
+        "nodesPerStorageAccount": 4,
+        "storageAccountType": "Standard_LRS"
       },
       "Standard_A4": {
-        "dataDisks":16,
-        "nodesPerStorageAccount":2,
-        "storageAccountType":"Standard_LRS"
+        "dataDisks": 16,
+        "nodesPerStorageAccount": 2,
+        "storageAccountType": "Standard_LRS"
       },
       "Standard_A7": {
-        "dataDisks":16,
-        "nodesPerStorageAccount":2,
-        "storageAccountType":"Standard_LRS"
+        "dataDisks": 16,
+        "nodesPerStorageAccount": 2,
+        "storageAccountType": "Standard_LRS"
       }
     },
-    "nodesPerStorageAccount":"[variables('dataSkuSettings')[parameters('vmSizeDataNodes')].nodesPerStorageAccount]",
+    "nodesPerStorageAccount": "[variables('dataSkuSettings')[parameters('vmSizeDataNodes')].nodesPerStorageAccount]",
     "storageBinPackMap": [
       "[div(sub(add(1, variables('nodesPerStorageAccount')), 1), variables('nodesPerStorageAccount'))]",
       "[div(sub(add(2, variables('nodesPerStorageAccount')), 1), variables('nodesPerStorageAccount'))]",
@@ -512,10 +512,10 @@
       "[div(sub(add(60, variables('nodesPerStorageAccount')), 1), variables('nodesPerStorageAccount'))]"
     ],
     "dataNodeStorageSettings": {
-      "count":"[div(sub(add(parameters('vmDataNodeCount'), variables('nodesPerStorageAccount')), 1), variables('nodesPerStorageAccount'))]",
-      "mapping":"[variables('storageBinPackMap')]",
-      "accountType":"[variables('dataSkuSettings')[parameters('vmSizeDataNodes')].storageAccountType]",
-      "prefix":"[concat(variables('storageAccountPrefix'), 'd', uniqueString(resourceGroup().id, deployment().name))]"
+      "count": "[div(sub(add(parameters('vmDataNodeCount'), variables('nodesPerStorageAccount')), 1), variables('nodesPerStorageAccount'))]",
+      "mapping": "[variables('storageBinPackMap')]",
+      "accountType": "[variables('dataSkuSettings')[parameters('vmSizeDataNodes')].storageAccountType]",
+      "prefix": "[concat(variables('storageAccountPrefix'), 'd', uniqueString(resourceGroup().id, deployment().name))]"
     },
     "dataTemplateUrl": "[concat(variables('templateBaseUrl'), 'data-nodes-', string(variables('dataSkuSettings')[parameters('vmSizeDataNodes')].dataDisks), 'disk-resources.json')]"
   },

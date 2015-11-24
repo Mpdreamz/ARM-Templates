@@ -26,6 +26,7 @@
   "homepage": "https://github.com/Mpdreamz/ARM-Templates",
   "devDependencies": {
     "gulp": "^3.9.0",
-    "eclint": "^1.1.5"
+    "eclint": "^1.1.5",
+    "gulp-jsonlint": "^1.1.1"
   }
 }
