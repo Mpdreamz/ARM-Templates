@@ -220,34 +220,34 @@
     }
   },
   "variables": {
-    "templateBaseUrl": "https://raw.githubusercontent.com/Mpdreamz/ARM-Templates/master/elastic/",
-    "sharedTemplateUrl": "[concat(variables('templateBaseUrl'), 'shared-resources.json')]",
+    "templateBaseUrl": "https://raw.githubusercontent.com/Mpdreamz/ARM-Templates/master/src/",
+    "sharedTemplateUrl": "[concat(variables('templateBaseUrl'), '/partials/shared-resources.json')]",
     "masterTemplates": {
-      "No": "master-nodes-resources.json",
+      "No": "machines/master-nodes-resources.json",
       "Yes": "empty/empty-master-nodes-resources.json"
     },
     "masterTemplateUrl": "[concat(variables('templateBaseUrl'), variables('masterTemplates')[parameters('dataNodesAreMasterEligible')])]",
     "jumpboxTemplates": {
       "No": "empty/empty-resources.json",
-      "Yes": "jumpbox-resources.json"
+      "Yes": "machines/jumpbox-resources.json"
     },
     "jumpboxTemplateUrl": "[concat(variables('templateBaseUrl'), variables('jumpboxTemplates')[parameters('jumpbox')])]",
     "kibanaTemplates": {
       "No": "empty/empty-resources.json",
-      "Yes": "kibana-resources.json"
+      "Yes": "machines/kibana-resources.json"
     },
     "kibanaTemplateUrl": "[concat(variables('templateBaseUrl'), variables('kibanaTemplates')[parameters('kibana')])]",
     "clientTemplates": {
       "n0": "empty/empty-resources.json",
-      "n1": "client-nodes-resources.json",
-      "n2": "client-nodes-resources.json",
-      "n3": "client-nodes-resources.json",
-      "n4": "client-nodes-resources.json",
-      "n5": "client-nodes-resources.json",
-      "n6": "client-nodes-resources.json",
-      "n7": "client-nodes-resources.json",
-      "n8": "client-nodes-resources.json",
-      "n9": "client-nodes-resources.json"
+      "n1": "machines/client-nodes-resources.json",
+      "n2": "machines/client-nodes-resources.json",
+      "n3": "machines/client-nodes-resources.json",
+      "n4": "machines/client-nodes-resources.json",
+      "n5": "machines/client-nodes-resources.json",
+      "n6": "machines/client-nodes-resources.json",
+      "n7": "machines/client-nodes-resources.json",
+      "n8": "machines/client-nodes-resources.json",
+      "n9": "machines/client-nodes-resources.json"
     },
     "clientPre": "[split(string(parameters('vmClientNodeCount')), '')[0]]",
     "clientTemplateUrl": "[concat(variables('templateBaseUrl'), variables('clientTemplates')[concat('n',variables('clientPre'))])]",
@@ -517,7 +517,7 @@
       "accountType": "[variables('dataSkuSettings')[parameters('vmSizeDataNodes')].storageAccountType]",
       "prefix": "[concat(variables('storageAccountPrefix'), 'd', uniqueString(resourceGroup().id, deployment().name))]"
     },
-    "dataTemplateUrl": "[concat(variables('templateBaseUrl'), 'data-nodes-', string(variables('dataSkuSettings')[parameters('vmSizeDataNodes')].dataDisks), 'disk-resources.json')]"
+    "dataTemplateUrl": "[concat(variables('templateBaseUrl'), 'datanodes/data-nodes-', string(variables('dataSkuSettings')[parameters('vmSizeDataNodes')].dataDisks), 'disk-resources.json')]"
   },
   "resources": [
     {

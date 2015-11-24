@@ -73,7 +73,7 @@
     }
   },
   "variables": {
-    "templateBaseUrl": "https://raw.githubusercontent.com/Mpdreamz/ARM-Templates/master/elastic/",
+    "templateBaseUrl": "https://raw.githubusercontent.com/Mpdreamz/ARM-Templates/master/src/",
     "vmStorageAccountContainerName": "vhd",
     "subnetRef": "[concat(resourceId('Microsoft.Network/virtualNetworks', parameters('subnet').vnet), '/subnets/', parameters('subnet').name)]",
     "storageAccountName": "[concat(parameters('storageSettings').prefix)]",
@@ -138,7 +138,7 @@
       "properties": {
         "mode": "Incremental",
         "templateLink": {
-          "uri": "[concat(variables('templateBaseUrl'), '/osProfile-resources.json')]",
+          "uri": "[concat(variables('templateBaseUrl'), '/partials/osProfile-resources.json')]",
           "contentVersion": "1.0.0.0"
         },
         "parameters": {
