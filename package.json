@@ -4,8 +4,7 @@
   "description": "The home for the elasticsearch arm template and market place ui",
   "main": "index.js",
   "scripts": {
-    "build": "./node_modules/gulp/bin/gulp.js --gulpfile build/gulpfile.js",
-    "postinstall": "npm run build"
+    "build": "./node_modules/gulp/bin/gulp.js --gulpfile build/gulpfile.js"
   },
   "repository": {
     "type": "git",

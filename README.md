@@ -3,8 +3,15 @@
 This repository consists of:
 
 * [src/mainTemplate.json](src/mainTemplate.json) - Entry Azure Resource Management (ARM) template.
-* [src/createUiDefinition](src/createUiDefinition.json) - UI definition file for our market place offering. This file produces an output json that the ARM template can accept as input parameters JSON.
+* [src/createUiDefinition](src/createUiDefinition.json) - UI definition file for our market place offering. This file produces an output JSON that the ARM template can accept as input parameters JSON.
 
+## Building
+
+After pulling call `npm install` once, this will pull in all devDependencies.
+
+You may edit [src/allowedValues.json](src/allowedValues) the build will use these to patch the arm template and ui definition.
+
+Run `npm run build`, this will validate EditorConfig settings, validate JSON files, patch the allowedValues and then create a zip in the `dist` folder.
 
 ## Marketplace
 
