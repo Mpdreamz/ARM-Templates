@@ -9,7 +9,7 @@ This repository consists of:
 
 After pulling call `npm install` once, this will pull in all devDependencies.
 
-You may edit [src/allowedValues.json](src/allowedValues) the build will use these to patch the arm template and ui definition.
+You may edit [src/allowedValues.json](src/allowedValues.json) the build will use these to patch the arm template and ui definition.
 
 Run `npm run build`, this will validate EditorConfig settings, validate JSON files, patch the allowedValues and then create a zip in the `dist` folder.
 
