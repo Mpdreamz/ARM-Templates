@@ -281,8 +281,8 @@
     "commonShortOpts": "[concat(variables('dedicatedMasterNodesShortOpt'),  variables('installPluginsShortOpt'), 'n ')]",
     "commonInstallParams": "[concat(variables('esSettings').clusterName, ' -v ', variables('esSettings').version, ' -A ', variables('esSettings').shieldAdminPwd, ' -R ', variables('esSettings').shieldReadPwd, ' -K ', variables('esSettings').shieldKibanaPwd, ' -S ', variables('esSettings').shieldKibanaServerPwd, ' -Z ', parameters('vmDataNodeCount'))]",
     "ubuntuScripts": [
-      "[concat(variables('templateBaseUrl'), 'elasticsearch-ubuntu-install.sh')]",
-      "[concat(variables('templateBaseUrl'), 'kibana-install.sh')]",
+      "[concat(variables('templateBaseUrl'), 'scripts/elasticsearch-ubuntu-install.sh')]",
+      "[concat(variables('templateBaseUrl'), 'scripts/kibana-install.sh')]",
       "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/shared_scripts/ubuntu/vm-disk-utils-0.1.sh"
     ],
     "clientInstallScript": "[concat('bash elasticsearch-ubuntu-install.sh -y', variables('commonShortOpts'), variables('commonInstallParams'))]",
