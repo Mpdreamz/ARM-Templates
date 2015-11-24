@@ -747,7 +747,7 @@
             "value": "[variables('networkSettings').subnet.data]"
           },
           "osSettings": {
-            "value": "[variables('ubuntuSettings')]"
+            "value": "[variables('osSettings')]"
           }
         }
       }
