@@ -243,11 +243,6 @@
       "Yes": "kibana-resources.json"
     },
     "kibanaTemplateUrl":"[concat(variables('templateBaseUrl'), variables('kibanaTemplates')[parameters('kibana')])]",
-    "kibanaClientNodeInstallScripts" : {
-      "internal" : "echo",
-      "external" : "[parameters('osSettings').extentionSettings.client]"
-    },
-    "kibanaClientNodeInstallScript":"[variables('kibanaClientNodeInstallScripts')[parameters('loadBalancerType')]]",
     "clientTemplates": {
       "n0": "empty/empty-resources.json",
       "n3": "client-nodes-resources.json",
@@ -286,6 +281,12 @@
       "[concat(variables('templateBaseUrl'), 'kibana-install.sh')]",
       "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/shared_scripts/ubuntu/vm-disk-utils-0.1.sh"
     ],
+    "clientInstallScript" : "[concat('bash elasticsearch-ubuntu-install.sh -y', variables('commonShortOpts'), variables('commonInstallParams'))]",
+    "kibanaClientNodeInstallScripts" : {
+      "internal" : "echo",
+      "external" : "[variables('clientInstallScript')]"
+    },
+    "kibanaClientNodeInstallScript":"[variables('kibanaClientNodeInstallScripts')[parameters('loadBalancerType')]]",
     "ubuntuSettings": {
       "imageReference":{
         "publisher": "Canonical",
@@ -310,7 +311,7 @@
             "typeHandlerVersion": "1.2",
             "settings": {
               "fileUris": "[variables('ubuntuScripts')]",
-              "commandToExecute": "[concat('bash elasticsearch-ubuntu-install.sh -y', variables('commonShortOpts'), variables('commonInstallParams'))]"
+              "commandToExecute": "[variables('clientInstallScript')]"
             }
           },
         "data": {
@@ -328,16 +329,7 @@
           "typeHandlerVersion": "1.2",
           "settings": {
             "fileUris": "[variables('ubuntuScripts')]",
-            "commandToExecute": "[concat('bash kibana-install.sh -', variables('installPluginsShortOpt'), 'n ', variables('esSettings').clusterName, ' -v ', variables('esSettings').version, ' -S ', variables('esSettings').shieldKibanaServerPwd, ' -m ', parameters('loadBalancerType'))]"
-          }
-        },
-        "kibanaclientnode": {
-          "publisher": "Microsoft.OSTCExtensions",
-          "type": "CustomScriptForLinux",
-          "typeHandlerVersion": "1.2",
-          "settings": {
-            "fileUris": "[variables('ubuntuScripts')]",
-            "commandToExecute": "[variables('kibanaClientNodeInstallScript')]"
+            "commandToExecute": "[concat(variables('kibanaClientNodeInstallScript'), ' | ', 'bash kibana-install.sh -', variables('installPluginsShortOpt'), 'n ', variables('esSettings').clusterName, ' -v ', variables('esSettings').version, ' -S ', variables('esSettings').shieldKibanaServerPwd, ' -m ', parameters('loadBalancerType'))]"
           }
         }
       }
