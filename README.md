@@ -15,9 +15,9 @@ You can view the UI in developer mode by [clicking here](https://portal.azure.co
 ## ARM template
 
 <table>
-  <th><td>Parameter</td><td>Type</td><td>Description</td></th>
+  <tr><th>Parameter</td><th>Type</th><th>Description</th></tr>
   <tr><td>esVersion</td><td>enum</td>
-    <td>A valid supported Elasticsearch version
+    <td>A valid supported Elasticsearch version see [this list for supported versions](https://github.com/Mpdreamz/ARM-Templates/blob/master/src/mainTemplate.json#L8)
     </td></tr>
   <tr><td>esClusterName</td><td>string</td>
     <td> The name of the Elasticsearch cluster
@@ -28,72 +28,67 @@ You can view the UI in developer mode by [clicking here](https://portal.azure.co
     If you run `external` you should also install the shield plugin and look into setting up SSL on your endpoint
     </td></tr>
 
-  <tr><td>esClusterName</td><td>string</td>
+  <tr><td>esPlugins</td><td>string</td>
+    <td>Either `Yes` or `No`, whether to install the elasticsearch suite of
+    plugins (Shield, Watcher, Marvel)
+    </td></tr>
+
+  <tr><td>kibana</td><td>string</td>
+    <td>Either `Yes` or `No`, provision an extra machine with a public IP that
+    has Kibana installed on it. If you have opted to also install the Elasticsearch plugins using `esPlugins` then the Marvel and Sense Kibana apps get installed as well.
+    </td></tr>
+
+  <tr><td>jumpbox</td><td>string</td>
+    <td>Either `Yes` or `No`, Optionally add a virtual machine to the deployment which you can use to connect and manage virtual machines on the internal network.
+    </td></tr>
+
+  <tr><td>vmSizeDataNodes</td><td>string</td>
+    <td>Azure VM size of the data nodes see [this list for supported sizes](https://github.com/Mpdreamz/ARM-Templates/blob/master/src/mainTemplate.json#L69)
+    </td></tr>
+
+  <tr><td>vmDataNodeCount</td><td>int</td>
+    <td>The number of data nodes you wish to deploy. Should be greater than 0.
+    </td></tr>
+
+  <tr><td>dataNodesAreMasterEligible</td><td>string</td>
+    <td>Either `Yes` or `No`, Make all data nodes master eligible, this can be useful for small Elasticsearch clusters. When `Yes` no dedicated master nodes will be provisioned
+    </td></tr>
+
+  <tr><td>vmSizeMasterNodes</td><td>string</td>
+    <td>Azure VM size of the master nodes see [this list for supported sizes](https://github.com/Mpdreamz/ARM-Templates/blob/master/src/mainTemplate.json#L69). By default the template deploys 3 dedicated master nodes, unless `dataNodesAreMasterEligible` is set to `Yes`
+    </td></tr>
+
+  <tr><td>vmClientNodeCount</td><td>int</td>
+    <td> The number of client nodes to provision. Defaults 0 and can be any positive integer. By default the data nodes are directly exposed on the loadbalancer. If you provision client nodes, only these will be added to the loadbalancer.
+    </td></tr>
+
+  <tr><td>vmSizeClientNodes</td><td>string</td>
+    <td> Azure VM size of the client nodes see [this list for supported sizes](https://github.com/Mpdreamz/ARM-Templates/blob/master/src/mainTemplate.json#L69).
+    </td></tr>
+
+  <tr><td>adminUsername</td><td>string</td>
+    <td>Admin username used when provisioning virtual machines
+    </td></tr>
+
+  <tr><td>password</td><td>object</td>
     <td>
     </td></tr>
 
-  <tr><td>esClusterName</td><td>string</td>
-    <td>
+  <tr><td>shieldAdminPassword</td><td>securestring</td>
+    <td>Shield password for the `es_admin` user with admin role, must be &gt; 6 characters
     </td></tr>
 
-  <tr><td>esClusterName</td><td>string</td>
-    <td>
+  <tr><td>shieldReadPassword</td><td>securestring</td>
+    <td>Shield password for the `es_read` user with user (read-only) role, must be &gt; 6 characters
     </td></tr>
 
-  <tr><td>esClusterName</td><td>string</td>
-    <td>
+  <tr><td>shieldKibanaPassword</td><td>securestring</td>
+    <td>Shield password for the `es_kibana` user with kibana4 role, must be &gt; 6 characters
     </td></tr>
 
-  <tr><td>esClusterName</td><td>string</td>
-    <td>
-    </td></tr>
-
-  <tr><td>esClusterName</td><td>string</td>
-    <td>
-    </td></tr>
-
-  <tr><td>esClusterName</td><td>string</td>
-    <td>
-    </td></tr>
-
-  <tr><td>esClusterName</td><td>string</td>
-    <td>
-    </td></tr>
-
-  <tr><td>esClusterName</td><td>string</td>
-    <td>
-    </td></tr>
-
-  <tr><td>esClusterName</td><td>string</td>
-    <td>
-    </td></tr>
-
-  <tr><td>esClusterName</td><td>string</td>
-    <td>
-    </td></tr>
-
-  <tr><td>esClusterName</td><td>string</td>
-    <td>
-    </td></tr>
-
-  <tr><td>esClusterName</td><td>string</td>
-    <td>
-    </td></tr>
-
-  <tr><td>esClusterName</td><td>string</td>
-    <td>
-    </td></tr>
-
-  <tr><td>esClusterName</td><td>string</td>
-    <td>
-    </td></tr>
-
-  <tr><td>esClusterName</td><td>string</td>
-    <td>
-    </td></tr>
-
-  <tr><td>esClusterName</td><td>string</td>
-    <td>
+  <tr><td>location</td><td>string</td>
+    <td>The location where to provision all the items in this template. Defaults to the special `ResourceGroup` value which means it will inherit the location
+    from the resource group see [this list for supported locations](https://github.com/Mpdreamz/ARM-Templates/blob/master/src/mainTemplate.json#L197).
     </td></tr>
 
 </table>
