@@ -151,9 +151,9 @@ while getopts :n:v:A:R:K:S:Z:xyzldh optname; do
 done
 
 if [ ${CLUSTER_USES_DEDICATED_MASTERS} -ne 0 ]; then
-    MINIMUM_MASTER_NODES=3
+    MINIMUM_MASTER_NODES=2
     UNICAST_HOSTS='["masterVm0:9300","masterVm1:9300","masterVm2:9300"]'
-else 
+else
     MINIMUM_MASTER_NODES=$(((DATANODE_COUNT/2)+1))
     UNICAST_HOSTS='['
     for i in $(seq 0 $((DATANODE_COUNT-1))); do
@@ -188,7 +188,7 @@ install_java()
     apt-get -y update  > /dev/null
     echo debconf shared/accepted-oracle-license-v1-1 select true | sudo debconf-set-selections
     echo debconf shared/accepted-oracle-license-v1-1 seen true | sudo debconf-set-selections
-    apt-get -y install oracle-java8-installer 
+    apt-get -y install oracle-java8-installer
 
     log "Installed Java"
 }
@@ -365,10 +365,10 @@ echo "set httpd port 2812 and" >> /etc/monit/monitrc
 echo "    use address localhost" >> /etc/monit/monitrc
 echo "    allow localhost" >> /etc/monit/monitrc
 sudo touch /etc/monit/conf.d/elasticsearch.conf
-"check process elasticsearch with pidfile \"/var/run/elasticsearch/elasticsearch.pid\"" >> /etc/monit/conf.d/elasticsearch.conf
-echo "group elasticsearch" >> /etc/monit/conf.d/elasticsearch.conf
-echo "start program = \"/etc/init.d/elasticsearch start\"" >> /etc/monit/conf.d/elasticsearch.conf
-echo "stop program = \"/etc/init.d/elasticsearch stop\"" >> /etc/monit/conf.d/elasticsearch.conf
+echo "check process elasticsearch with pidfile \"/var/run/elasticsearch/elasticsearch.pid\"" >> /etc/monit/conf.d/elasticsearch.conf
+echo "  group elasticsearch" >> /etc/monit/conf.d/elasticsearch.conf
+echo "  start program = \"/etc/init.d/elasticsearch start\"" >> /etc/monit/conf.d/elasticsearch.conf
+echo "  stop program = \"/etc/init.d/elasticsearch stop\"" >> /etc/monit/conf.d/elasticsearch.conf
 
 sudo /etc/init.d/monit start
 sudo monit start all

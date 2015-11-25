@@ -78,13 +78,8 @@ while getopts :n:v:S:m:lh optname; do
   esac
 done
 
-HOST = "10.0.0.100"
-if [ "$HOSTMODE" == "external" ]; then
-    HOST = "127.0.0.1"
-fi
-
 #hit the loadbalancers internal IP
-ELASTICSEARCH_URL="http://$HOST:9200"
+ELASTICSEARCH_URL="http://10.0.0.100:9200"
 
 echo "installing kibana for Elasticsearch $ES_VERSION cluster: $CLUSTER_NAME"
 echo "installing kibana plugins is set to: $INSTALL_PLUGINS"
